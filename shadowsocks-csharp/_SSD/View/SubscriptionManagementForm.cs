@@ -74,16 +74,26 @@ namespace Shadowsocks.View {
             Button_save.Enabled = false;
             Button_delete.Enabled = false;
             refresh_switch = !refresh_switch;
+            CheckSelected();
+        }
+
+        private void CheckSelected() {
+            if (ListBox_subscription.SelectedIndex == -1) {
+                Button_save.Enabled = false;
+                Button_delete.Enabled = false;
+            }
+            else {
+                Button_save.Enabled = true;
+                Button_delete.Enabled = true;
+            }
         }
 
         private void AddSubscription(object sender, EventArgs e) {
             EnableSwitch();
-            var new_subscription = controller.GetCurrentConfiguration().PareseSubscriptionURL(TextBox_url.Text,false,false);
+            var new_subscription = controller.GetCurrentConfiguration().PareseSubscriptionURL(TextBox_url.Text, false, false);
             if (new_subscription == null) {
                 MessageBox.Show("Subscribe Fail");
                 EnableSwitch();
-                Button_save.Enabled = true;
-                Button_delete.Enabled = true;
                 return;
             }
             if (TextBox_name.Text != text_auto) {
@@ -93,17 +103,15 @@ namespace Shadowsocks.View {
                 if (subscription.airport == new_subscription.airport) {
                     MessageBox.Show("This airport is exist");
                     EnableSwitch();
-                    Button_save.Enabled = true;
-                    Button_delete.Enabled = true;
                     return;
                 }
             }
             subscriptions.Add(new_subscription);
             ListBox_subscription.Items.Add(new_subscription.airport);
+            TextBox_url.Text = "";
             EnableSwitch();
-            Button_save.Enabled = true;
-            Button_delete.Enabled = true;
         }
+
 
         private void SaveSubscription(object sender, EventArgs e) {
             EnableSwitch();
@@ -120,7 +128,7 @@ namespace Shadowsocks.View {
             if (TextBox_name.Text != text_auto) {
                 new_subscription.airport = TextBox_name.Text;
             }
-            subscriptions[ListBox_subscription.SelectedIndex]=new_subscription;            
+            subscriptions[ListBox_subscription.SelectedIndex] = new_subscription;
             RefreshSubscriptionAndSwitch();
         }
 
@@ -130,6 +138,9 @@ namespace Shadowsocks.View {
                 subscriptions.RemoveAt(delete_index);
                 ListBox_subscription.Items.RemoveAt(delete_index);
             }
+            TextBox_url.Text = "";
+            SetNameAuto();
+            CheckSelected();
         }
 
         private void SubscriptionSelected(object sender, EventArgs e) {
@@ -141,8 +152,7 @@ namespace Shadowsocks.View {
             TextBox_url.Text = subscription.url;
             TextBox_name.Text = subscription.airport;
             TextBox_name.ForeColor = SystemColors.WindowText;
-            Button_save.Enabled = true;
-            Button_delete.Enabled = true;
+            CheckSelected();
         }
 
         private void ManagementExit(object sender, FormClosedEventArgs e) {

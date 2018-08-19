@@ -111,10 +111,16 @@ namespace Shadowsocks.View {
             foreach (var server in configuration.configs) {
                 server.TcpingLatency();
             }
-            foreach (var subscription in configuration.subscriptions) {
-                foreach (var server in subscription.servers) {
-                    server.TcpingLatency();
+            try {
+                //编辑节点时会导致error所以要try-catch
+                foreach (var subscription in configuration.subscriptions) {
+                    foreach (var server in subscription.servers) {
+                        server.TcpingLatency();
+                    }
                 }
+            }
+            catch {
+
             }
             Timer_update_latency.Start();
         }
