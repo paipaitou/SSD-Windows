@@ -49,34 +49,77 @@ namespace Shadowsocks.Model {
                     ToolTipIcon.Error
                 );
             }
+            for (var index = 0; index <= subscriptions.Count - 1; index++) {
+                if (PareseSubscriptionURL(subscriptions[index].url) != null) {
+                    if (notifyIcon != null) {
+                        notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Success");
+                        notifyIcon.BalloonTipText = string.Format(I18N.GetString("Successful Airport: {0}"), subscriptions[index].airport);
+                        notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+                        notifyIcon.ShowBalloonTip(0);
+                    }
+                }
+                else {
+                    if (notifyIcon != null) {
+                        notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Fail");
+                        notifyIcon.BalloonTipText = string.Format(I18N.GetString("Failed Link: {0}"), subscriptions[index].url);
+                        notifyIcon.BalloonTipIcon = ToolTipIcon.Error;
+                        notifyIcon.ShowBalloonTip(0);
+                    }
+                    if (subscriptions[index].airport.IsNullOrEmpty()) {
+                        subscriptions[index].airport = "(error)";
+                    }
+                    subscriptions[index].url = "(error)";
+                    continue;
+                }
+            }
+            Save(this);
+        }
+
+        public Subscription PareseSubscriptionURL(string url, bool proxy = false, bool merge = true) {
             var web_subscribe = new WebClient();
             if (proxy) {
                 web_subscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);
             }
-            for (var index = 0; index <= subscriptions.Count - 1; index++) {
-                try {
-                    var buffer = web_subscribe.DownloadData(subscriptions[index].url);
-                    var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
-                    subscriptions[index].ParseBase64(text);
-                }
-                catch (Exception) {
-                    if (notifyIcon != null) {
-                        notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Fail");
-                        notifyIcon.BalloonTipText = string.Format(I18N.GetString("Failed Link: {0}"), subscriptions[index].url);
-                        notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-                        notifyIcon.ShowBalloonTip(0);
-                    }
-                    subscriptions[index].airport = "(error)";
-                    continue;
-                }
-                if (notifyIcon != null) {
-                    notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Success");
-                    notifyIcon.BalloonTipText = string.Format(I18N.GetString("Successful Airport: {0}"), subscriptions[index].airport);
-                    notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-                    notifyIcon.ShowBalloonTip(0);
+            try {
+                var buffer = web_subscribe.DownloadData(url);
+                var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
+                var new_subscription = ParseBase64(text, merge);
+                new_subscription.url = url;
+                return new_subscription;
+            }
+            catch (Exception) {
+                return null;
+            }
+        }
+
+        public Subscription ParseBase64(string text_base64, bool merge = true) {
+            text_base64.Replace('-', '+');
+            text_base64.Replace('_', '/');
+            var mod4 = text_base64.Length % 4;
+            if (mod4 > 0) {
+                text_base64 += new string('=', 4 - mod4);
+            }
+            var json_buffer = Convert.FromBase64String(text_base64);
+            var json_text = Encoding.UTF8.GetString(json_buffer);
+            var new_subscription = JsonConvert.DeserializeObject<Subscription>(json_text);
+            if (!merge) {
+                new_subscription.HandleServers();
+                return new_subscription;
+            }
+            foreach (var subscription in subscriptions) {
+                if (subscription.airport == new_subscription.airport) {
+                    subscription.encryption = new_subscription.encryption;
+                    subscription.password = new_subscription.password;
+                    subscription.port = new_subscription.port;
+                    subscription.servers = new_subscription.servers;
+                    subscription.HandleServers();
+                    return subscription;
                 }
             }
-            Save(this);
+            //未找到同名订阅，被迫创建
+            new_subscription.HandleServers();
+            subscriptions.Add(new_subscription);
+            return new_subscription;
         }
     }
 }

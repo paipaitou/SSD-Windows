@@ -76,6 +76,9 @@ namespace Shadowsocks.Model
             plugin_args = "";
             password = "";
             remarks = "";
+            #region SSD
+            InitServer();
+            #endregion
             timeout = DefaultServerTimeoutSec;
         }
 

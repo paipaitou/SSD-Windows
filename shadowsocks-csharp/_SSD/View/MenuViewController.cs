@@ -37,7 +37,6 @@ namespace Shadowsocks.View {
                     );
                 }
                 else {
-                    clipboard.Replace("ssd://", "");
                     ShowBalloonTip(
                         I18N.GetString("Import Fail"),
                         string.Format(I18N.GetString("Import URL: {0}"), clipboard),
@@ -47,9 +46,9 @@ namespace Shadowsocks.View {
                 }
             }
             else {
+                clipboard = clipboard.Replace("ssd://", "");
                 try {
-                    var new_subscription = Subscription.ParseNewBase64(Clipboard.GetText(TextDataFormat.Text));
-                    controller.GetCurrentConfiguration().subscriptions.Add(new_subscription);
+                    var new_subscription = controller.GetCurrentConfiguration().ParseBase64(clipboard);
                     ShowBalloonTip(
                         I18N.GetString("Import Success"),
                         string.Format(I18N.GetString("Import Airport: {0}"), new_subscription.airport),
@@ -87,7 +86,10 @@ namespace Shadowsocks.View {
         private void RegularUpdateSubscription(object sender, EventArgs e) {
             Timer_update_subscription.Interval = 1000.0 * 60 * 60;
             Timer_update_subscription.Stop();
+            Timer_update_latency.Stop();
             controller.GetCurrentConfiguration().UpdateAllSubscription();
+            RegularUpdateLatency(null, null);
+            Timer_update_latency.Start();
             Timer_update_subscription.Start();
         }
 
@@ -122,7 +124,7 @@ namespace Shadowsocks.View {
         }
 
         private MenuItem CreateSubscribeGroup() {
-            MenuGroup_subscribe = CreateMenuGroup("Subscribe", new MenuItem[] {
+            MenuGroup_subscribe = CreateMenuGroup("Subscription", new MenuItem[] {
                     MenuItem_subscribe_Manage = CreateMenuItem("Manage", new EventHandler(SubscriptionManagement)),
                     MenuItem_subscribe_Update = CreateMenuItem("Update", new EventHandler(UpdateSubscription)),
                     MenuItem_subscribe_UpdateUseProxy = CreateMenuItem("Update(use proxy)", new EventHandler(UpdateSubscriptionUseProxy))
@@ -161,7 +163,6 @@ namespace Shadowsocks.View {
         }
 
         private void UpdateAirportMenu() {
-            //判断当前是否可以清空（防止在show时被清空)
             var items = ServersItem.MenuItems;
             var index_airport = 0;
             var count_seperator = 0;

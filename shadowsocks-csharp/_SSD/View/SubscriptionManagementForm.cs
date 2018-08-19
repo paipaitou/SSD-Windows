@@ -50,15 +50,16 @@ namespace Shadowsocks.View {
 
         private void LoadSubscriptionManage(object sender, EventArgs e) {
             SetNameAuto();
-            EnableSwitch();
-            RefreshSubscription();
+            foreach (var subscription in subscriptions) {
+                ListBox_subscription.Items.Add(subscription.airport);
+            }
         }
 
-        private void RefreshSubscription() {
-            ListBox_subscription.Items.Clear();
+        private void RefreshSubscriptionAndSwitch() {
             TextBox_url.Text = "";
             SetNameAuto();
             controller.GetCurrentConfiguration().UpdateAllSubscription();
+            ListBox_subscription.Items.Clear();
             foreach (var subscription in subscriptions) {
                 ListBox_subscription.Items.Add(subscription.airport);
             }
@@ -71,59 +72,81 @@ namespace Shadowsocks.View {
             TextBox_name.Enabled = !refresh_switch;
             Button_add.Enabled = !refresh_switch;
             Button_save.Enabled = false;
-            Button_delete.Enabled = !refresh_switch;
+            Button_delete.Enabled = false;
             refresh_switch = !refresh_switch;
         }
 
         private void AddSubscription(object sender, EventArgs e) {
             EnableSwitch();
-            //加入重名检验
-            subscriptions.Add(GetSubscriptionShowed());
-            RefreshSubscription();
+            var new_subscription = controller.GetCurrentConfiguration().PareseSubscriptionURL(TextBox_url.Text,false,false);
+            if (new_subscription == null) {
+                MessageBox.Show("Subscribe Fail");
+                EnableSwitch();
+                Button_save.Enabled = true;
+                Button_delete.Enabled = true;
+                return;
+            }
+            if (TextBox_name.Text != text_auto) {
+                new_subscription.airport = TextBox_name.Text;
+            }
+            foreach (var subscription in subscriptions) {
+                if (subscription.airport == new_subscription.airport) {
+                    MessageBox.Show("This airport is exist");
+                    EnableSwitch();
+                    Button_save.Enabled = true;
+                    Button_delete.Enabled = true;
+                    return;
+                }
+            }
+            subscriptions.Add(new_subscription);
+            ListBox_subscription.Items.Add(new_subscription.airport);
+            EnableSwitch();
+            Button_save.Enabled = true;
+            Button_delete.Enabled = true;
         }
 
         private void SaveSubscription(object sender, EventArgs e) {
-            subscriptions[GetSeletedSubscriptionGlobalIndex()] = GetSubscriptionShowed();
-            RefreshSubscription();
-        }
-
-        private Subscription GetSubscriptionShowed() {
-            var subscription = new Subscription();
-            var airport = TextBox_name.Text.Trim();
-            if (airport != text_auto && airport != "") {
-                subscription.airport = airport;
+            EnableSwitch();
+            var new_subscription = controller.GetCurrentConfiguration().PareseSubscriptionURL(
+                TextBox_url.Text,
+                false,
+                false
+            );
+            if (new_subscription == null) {
+                MessageBox.Show("Subscribe Fail");
+                RefreshSubscriptionAndSwitch();
+                return;
             }
-            subscription.url = TextBox_url.Text;
-            return subscription;
-        }
-
-        private int GetSeletedSubscriptionGlobalIndex() {
-            var airport_selected = (string)ListBox_subscription.SelectedItem;
-            var subscription_index = 0;
-            for (; subscription_index <= subscriptions.Count - 1; subscription_index++) {
-                if (subscriptions[subscription_index].airport == airport_selected) {
-                    break;
-                }
+            if (TextBox_name.Text != text_auto) {
+                new_subscription.airport = TextBox_name.Text;
             }
-            return subscription_index;
+            subscriptions[ListBox_subscription.SelectedIndex]=new_subscription;            
+            RefreshSubscriptionAndSwitch();
         }
 
         private void DeleteSubscription(object sender, EventArgs e) {
-            var delete_index = GetSeletedSubscriptionGlobalIndex();
+            var delete_index = ListBox_subscription.SelectedIndex;
             if (delete_index <= subscriptions.Count - 1) {
-                EnableSwitch();
                 subscriptions.RemoveAt(delete_index);
                 ListBox_subscription.Items.RemoveAt(delete_index);
-                EnableSwitch();
             }
         }
 
         private void SubscriptionSelected(object sender, EventArgs e) {
-            var subscription = subscriptions[GetSeletedSubscriptionGlobalIndex()];
+            var index = ListBox_subscription.SelectedIndex;
+            if (index == -1) {
+                return;
+            }
+            var subscription = subscriptions[index];
             TextBox_url.Text = subscription.url;
             TextBox_name.Text = subscription.airport;
             TextBox_name.ForeColor = SystemColors.WindowText;
             Button_save.Enabled = true;
+            Button_delete.Enabled = true;
+        }
+
+        private void ManagementExit(object sender, FormClosedEventArgs e) {
+            Configuration.Save(controller.GetCurrentConfiguration());
         }
     }
 }

@@ -21,6 +21,12 @@ namespace Shadowsocks.Model {
         public const int PREFIX_LATENCY = 0;
         public const int PREFIX_AIRPORT = 1;
 
+        private void InitServer() {
+            server_port = -1;
+            method = null;
+            password = null;
+        }
+
         public string NamePrefix(int PREFIX_FLAG) {
             string prefix = "[";
             if (PREFIX_FLAG == PREFIX_LATENCY) {
@@ -55,7 +61,6 @@ namespace Shadowsocks.Model {
             var latencies = new List<double>();
             var sock = new TcpClient();
             var stopwatch = new Stopwatch();
-            stopwatch.Start();
             try {
                 Dns.GetHostAddresses(server);
             }
@@ -64,13 +69,20 @@ namespace Shadowsocks.Model {
                 return;
             }
 
-            var result = sock.BeginConnect(server, server_port, null, null);
-            if (result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
-                stopwatch.Stop();
-                latencies.Add(stopwatch.Elapsed.TotalMilliseconds);
+            try {
+                stopwatch.Start();
+                var result = sock.BeginConnect(server, server_port, null, null);
+                if (result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
+                    stopwatch.Stop();
+                    latencies.Add(stopwatch.Elapsed.TotalMilliseconds);
+                }
+                else {
+                    stopwatch.Stop();
+                }
             }
-            else {
-                stopwatch.Stop();
+            catch {
+                latency = LATENCY_ERROR;
+                return;
             }
 
             try {

@@ -96,6 +96,7 @@
             // 
             // Button_delete
             // 
+            this.Button_delete.Enabled = false;
             this.Button_delete.Location = new System.Drawing.Point(742, 109);
             this.Button_delete.Name = "Button_delete";
             this.Button_delete.Size = new System.Drawing.Size(100, 46);
@@ -132,6 +133,7 @@
             this.Name = "SubscriptionManagementForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Subscription Management";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManagementExit);
             this.Load += new System.EventHandler(this.LoadSubscriptionManage);
             this.ResumeLayout(false);
             this.PerformLayout();

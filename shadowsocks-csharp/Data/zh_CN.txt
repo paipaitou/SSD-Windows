@@ -154,7 +154,7 @@ Timeout is invalid, it should not exceed {0}=超时无效，不应超过 {0}
 
 # Menu items
 
-Subscribe=订阅
+Subscription=订阅
 Manage=管理
 Update=更新
 Update(use proxy)=更新（通过代理）
@@ -181,3 +181,4 @@ Failed Link: {0}=失败链接： {0}
 Subscribe Success=订阅成功
 Successful Airport: {0}=成功机场： {0}
 No Subscription=没有订阅
+This airport is exist=此机场已存在

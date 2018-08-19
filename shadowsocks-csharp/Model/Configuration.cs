@@ -63,11 +63,11 @@ namespace Shadowsocks.Model
 
                 if (config.configs == null)
                     config.configs = new List<Server>();
+                if (config.configs.Count == 0)
+                    config.configs.Add(GetDefaultServer());
                 #region SSD
                 LoadSubscription(config);
                 #endregion
-                if (config.configs.Count == 0)
-                    config.configs.Add(GetDefaultServer());
                 if (config.localPort == 0)
                     config.localPort = 1080;
                 if (config.index == -1 && config.strategy == null)
