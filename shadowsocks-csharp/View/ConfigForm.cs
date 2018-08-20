@@ -187,11 +187,16 @@ namespace Shadowsocks.View
             {
                 return false;
             }
-            if (_modifiedConfiguration.configs.Count == 0)
-            {
-                MessageBox.Show(I18N.GetString("Please add at least one server"));
+            #region SSD
+            if (!ChechListCount()) {
                 return false;
             }
+            //if (_modifiedConfiguration.configs.Count == 0)
+            //{
+            //    MessageBox.Show(I18N.GetString("Please add at least one server"));
+            //    return false;
+            //}
+            #endregion
 
             int localPort = int.Parse(ProxyPortTextBox.Text);
             Configuration.CheckLocalPort(localPort);

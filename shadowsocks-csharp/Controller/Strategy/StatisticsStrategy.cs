@@ -12,7 +12,7 @@ namespace Shadowsocks.Controller.Strategy
 {
     using Statistics = Dictionary<string, List<StatisticsRecord>>;
 
-    internal class StatisticsStrategy : IStrategy, IDisposable
+    internal partial class StatisticsStrategy : IStrategy, IDisposable
     {
         private readonly ShadowsocksController _controller;
         private Server _currentServer;
@@ -26,8 +26,11 @@ namespace Shadowsocks.Controller.Strategy
         {
             _controller = controller;
             var servers = controller.GetCurrentConfiguration().configs;
-            var randomIndex = new Random().Next() % servers.Count;
-            _currentServer = servers[randomIndex];  //choose a server randomly at first
+            #region SSD
+            var randomIndex = InitIndex();
+            //var randomIndex = new Random().Next() % servers.Count;
+            //_currentServer = servers[randomIndex];  //choose a server randomly at first
+            #endregion
             _timer = new Timer(ReloadStatisticsAndChooseAServer);
         }
 

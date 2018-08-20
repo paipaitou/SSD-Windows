@@ -133,7 +133,7 @@
             this.Name = "SubscriptionManagementForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Subscription Management";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManagementExit);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManagementClosed);
             this.Load += new System.EventHandler(this.LoadSubscriptionManage);
             this.ResumeLayout(false);
             this.PerformLayout();

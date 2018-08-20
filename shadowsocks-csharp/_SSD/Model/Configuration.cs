@@ -11,8 +11,22 @@ namespace Shadowsocks.Model {
         public List<Subscription> subscriptions = new List<Subscription>();
 
         public static void LoadSubscription(Configuration configuration_subscription) {
-            if (configuration_subscription.subscriptions == null) {
-                configuration_subscription.subscriptions = new List<Subscription>();
+            var count = configuration_subscription.configs.Count;
+            foreach (var subscription in configuration_subscription.subscriptions) {
+                count += subscription.servers.Count;
+            }
+            if (count == 0) {
+                configuration_subscription.configs.Add(GetDefaultServer());
+                return;
+            }
+            var subscriptions = configuration_subscription.subscriptions;
+            if (subscriptions == null) {
+                subscriptions = new List<Subscription>();
+            }
+            else {
+                foreach (var subscription in subscriptions) {
+                    subscription.configuration = configuration_subscription;
+                }
             }
         }
 
@@ -50,7 +64,7 @@ namespace Shadowsocks.Model {
                 );
             }
             for (var index = 0; index <= subscriptions.Count - 1; index++) {
-                if (PareseSubscriptionURL(subscriptions[index].url) != null) {
+                if (subscriptions[index].ParseURL(proxy) != null) {
                     if (notifyIcon != null) {
                         notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Success");
                         notifyIcon.BalloonTipText = string.Format(I18N.GetString("Successful Airport: {0}"), subscriptions[index].airport);
@@ -102,6 +116,7 @@ namespace Shadowsocks.Model {
             var json_buffer = Convert.FromBase64String(text_base64);
             var json_text = Encoding.UTF8.GetString(json_buffer);
             var new_subscription = JsonConvert.DeserializeObject<Subscription>(json_text);
+            new_subscription.configuration = this;
             if (!merge) {
                 new_subscription.HandleServers();
                 return new_subscription;

@@ -31,6 +31,7 @@ namespace Shadowsocks.Controller
         static I18N()
         {
             string name = CultureInfo.CurrentCulture.EnglishName;
+            name = "Chinese";
             if (name.StartsWith("Chinese", StringComparison.OrdinalIgnoreCase))
             {
                 // choose Traditional Chinese only if we get explicit indication

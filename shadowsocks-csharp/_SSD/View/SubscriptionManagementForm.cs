@@ -11,14 +11,14 @@ namespace Shadowsocks.View {
         private string text_auto = I18N.GetString("(Auto)");
 
         private ShadowsocksController controller;
-        private List<Subscription> subscriptions;
+        private Configuration configuration_copy;
 
         private bool refresh_switch = true;
 
         public SubscriptionManagementForm(ShadowsocksController controller_set) {
             InitializeComponent();
             controller = controller_set;
-            subscriptions = controller.GetCurrentConfiguration().subscriptions;
+            configuration_copy = controller.GetConfigurationCopy();
 
             Text = I18N.GetString("Subscription Management");
             Label_url.Text = I18N.GetString("Subscription URL");
@@ -50,7 +50,7 @@ namespace Shadowsocks.View {
 
         private void LoadSubscriptionManage(object sender, EventArgs e) {
             SetNameAuto();
-            foreach (var subscription in subscriptions) {
+            foreach (var subscription in configuration_copy.subscriptions) {
                 ListBox_subscription.Items.Add(subscription.airport);
             }
         }
@@ -58,9 +58,9 @@ namespace Shadowsocks.View {
         private void RefreshSubscriptionAndSwitch() {
             TextBox_url.Text = "";
             SetNameAuto();
-            controller.GetCurrentConfiguration().UpdateAllSubscription();
+            configuration_copy.UpdateAllSubscription();
             ListBox_subscription.Items.Clear();
-            foreach (var subscription in subscriptions) {
+            foreach (var subscription in configuration_copy.subscriptions) {
                 ListBox_subscription.Items.Add(subscription.airport);
             }
             EnableSwitch();
@@ -90,52 +90,59 @@ namespace Shadowsocks.View {
 
         private void AddSubscription(object sender, EventArgs e) {
             EnableSwitch();
-            var new_subscription = controller.GetCurrentConfiguration().PareseSubscriptionURL(TextBox_url.Text, false, false);
+            var new_subscription = configuration_copy.PareseSubscriptionURL(TextBox_url.Text, false, false);
             if (new_subscription == null) {
-                MessageBox.Show("Subscribe Fail");
+                MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 EnableSwitch();
                 return;
             }
             if (TextBox_name.Text != text_auto) {
                 new_subscription.airport = TextBox_name.Text;
             }
-            foreach (var subscription in subscriptions) {
+            foreach (var subscription in configuration_copy.subscriptions) {
                 if (subscription.airport == new_subscription.airport) {
-                    MessageBox.Show("This airport is exist");
+                    MessageBox.Show(I18N.GetString("This airport is exist"));
                     EnableSwitch();
                     return;
                 }
             }
-            subscriptions.Add(new_subscription);
+            configuration_copy.subscriptions.Add(new_subscription);
             ListBox_subscription.Items.Add(new_subscription.airport);
             TextBox_url.Text = "";
+            SetNameAuto();
+            ListBox_subscription.SelectedIndex = -1;
             EnableSwitch();
         }
 
 
         private void SaveSubscription(object sender, EventArgs e) {
             EnableSwitch();
-            var new_subscription = controller.GetCurrentConfiguration().PareseSubscriptionURL(
+            var new_subscription = configuration_copy.PareseSubscriptionURL(
                 TextBox_url.Text,
                 false,
                 false
             );
             if (new_subscription == null) {
-                MessageBox.Show("Subscribe Fail");
+                MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 RefreshSubscriptionAndSwitch();
                 return;
             }
             if (TextBox_name.Text != text_auto) {
                 new_subscription.airport = TextBox_name.Text;
             }
-            subscriptions[ListBox_subscription.SelectedIndex] = new_subscription;
+            configuration_copy.subscriptions[ListBox_subscription.SelectedIndex] = new_subscription;
             RefreshSubscriptionAndSwitch();
         }
 
         private void DeleteSubscription(object sender, EventArgs e) {
+            if (configuration_copy.configs.Count == 0 &&
+                configuration_copy.subscriptions.Count == 1) {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                return;
+            }
             var delete_index = ListBox_subscription.SelectedIndex;
-            if (delete_index <= subscriptions.Count - 1) {
-                subscriptions.RemoveAt(delete_index);
+            if (delete_index <= configuration_copy.subscriptions.Count - 1) {
+                configuration_copy.subscriptions.RemoveAt(delete_index);
                 ListBox_subscription.Items.RemoveAt(delete_index);
             }
             TextBox_url.Text = "";
@@ -148,15 +155,15 @@ namespace Shadowsocks.View {
             if (index == -1) {
                 return;
             }
-            var subscription = subscriptions[index];
+            var subscription = configuration_copy.subscriptions[index];
             TextBox_url.Text = subscription.url;
             TextBox_name.Text = subscription.airport;
             TextBox_name.ForeColor = SystemColors.WindowText;
             CheckSelected();
         }
 
-        private void ManagementExit(object sender, FormClosedEventArgs e) {
-            Configuration.Save(controller.GetCurrentConfiguration());
+        private void ManagementClosed(object sender, FormClosedEventArgs e) {
+            controller.GetCurrentConfiguration().subscriptions = configuration_copy.subscriptions;
         }
     }
 }

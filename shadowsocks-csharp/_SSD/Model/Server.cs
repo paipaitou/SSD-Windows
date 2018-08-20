@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Shadowsocks.Model {
     public partial class Server {
@@ -11,7 +13,7 @@ namespace Shadowsocks.Model {
         public int id;
         public double ratio;
 
-        [Newtonsoft.Json.JsonIgnore()]
+        [JsonIgnore()]
         public int latency = LATENCY_PENDING;
 
         public const int LATENCY_ERROR = -2;
@@ -22,6 +24,7 @@ namespace Shadowsocks.Model {
         public const int PREFIX_AIRPORT = 1;
 
         private void InitServer() {
+            server = "www.baidu.com";
             server_port = -1;
             method = null;
             password = null;
@@ -63,13 +66,6 @@ namespace Shadowsocks.Model {
             var stopwatch = new Stopwatch();
             try {
                 Dns.GetHostAddresses(server);
-            }
-            catch (Exception) {
-                latency = LATENCY_ERROR;
-                return;
-            }
-
-            try {
                 stopwatch.Start();
                 var result = sock.BeginConnect(server, server_port, null, null);
                 if (result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
@@ -79,18 +75,13 @@ namespace Shadowsocks.Model {
                 else {
                     stopwatch.Stop();
                 }
+                sock.Close();
             }
-            catch {
+            catch (Exception) {
                 latency = LATENCY_ERROR;
                 return;
             }
 
-            try {
-                sock.Close();
-            }
-            catch (Exception) {
-
-            }
 
             if (latencies.Count != 0) {
                 latency = (int)latencies.Average();

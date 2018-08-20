@@ -1,5 +1,7 @@
-﻿using Shadowsocks.Model;
+﻿using Shadowsocks.Controller;
+using Shadowsocks.Model;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Shadowsocks.View {
     public partial class ConfigForm {
@@ -12,6 +14,16 @@ namespace Shadowsocks.View {
                     ServersListBox.Items.Add(ServerText);
                     SubscriptionServerMap.Add(ServerText, server);
                 }
+            }
+        }
+
+        private bool ChechListCount() {
+            if (ServersListBox.Items.Count == 0) {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                return false;
+            }
+            else {
+                return true;
             }
         }
 

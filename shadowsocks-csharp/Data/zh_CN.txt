@@ -165,7 +165,7 @@ Subscription Management=订阅管理
 Subscription URL=订阅链接
 Airport Name=机场名
 (Auto)=（自动）
-&Save=保存
+&Save=保存(&S)
 
 
 # Message

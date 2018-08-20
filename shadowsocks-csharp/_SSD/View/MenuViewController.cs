@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using Shadowsocks.Controller;
 using Shadowsocks.Model;
@@ -15,8 +16,7 @@ namespace Shadowsocks.View {
         private SubscriptionManagementForm ManageForm;
 
         private System.Timers.Timer Timer_detect_running;
-        private System.Timers.Timer Timer_update_latency;
-        private System.Timers.Timer Timer_update_subscription;
+        private System.Timers.Timer Timer_regular_update;
 
         private void DisableFirstRun() {
 
@@ -49,6 +49,7 @@ namespace Shadowsocks.View {
                 clipboard = clipboard.Replace("ssd://", "");
                 try {
                     var new_subscription = controller.GetCurrentConfiguration().ParseBase64(clipboard);
+                    Configuration.Save(controller.GetCurrentConfiguration());
                     ShowBalloonTip(
                         I18N.GetString("Import Success"),
                         string.Format(I18N.GetString("Import Airport: {0}"), new_subscription.airport),
@@ -67,30 +68,39 @@ namespace Shadowsocks.View {
             }
         }
 
+        private void RegularUpdate(object sender, EventArgs e) {
+            Timer_regular_update.Interval = 1000.0 * 60 * 30;
+            Timer_regular_update.Stop();
+            try {
+                Configuration configuration = controller.GetCurrentConfiguration();
+                configuration.UpdateAllSubscription();
+                foreach (var server in configuration.configs) {
+                    server.TcpingLatency();
+                }
+                foreach (var subscription in configuration.subscriptions) {
+                    foreach (var server in subscription.servers) {
+                        server.TcpingLatency();
+                    }
+                }
+                Thread.Sleep(1000 * 60 * 30);
+            }
+            catch (Exception) {
+
+            }
+            Timer_regular_update.Start();
+        }
+
+
         private void InitOther() {
             Timer_detect_running = new System.Timers.Timer(1000.0 * 3);
             Timer_detect_running.Elapsed += RegularDetectRunning;
             Timer_detect_running.Start();
 
-            Timer_update_latency = new System.Timers.Timer(1000.0 * 3);
-            Timer_update_latency.Elapsed += RegularUpdateLatency;
-            Timer_update_latency.Start();
-
-            Timer_update_subscription = new System.Timers.Timer(1000.0 * 3);
-            Timer_update_subscription.Elapsed += RegularUpdateSubscription;
-            Timer_update_subscription.Start();
+            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
+            Timer_regular_update.Elapsed += RegularUpdate;
+            Timer_regular_update.Start();
 
             contextMenu1.Popup += PreloadMenu;
-        }
-
-        private void RegularUpdateSubscription(object sender, EventArgs e) {
-            Timer_update_subscription.Interval = 1000.0 * 60 * 60;
-            Timer_update_subscription.Stop();
-            Timer_update_latency.Stop();
-            controller.GetCurrentConfiguration().UpdateAllSubscription();
-            RegularUpdateLatency(null, null);
-            Timer_update_latency.Start();
-            Timer_update_subscription.Start();
         }
 
         private void PreloadMenu(object sender, EventArgs e) {
@@ -102,27 +112,6 @@ namespace Shadowsocks.View {
             if (UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
                 Quit_Click(null, null);
             }
-        }
-
-        private void RegularUpdateLatency(object sender, System.Timers.ElapsedEventArgs e) {
-            Timer_update_latency.Interval = 1000.0 * 60;
-            Timer_update_latency.Stop();
-            Configuration configuration = controller.GetCurrentConfiguration();
-            foreach (var server in configuration.configs) {
-                server.TcpingLatency();
-            }
-            try {
-                //编辑节点时会导致error所以要try-catch
-                foreach (var subscription in configuration.subscriptions) {
-                    foreach (var server in subscription.servers) {
-                        server.TcpingLatency();
-                    }
-                }
-            }
-            catch {
-
-            }
-            Timer_update_latency.Start();
         }
 
         private Configuration CurrentConfigurationGet() {
@@ -143,10 +132,11 @@ namespace Shadowsocks.View {
         }
 
         private void SubscriptionManagement(object sender, EventArgs e) {
+            Configuration.Save(controller.GetCurrentConfiguration());
             if (ManageForm == null) {
                 ManageForm = new SubscriptionManagementForm(controller);
-                ManageForm.FormClosed += SubscriptionSettingsRecycled;
                 ManageForm.Show();
+                ManageForm.FormClosed += SubscriptionSettingsRecycled;
             }
             ManageForm.Activate();
         }
@@ -154,6 +144,11 @@ namespace Shadowsocks.View {
         private void SubscriptionSettingsRecycled(object sender, EventArgs e) {
             ManageForm.Dispose();
             ManageForm = null;
+            Configuration.Save(controller.GetCurrentConfiguration());
+            controller.SelectServerIndex(0);
+            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
+            Timer_regular_update.Elapsed += RegularUpdate;
+            Timer_regular_update.Start();
         }
 
         private void UpdateSubscription(object sender, EventArgs e) {
