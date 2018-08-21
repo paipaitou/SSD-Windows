@@ -26,6 +26,11 @@ namespace Shadowsocks.View {
             Button_add.Text = I18N.GetString("&Add");
             Button_save.Text = I18N.GetString("&Save");
             Button_delete.Text = I18N.GetString("&Delete");
+            CheckBox_use_proxy.Text = I18N.GetString("Use Proxy");
+            Label_traffic_used.Text = I18N.GetString("Traffic Used:");
+            Label_expiry_date.Text = I18N.GetString("Expiry Date:");
+            CheckBox_use_proxy.Checked = configuration_copy.use_proxy;
+            ResetShowed();
 
             Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
         }
@@ -56,8 +61,7 @@ namespace Shadowsocks.View {
         }
 
         private void RefreshSubscriptionAndSwitch() {
-            TextBox_url.Text = "";
-            SetNameAuto();
+            ResetShowed();
             configuration_copy.UpdateAllSubscription();
             ListBox_subscription.Items.Clear();
             foreach (var subscription in configuration_copy.subscriptions) {
@@ -90,7 +94,7 @@ namespace Shadowsocks.View {
 
         private void AddSubscription(object sender, EventArgs e) {
             EnableSwitch();
-            var new_subscription = configuration_copy.PareseSubscriptionURL(TextBox_url.Text, false, false);
+            var new_subscription = configuration_copy.PareseSubscriptionURL(TextBox_url.Text, false);
             if (new_subscription == null) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 EnableSwitch();
@@ -108,9 +112,7 @@ namespace Shadowsocks.View {
             }
             configuration_copy.subscriptions.Add(new_subscription);
             ListBox_subscription.Items.Add(new_subscription.airport);
-            TextBox_url.Text = "";
-            SetNameAuto();
-            ListBox_subscription.SelectedIndex = -1;
+            ResetShowed();
             EnableSwitch();
         }
 
@@ -119,7 +121,6 @@ namespace Shadowsocks.View {
             EnableSwitch();
             var new_subscription = configuration_copy.PareseSubscriptionURL(
                 TextBox_url.Text,
-                false,
                 false
             );
             if (new_subscription == null) {
@@ -134,6 +135,15 @@ namespace Shadowsocks.View {
             RefreshSubscriptionAndSwitch();
         }
 
+        private void ResetShowed() {
+            TextBox_url.Text = "";
+            SetNameAuto();
+            ListBox_subscription.SelectedIndex = -1;
+            CheckSelected();
+            Label_traffic.Text = "?/? G";
+            Label_expiry.Text = "????-??-?? " + string.Format(I18N.GetString("{0}d"), "?");
+        }
+
         private void DeleteSubscription(object sender, EventArgs e) {
             if (configuration_copy.configs.Count == 0 &&
                 configuration_copy.subscriptions.Count == 1) {
@@ -145,9 +155,7 @@ namespace Shadowsocks.View {
                 configuration_copy.subscriptions.RemoveAt(delete_index);
                 ListBox_subscription.Items.RemoveAt(delete_index);
             }
-            TextBox_url.Text = "";
-            SetNameAuto();
-            CheckSelected();
+            ResetShowed();
         }
 
         private void SubscriptionSelected(object sender, EventArgs e) {
@@ -159,11 +167,18 @@ namespace Shadowsocks.View {
             TextBox_url.Text = subscription.url;
             TextBox_name.Text = subscription.airport;
             TextBox_name.ForeColor = SystemColors.WindowText;
+            Label_traffic.Text = subscription.DescribeTraffic();
+            Label_expiry.Text = subscription.DescribeExpiry();
             CheckSelected();
         }
 
         private void ManagementClosed(object sender, FormClosedEventArgs e) {
             controller.GetCurrentConfiguration().subscriptions = configuration_copy.subscriptions;
+            controller.GetCurrentConfiguration().use_proxy = configuration_copy.use_proxy;
+        }
+
+        private void UseProxyChanged(object sender, EventArgs e) {
+            configuration_copy.use_proxy = CheckBox_use_proxy.Checked;
         }
     }
 }

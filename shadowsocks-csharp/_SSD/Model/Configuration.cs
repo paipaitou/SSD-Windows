@@ -9,6 +9,7 @@ using System.Windows.Forms;
 namespace Shadowsocks.Model {
     public partial class Configuration {
         public List<Subscription> subscriptions = new List<Subscription>();
+        public bool use_proxy = false;
 
         public static void LoadSubscription(Configuration configuration_subscription) {
             var count = configuration_subscription.configs.Count;
@@ -54,7 +55,7 @@ namespace Shadowsocks.Model {
             return GetDefaultServer();
         }
 
-        public void UpdateAllSubscription(NotifyIcon notifyIcon = null, bool proxy = false) {
+        public void UpdateAllSubscription(NotifyIcon notifyIcon = null) {
             if (subscriptions.Count == 0 && notifyIcon != null) {
                 notifyIcon.ShowBalloonTip(
                     1000,
@@ -64,7 +65,7 @@ namespace Shadowsocks.Model {
                 );
             }
             for (var index = 0; index <= subscriptions.Count - 1; index++) {
-                if (subscriptions[index].ParseURL(proxy) != null) {
+                if (subscriptions[index].ParseURL() != null) {
                     if (notifyIcon != null) {
                         notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Success");
                         notifyIcon.BalloonTipText = string.Format(I18N.GetString("Successful Airport: {0}"), subscriptions[index].airport);
@@ -89,9 +90,9 @@ namespace Shadowsocks.Model {
             Save(this);
         }
 
-        public Subscription PareseSubscriptionURL(string url, bool proxy = false, bool merge = true) {
+        public Subscription PareseSubscriptionURL(string url, bool merge = true) {
             var web_subscribe = new WebClient();
-            if (proxy) {
+            if (use_proxy) {
                 web_subscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);
             }
             try {

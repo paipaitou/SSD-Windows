@@ -157,7 +157,6 @@ Timeout is invalid, it should not exceed {0}=超时无效，不应超过 {0}
 Subscription=订阅
 Manage=管理
 Update=更新
-Update(use proxy)=更新（通过代理）
 
 # SubscriptionManagement Form
 
@@ -166,6 +165,9 @@ Subscription URL=订阅链接
 Airport Name=机场名
 (Auto)=（自动）
 &Save=保存(&S)
+Use Proxy=通过代理
+Traffic Used:=已用流量：
+Expiry Date:=过期日期：
 
 
 # Message
@@ -182,3 +184,4 @@ Subscribe Success=订阅成功
 Successful Airport: {0}=成功机场： {0}
 No Subscription=没有订阅
 This airport is exist=此机场已存在
+{0}d={0}天

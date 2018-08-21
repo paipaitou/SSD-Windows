@@ -71,7 +71,7 @@
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Location = new System.Drawing.Point(666, 16);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(6);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(246, 62);
             this.btnOK.TabIndex = 0;
@@ -83,7 +83,7 @@
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(408, 16);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(6);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(246, 62);
             this.btnCancel.TabIndex = 1;
@@ -95,7 +95,7 @@
             // 
             this.btnRegisterAll.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnRegisterAll.Location = new System.Drawing.Point(150, 16);
-            this.btnRegisterAll.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnRegisterAll.Margin = new System.Windows.Forms.Padding(6);
             this.btnRegisterAll.Name = "btnRegisterAll";
             this.btnRegisterAll.Size = new System.Drawing.Size(246, 62);
             this.btnRegisterAll.TabIndex = 2;
@@ -125,7 +125,7 @@
             this.tableLayoutPanel1.Controls.Add(this.RegHotkeysAtStartupCheckBox, 1, 6);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 8;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.16726F));

@@ -11,7 +11,6 @@ namespace Shadowsocks.View {
         private MenuItem MenuGroup_subscribe;
         private MenuItem MenuItem_subscribe_Manage;
         private MenuItem MenuItem_subscribe_Update;
-        private MenuItem MenuItem_subscribe_UpdateUseProxy = null;
 
         private SubscriptionManagementForm ManageForm;
 
@@ -121,8 +120,7 @@ namespace Shadowsocks.View {
         private MenuItem CreateSubscribeGroup() {
             MenuGroup_subscribe = CreateMenuGroup("Subscription", new MenuItem[] {
                     MenuItem_subscribe_Manage = CreateMenuItem("Manage", new EventHandler(SubscriptionManagement)),
-                    MenuItem_subscribe_Update = CreateMenuItem("Update", new EventHandler(UpdateSubscription)),
-                    MenuItem_subscribe_UpdateUseProxy = CreateMenuItem("Update(use proxy)", new EventHandler(UpdateSubscriptionUseProxy))
+                    MenuItem_subscribe_Update = CreateMenuItem("Update", new EventHandler(UpdateSubscription))
                 });
             return MenuGroup_subscribe;
         }
@@ -155,9 +153,6 @@ namespace Shadowsocks.View {
             controller.GetCurrentConfiguration().UpdateAllSubscription(_notifyIcon);
         }
 
-        private void UpdateSubscriptionUseProxy(object sender, EventArgs e) {
-            controller.GetCurrentConfiguration().UpdateAllSubscription(_notifyIcon, true);
-        }
 
         private MenuItem AdjustServerName(Server server) {
             return new MenuItem(server.NamePrefix(Server.PREFIX_LATENCY) + " " + server.FriendlyName());
@@ -184,7 +179,7 @@ namespace Shadowsocks.View {
             Configuration configuration = controller.GetCurrentConfiguration();
             var subscription_server_index = configuration.configs.Count;
             foreach (var subscription in configuration.subscriptions) {
-                var MenuItem_airport = new MenuItem(subscription.airport);
+                var MenuItem_airport = new MenuItem(subscription.NamePrefix() + " " + subscription.airport);
                 foreach (var server in subscription.servers) {
                     var server_text = server.NamePrefix(Server.PREFIX_LATENCY) + " " + server.FriendlyName();
                     var server_item = new MenuItem(server_text);
