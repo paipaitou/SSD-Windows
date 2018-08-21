@@ -62,16 +62,14 @@ namespace Shadowsocks.Model {
         }
 
         public string DescribeExpiry() {
-            string expiry_description;
             if (expiry == DateTime.MinValue) {
-                expiry_description="????-??-?? "+ string.Format(I18N.GetString("{0}d"), "?");
-            }else if (expiry == DateTime.MinValue) {
-                expiry_description = string.Format(I18N.GetString("{0}d"), "+∞");
+                return "????-??-?? "+ string.Format(I18N.GetString("{0}d"), "?");
+            }else if (expiry == DateTime.MaxValue) {
+                return string.Format(I18N.GetString("{0}d"), "+∞");
             }
             else {
-                expiry_description = expiry.ToString("yyyy-MM-dd")+" "+ string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
+                return expiry.ToString("yyyy-MM-dd")+" "+ string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
             }
-            return expiry_description;
         }
 
         public Subscription ParseURL() {
