@@ -11,6 +11,24 @@ namespace Shadowsocks.Model {
         public List<Subscription> subscriptions = new List<Subscription>();
         public bool use_proxy = false;
 
+        //region SSD
+
+        public Server CurrentServerEx() {
+            if (index >= 0 && index < configs.Count) {
+                return configs[index];
+            }
+            else if (index >= configs.Count) {
+                var real_index = index - configs.Count;
+                foreach (var subscription in subscriptions) {
+                    if (subscription.servers.Count >= real_index - 1) {
+                        return subscription.servers[real_index];
+                    }
+                    real_index -= subscription.servers.Count;
+                }
+            }
+            return GetDefaultServer();
+        }
+
         public static void LoadSubscription(Configuration configuration_subscription) {
             var count = configuration_subscription.configs.Count;
             foreach (var subscription in configuration_subscription.subscriptions) {
@@ -38,21 +56,55 @@ namespace Shadowsocks.Model {
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
         }
+        
+        //endregion
 
-        public Server CurrentServerEx() {
-            if (index >= 0 && index < configs.Count) {
-                return configs[index];
+        public Subscription ParseBase64(string text_base64, bool merge = true) {
+            text_base64.Replace('-', '+');
+            text_base64.Replace('_', '/');
+            var mod4 = text_base64.Length % 4;
+            if (mod4 > 0) {
+                text_base64 += new string('=', 4 - mod4);
             }
-            else if (index >= configs.Count) {
-                var real_index = index - configs.Count;
-                foreach (var subscription in subscriptions) {
-                    if (subscription.servers.Count >= real_index - 1) {
-                        return subscription.servers[real_index];
-                    }
-                    real_index -= subscription.servers.Count;
+            var json_buffer = Convert.FromBase64String(text_base64);
+            var json_text = Encoding.UTF8.GetString(json_buffer);
+            var new_subscription = JsonConvert.DeserializeObject<Subscription>(json_text);
+            new_subscription.configuration = this;
+            if (!merge) {
+                new_subscription.HandleServers();
+                return new_subscription;
+            }
+            foreach (var subscription in subscriptions) {
+                if (subscription.airport == new_subscription.airport) {
+                    subscription.encryption = new_subscription.encryption;
+                    subscription.password = new_subscription.password;
+                    subscription.port = new_subscription.port;
+                    subscription.servers = new_subscription.servers;
+                    subscription.HandleServers();
+                    return subscription;
                 }
             }
-            return GetDefaultServer();
+            //未找到同名订阅，被迫创建
+            new_subscription.HandleServers();
+            subscriptions.Add(new_subscription);
+            return new_subscription;
+        }
+
+        public Subscription ParseSubscriptionURL(string url, bool merge = true) {
+            var web_subscribe = new WebClient();
+            if (use_proxy) {
+                web_subscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);
+            }
+            try {
+                var buffer = web_subscribe.DownloadData(url);
+                var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
+                var new_subscription = ParseBase64(text, merge);
+                new_subscription.url = url;
+                return new_subscription;
+            }
+            catch (Exception) {
+                return null;
+            }
         }
 
         public void UpdateAllSubscription(NotifyIcon notifyIcon = null) {
@@ -88,54 +140,6 @@ namespace Shadowsocks.Model {
                 }
             }
             Save(this);
-        }
-
-        public Subscription PareseSubscriptionURL(string url, bool merge = true) {
-            var web_subscribe = new WebClient();
-            if (use_proxy) {
-                web_subscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);
-            }
-            try {
-                var buffer = web_subscribe.DownloadData(url);
-                var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
-                var new_subscription = ParseBase64(text, merge);
-                new_subscription.url = url;
-                return new_subscription;
-            }
-            catch (Exception) {
-                return null;
-            }
-        }
-
-        public Subscription ParseBase64(string text_base64, bool merge = true) {
-            text_base64.Replace('-', '+');
-            text_base64.Replace('_', '/');
-            var mod4 = text_base64.Length % 4;
-            if (mod4 > 0) {
-                text_base64 += new string('=', 4 - mod4);
-            }
-            var json_buffer = Convert.FromBase64String(text_base64);
-            var json_text = Encoding.UTF8.GetString(json_buffer);
-            var new_subscription = JsonConvert.DeserializeObject<Subscription>(json_text);
-            new_subscription.configuration = this;
-            if (!merge) {
-                new_subscription.HandleServers();
-                return new_subscription;
-            }
-            foreach (var subscription in subscriptions) {
-                if (subscription.airport == new_subscription.airport) {
-                    subscription.encryption = new_subscription.encryption;
-                    subscription.password = new_subscription.password;
-                    subscription.port = new_subscription.port;
-                    subscription.servers = new_subscription.servers;
-                    subscription.HandleServers();
-                    return subscription;
-                }
-            }
-            //未找到同名订阅，被迫创建
-            new_subscription.HandleServers();
-            subscriptions.Add(new_subscription);
-            return new_subscription;
         }
     }
 }

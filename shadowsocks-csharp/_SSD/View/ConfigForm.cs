@@ -6,6 +6,15 @@ using System.Windows.Forms;
 namespace Shadowsocks.View {
     public partial class ConfigForm {
         private Dictionary<string, Server> SubscriptionServerMap = new Dictionary<string, Server>();
+
+        //region SSD
+
+        private void LoadSelectedSubscriptionServerDetails() {
+            if (ServersListBox.SelectedIndex >= _modifiedConfiguration.configs.Count) {
+                SetServerDetailsToUI(SubscriptionServerMap[(string)ServersListBox.Items[ServersListBox.SelectedIndex]]);
+            }
+        }
+
         private void LoadSubscriptionServerNameList(Configuration modifiedConfiguration) {
             SubscriptionServerMap.Clear();
             foreach (var subscription in modifiedConfiguration.subscriptions) {
@@ -32,10 +41,6 @@ namespace Shadowsocks.View {
             MoveDownButton.Visible = false;
         }
 
-        private void LoadSelectedSubscriptionServerDetails() {
-            if (ServersListBox.SelectedIndex >= _modifiedConfiguration.configs.Count) {
-                SetServerDetailsToUI(SubscriptionServerMap[(string)ServersListBox.Items[ServersListBox.SelectedIndex]]);
-            }
-        }
+        //endregion
     }
 }

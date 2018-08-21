@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace Shadowsocks.Util {
     public static partial class Utils {
+
         public static bool DetectVirus() {
             int offense_count = 0;
             string[] virus_process =

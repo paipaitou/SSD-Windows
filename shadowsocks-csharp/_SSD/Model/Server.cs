@@ -9,9 +9,9 @@ using System.Threading;
 
 namespace Shadowsocks.Model {
     public partial class Server {
-        public Subscription subscription = null;
         public int id;
         public double ratio;
+        public Subscription subscription = null;
 
         [JsonIgnore()]
         public int latency = LATENCY_PENDING;
@@ -23,12 +23,17 @@ namespace Shadowsocks.Model {
         public const int PREFIX_LATENCY = 0;
         public const int PREFIX_AIRPORT = 1;
 
+
+        //region SSD
+
         private void InitServer() {
             server = "www.baidu.com";
             server_port = -1;
             method = null;
             password = null;
         }
+
+        //endregion
 
         public string NamePrefix(int PREFIX_FLAG) {
             string prefix = "[";

@@ -7,21 +7,40 @@ using System.Text;
 
 namespace Shadowsocks.Model {
     public class Subscription {
-        public string url;
         public string airport;
-        public int port;
         public string encryption;
-        public string password;
-        public List<Server> servers;
-        public int traffic_used = -1;
-        public int traffic_total = -1;
         public DateTime expiry;
+        public string password;
+        public int port;
+        public List<Server> servers;
+        public int traffic_total = -1;
+        public int traffic_used = -1;
+        public string url;
 
         [JsonIgnore()]
         public Configuration configuration;
 
         public Subscription() {
             servers = new List<Server>();
+        }
+
+        public string DescribeExpiry() {
+            if (expiry == DateTime.MinValue) {
+                return "????-??-?? "+ string.Format(I18N.GetString("{0}d"), "?");
+            }else if (expiry == DateTime.MaxValue) {
+                return string.Format(I18N.GetString("{0}d"), "+∞");
+            }
+            else {
+                return expiry.ToString("yyyy-MM-dd")+" "+ string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
+            }
+        }
+
+        public string DescribeTraffic() {
+            return
+            (traffic_used == -1 ? "?" : traffic_used.ToString()) +
+            "/" +
+            (traffic_total == -1 ? "?" : traffic_total.ToString()) +
+            " G";
         }
 
         public void HandleServers() {
@@ -39,14 +58,6 @@ namespace Shadowsocks.Model {
             }
         }
 
-        public string DescribeTraffic() {
-            return
-            (traffic_used == -1 ? "?" : traffic_used.ToString()) +
-            "/" +
-            (traffic_total == -1 ? "?" : traffic_total.ToString()) +
-            " G";
-        }
-
         public string NamePrefix() {
             string expiry_description;
             if (expiry == DateTime.MinValue) {
@@ -61,19 +72,8 @@ namespace Shadowsocks.Model {
             return "[" + DescribeTraffic() + " " + expiry_description + "]";
         }
 
-        public string DescribeExpiry() {
-            if (expiry == DateTime.MinValue) {
-                return "????-??-?? "+ string.Format(I18N.GetString("{0}d"), "?");
-            }else if (expiry == DateTime.MaxValue) {
-                return string.Format(I18N.GetString("{0}d"), "+∞");
-            }
-            else {
-                return expiry.ToString("yyyy-MM-dd")+" "+ string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
-            }
-        }
-
         public Subscription ParseURL() {
-            var new_subscription = configuration.PareseSubscriptionURL(url);
+            var new_subscription = configuration.ParseSubscriptionURL(url);
             if (new_subscription == null) {
                 return null;
             }
