@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Shadowsocks.Controller;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,13 +41,13 @@ namespace Shadowsocks.Model {
             if (PREFIX_FLAG == PREFIX_LATENCY) {
 
                 if (latency == LATENCY_TESTING) {
-                    prefix += "testing";
+                    prefix +=I18N.GetString("Testing");
                 }
                 else if (latency == LATENCY_ERROR) {
-                    prefix += "error";
+                    prefix += I18N.GetString("Error");
                 }
                 else if (latency == LATENCY_PENDING) {
-                    prefix += "pending";
+                    prefix += I18N.GetString("Pending");
                 }
                 else {
                     prefix += latency.ToString() + "ms";
@@ -66,6 +67,7 @@ namespace Shadowsocks.Model {
         }
 
         public void TcpingLatency() {
+            latency = LATENCY_TESTING;
             var latencies = new List<double>();
             var sock = new TcpClient();
             var stopwatch = new Stopwatch();

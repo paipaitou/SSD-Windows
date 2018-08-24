@@ -527,6 +527,10 @@ namespace Shadowsocks.View
 
         private void ShowLogForm()
         {
+            #region SSD
+            Timer_regular_update = null;
+            #endregion
+
             if (logForm != null)
             {
                 logForm.Activate();
@@ -558,6 +562,10 @@ namespace Shadowsocks.View
                 ShowFirstTimeBalloon();
                 _isFirstRun = false;
             }
+
+            #region SSD
+            ResetRegularUpdate();
+            #endregion
         }
 
         void proxyForm_FormClosed(object sender, FormClosedEventArgs e)

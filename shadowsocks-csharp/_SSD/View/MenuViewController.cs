@@ -21,7 +21,7 @@ namespace Shadowsocks.View {
         private void DisableFirstRun() {
 
         }
-        
+
         private void InitOther() {
             Timer_detect_running = new System.Timers.Timer(1000.0 * 3);
             Timer_detect_running.Elapsed += RegularDetectRunning;
@@ -88,8 +88,15 @@ namespace Shadowsocks.View {
                     }
                     subscription_server_index++;
                 }
-                items.Add(index_airport++, MenuItem_airport);
+                items.Add(index_airport, MenuItem_airport);
+                index_airport++;
             }
+        }
+
+        private void ResetRegularUpdate() {
+            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
+            Timer_regular_update.Elapsed += RegularUpdate;
+            Timer_regular_update.Start();
         }
 
         private void AboutSSD() {
@@ -140,6 +147,8 @@ namespace Shadowsocks.View {
                     );
                 }
             }
+
+            ResetRegularUpdate();
         }
 
         //endregion
@@ -154,7 +163,7 @@ namespace Shadowsocks.View {
                 Quit_Click(null, null);
             }
         }
-        
+
         private void RegularUpdate(object sender, EventArgs e) {
             Timer_regular_update.Interval = 1000.0 * 60 * 30;
             Timer_regular_update.Stop();
@@ -176,8 +185,9 @@ namespace Shadowsocks.View {
             }
             Timer_regular_update.Start();
         }
-
+        
         private void SubscriptionManagement(object sender, EventArgs e) {
+            Timer_regular_update = null;
             Configuration.Save(controller.GetCurrentConfiguration());
             if (ManageForm == null) {
                 ManageForm = new SubscriptionManagementForm(controller);
@@ -192,13 +202,11 @@ namespace Shadowsocks.View {
             ManageForm = null;
             Configuration.Save(controller.GetCurrentConfiguration());
             controller.SelectServerIndex(0);
-            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
-            Timer_regular_update.Elapsed += RegularUpdate;
-            Timer_regular_update.Start();
+            ResetRegularUpdate();
         }
 
         private void UpdateSubscription(object sender, EventArgs e) {
             controller.GetCurrentConfiguration().UpdateAllSubscription(_notifyIcon);
-        }               
+        }
     }
 }

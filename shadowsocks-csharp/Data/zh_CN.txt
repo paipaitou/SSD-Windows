@@ -154,6 +154,14 @@ Timeout is invalid, it should not exceed {0}=超时无效，不应超过 {0}
 
 # Menu items
 
+# Servers
+
+Pending=队列中
+Testing=测试中
+Error=失败
+
+# Subscription
+
 Subscription=订阅
 Manage=管理
 Update=更新
