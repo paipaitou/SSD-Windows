@@ -453,7 +453,7 @@ namespace Shadowsocks.View
 
             int strategyCount = i;
             #region SSD
-            Configuration configuration = CurrentConfigurationGet();
+            Configuration configuration = GetConfigurationCurrent();
             //Configuration configuration = controller.GetConfigurationCopy();
             #endregion
             foreach (var server in configuration.configs)
@@ -528,7 +528,7 @@ namespace Shadowsocks.View
         private void ShowLogForm()
         {
             #region SSD
-            Timer_regular_update = null;
+            SetRegularUpdateNull();
             #endregion
 
             if (logForm != null)

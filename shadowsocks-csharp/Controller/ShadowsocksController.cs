@@ -20,7 +20,7 @@ using Shadowsocks.Proxy;
 
 namespace Shadowsocks.Controller
 {
-    public class ShadowsocksController
+    public partial class ShadowsocksController
     {
         // controller:
         // handle user actions
@@ -567,6 +567,9 @@ namespace Shadowsocks.Controller
 
             UpdateSystemProxy();
             Utils.ReleaseMemory(true);
+            #region SSD
+            ResetRegularUpdate();
+            #endregion
         }
 
         private void StartPlugin()

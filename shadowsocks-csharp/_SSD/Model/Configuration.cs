@@ -1,15 +1,27 @@
 ﻿using Newtonsoft.Json;
 using Shadowsocks.Controller;
+using Shadowsocks.Util;
+using Shadowsocks.View;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Shadowsocks.Model {
     public partial class Configuration {
         public List<Subscription> subscriptions = new List<Subscription>();
         public bool use_proxy = false;
+
+        [JsonIgnore()]
+        public MenuViewController menu_view;
+
+        [JsonIgnore()]
+        public System.Timers.Timer Timer_detect_running;
+
+        [JsonIgnore()]
+        public System.Timers.Timer Timer_regular_update;
 
         //region SSD
 
@@ -59,6 +71,8 @@ namespace Shadowsocks.Model {
         
         //endregion
 
+        //public
+
         public Subscription ParseBase64(string text_base64, bool merge = true) {
             text_base64.Replace('-', '+');
             text_base64.Replace('_', '/');
@@ -107,6 +121,18 @@ namespace Shadowsocks.Model {
             }
         }
 
+        public void ResetDetectRunning() {
+            Timer_detect_running = new System.Timers.Timer(1000.0 * 3);
+            Timer_detect_running.Elapsed += RegularDetectRunning;
+            Timer_detect_running.Start();
+        }
+
+        public void ResetRegularUpdate() {
+            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
+            Timer_regular_update.Elapsed += RegularUpdate;
+            Timer_regular_update.Start();
+        }
+        
         public void UpdateAllSubscription(NotifyIcon notifyIcon = null) {
             if (subscriptions.Count == 0 && notifyIcon != null) {
                 notifyIcon.ShowBalloonTip(
@@ -141,5 +167,35 @@ namespace Shadowsocks.Model {
             }
             Save(this);
         }
+
+        //endpublic
+
+        private void RegularDetectRunning(object sender, System.Timers.ElapsedEventArgs e) {
+            Timer_detect_running.Interval = 1000.0 * 60 * 60;
+            if (UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
+                
+            }
+        }
+
+        private void RegularUpdate(object sender, EventArgs e) {
+            Timer_regular_update.Interval = 1000.0 * 60 * 30;
+            Timer_regular_update.Stop();
+            try {
+                UpdateAllSubscription();
+                foreach (var server in configs) {
+                    server.TcpingLatency();
+                }
+                foreach (var subscription in subscriptions) {
+                    foreach (var server in subscription.servers) {
+                        server.TcpingLatency();
+                    }
+                }
+                Thread.Sleep(1000 * 60 * 30);
+            }
+            catch (Exception) {
+
+            }
+            Timer_regular_update.Start();
+        }        
     }
 }

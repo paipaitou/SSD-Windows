@@ -8,14 +8,13 @@ using Shadowsocks.Util;
 
 namespace Shadowsocks.View {
     public partial class MenuViewController {
+        private Configuration configuration_current;
+
         private MenuItem MenuGroup_subscribe;
         private MenuItem MenuItem_subscribe_Manage;
         private MenuItem MenuItem_subscribe_Update;
 
         private SubscriptionManagementForm ManageForm;
-
-        private System.Timers.Timer Timer_detect_running;
-        private System.Timers.Timer Timer_regular_update;
 
         //region SSD
         private void DisableFirstRun() {
@@ -23,14 +22,9 @@ namespace Shadowsocks.View {
         }
 
         private void InitOther() {
-            Timer_detect_running = new System.Timers.Timer(1000.0 * 3);
-            Timer_detect_running.Elapsed += RegularDetectRunning;
-            Timer_detect_running.Start();
-
-            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
-            Timer_regular_update.Elapsed += RegularUpdate;
-            Timer_regular_update.Start();
-
+            configuration_current = controller.GetCurrentConfiguration();
+            configuration_current.ResetDetectRunning();
+            configuration_current.ResetRegularUpdate();
             contextMenu1.Popup += PreloadMenu;
         }
 
@@ -46,8 +40,9 @@ namespace Shadowsocks.View {
             return MenuGroup_subscribe;
         }
 
-        private Configuration CurrentConfigurationGet() {
-            return controller.GetCurrentConfiguration();
+        private Configuration GetConfigurationCurrent() {
+            configuration_current = controller.GetCurrentConfiguration();
+            return configuration_current;
         }
 
         private MenuItem AdjustServerName(Server server) {
@@ -72,9 +67,8 @@ namespace Shadowsocks.View {
                 items.RemoveAt(index_airport);
             }
 
-            Configuration configuration = controller.GetCurrentConfiguration();
-            var subscription_server_index = configuration.configs.Count;
-            foreach (var subscription in configuration.subscriptions) {
+            var subscription_server_index = configuration_current.configs.Count;
+            foreach (var subscription in configuration_current.subscriptions) {
                 var MenuItem_airport = new MenuItem(subscription.NamePrefix() + " " + subscription.airport);
                 foreach (var server in subscription.servers) {
                     var server_text = server.NamePrefix(Server.PREFIX_LATENCY) + " " + server.FriendlyName();
@@ -82,7 +76,7 @@ namespace Shadowsocks.View {
                     server_item.Tag = subscription_server_index;
                     server_item.Click += AServerItem_Click;
                     MenuItem_airport.MenuItems.Add(server_item);
-                    if (configuration.index == subscription_server_index) {
+                    if (configuration_current.index == subscription_server_index) {
                         server_item.Checked = true;
                         MenuItem_airport.Text = "● " + MenuItem_airport.Text;
                     }
@@ -92,11 +86,13 @@ namespace Shadowsocks.View {
                 index_airport++;
             }
         }
+        
+        private void SetRegularUpdateNull() {
+            configuration_current.Timer_regular_update = null;
+        }
 
         private void ResetRegularUpdate() {
-            Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
-            Timer_regular_update.Elapsed += RegularUpdate;
-            Timer_regular_update.Start();
+            configuration_current.ResetRegularUpdate();
         }
 
         private void AboutSSD() {
@@ -106,9 +102,9 @@ namespace Shadowsocks.View {
         private void ImportURL() {
             var clipboard = Clipboard.GetText(TextDataFormat.Text).Trim();
             if (clipboard.IndexOf("ss://") != -1) {
-                var count_old = controller.GetCurrentConfiguration().configs.Count;
+                var count_old = configuration_current.configs.Count;
                 var success = controller.AddServerBySSURL(clipboard);
-                var count_new = controller.GetCurrentConfiguration().configs.Count;
+                var count_new = configuration_current.configs.Count;
                 if (success) {
                     ShowBalloonTip(
                         I18N.GetString("Import Success"),
@@ -148,47 +144,26 @@ namespace Shadowsocks.View {
                 }
             }
 
-            ResetRegularUpdate();
+            configuration_current.ResetRegularUpdate();
         }
 
         //endregion
 
+        //public
+
+        public void Quit() {
+            Quit_Click(null,null);
+        }
+
+        //endpublic
+
         private void PreloadMenu(object sender, EventArgs e) {
             UpdateServersMenu();
         }
-
-        private void RegularDetectRunning(object sender, System.Timers.ElapsedEventArgs e) {
-            Timer_detect_running.Interval = 1000.0 * 60 * 60;
-            if (UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
-                Quit_Click(null, null);
-            }
-        }
-
-        private void RegularUpdate(object sender, EventArgs e) {
-            Timer_regular_update.Interval = 1000.0 * 60 * 30;
-            Timer_regular_update.Stop();
-            try {
-                Configuration configuration = controller.GetCurrentConfiguration();
-                configuration.UpdateAllSubscription();
-                foreach (var server in configuration.configs) {
-                    server.TcpingLatency();
-                }
-                foreach (var subscription in configuration.subscriptions) {
-                    foreach (var server in subscription.servers) {
-                        server.TcpingLatency();
-                    }
-                }
-                Thread.Sleep(1000 * 60 * 30);
-            }
-            catch (Exception) {
-
-            }
-            Timer_regular_update.Start();
-        }
         
         private void SubscriptionManagement(object sender, EventArgs e) {
-            Timer_regular_update = null;
-            Configuration.Save(controller.GetCurrentConfiguration());
+            configuration_current.Timer_regular_update = null;
+            Configuration.Save(configuration_current);
             if (ManageForm == null) {
                 ManageForm = new SubscriptionManagementForm(controller);
                 ManageForm.Show();
@@ -200,13 +175,13 @@ namespace Shadowsocks.View {
         private void SubscriptionSettingsRecycled(object sender, EventArgs e) {
             ManageForm.Dispose();
             ManageForm = null;
-            Configuration.Save(controller.GetCurrentConfiguration());
+            Configuration.Save(configuration_current);
             controller.SelectServerIndex(0);
-            ResetRegularUpdate();
+            configuration_current.ResetRegularUpdate();
         }
 
         private void UpdateSubscription(object sender, EventArgs e) {
-            controller.GetCurrentConfiguration().UpdateAllSubscription(_notifyIcon);
+            configuration_current.UpdateAllSubscription(_notifyIcon);
         }
     }
 }

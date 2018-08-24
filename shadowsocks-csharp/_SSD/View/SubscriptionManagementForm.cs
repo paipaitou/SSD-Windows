@@ -160,9 +160,7 @@ namespace Shadowsocks.View {
             TextBox_name.ForeColor = Color.Gray;
             TextBox_name.Text = text_auto;
         }
-
-
-
+        
         private void SubscriptionSelected(object sender, EventArgs e) {
             var index = ListBox_subscription.SelectedIndex;
             if (index == -1) {

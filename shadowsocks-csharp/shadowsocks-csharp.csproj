@@ -222,6 +222,7 @@
     <Compile Include="View\StatisticsStrategyConfigurationForm.Designer.cs">
       <DependentUpon>StatisticsStrategyConfigurationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="_SSD\Controller\ShadowsocksController.cs" />
     <Compile Include="_SSD\Controller\Strategy\StatisticsStrategy.cs" />
     <Compile Include="_SSD\Model\Configuration.cs" />
     <Compile Include="_SSD\Model\Server.cs" />
