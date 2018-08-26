@@ -15,9 +15,15 @@ measure servers' latency and display automatically     自动测节点延迟并�
 ```
 [订阅链接规范](https://github.com/SoDa-GitHub/SSD-Windows/wiki/%E8%AE%A2%E9%98%85%E9%93%BE%E6%8E%A5%E8%A7%84%E8%8C%83)
 
+## About 关于
+
+SSD不支持混淆而支持AEAD，因此**SSD和\[SSR/SSRR\]不兼容且永远不会兼容**
+
+未来版本中将会和V2Ray一样仅支持AEAD
+
 ## Telegram内测群
 
-[点我加入](https://t.me/joinchat/GvbhT0vatPxTnqLtUgPe7Q) 急需内测小白鼠（无薪）
+[点我加入](https://t.me/joinchat/GvbhT0vatPxTnqLtUgPe7Q) 招收内测小白鼠（无薪）
 
 **仅接纳\[可以明确描述问题、熟悉\[SSD/SSRR\]功能\]的小白鼠，\[萌新/小白/傻逼/潜水党\]勿入**
 
