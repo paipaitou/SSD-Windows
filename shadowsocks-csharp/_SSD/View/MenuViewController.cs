@@ -23,7 +23,7 @@ namespace Shadowsocks.View {
 
         private void InitOther() {
             configuration_current = controller.GetCurrentConfiguration();
-            configuration_current.ResetDetectRunning();
+            configuration_current.ResetRegularDetectRunning();
             configuration_current.ResetRegularUpdate();
             contextMenu1.Popup += PreloadMenu;
         }
@@ -87,8 +87,8 @@ namespace Shadowsocks.View {
             }
         }
         
-        private void SetRegularUpdateNull() {
-            configuration_current.Timer_regular_update = null;
+        private void StopRegularUpdate() {
+            configuration_current.StopRegularUpdate();
         }
 
         private void ResetRegularUpdate() {
@@ -123,9 +123,8 @@ namespace Shadowsocks.View {
                 }
             }
             else {
-                clipboard = clipboard.Replace("ssd://", "");
                 try {
-                    var new_subscription = controller.GetCurrentConfiguration().ParseBase64(clipboard);
+                    var new_subscription = controller.GetCurrentConfiguration().ParseBase64WithHead(clipboard);
                     Configuration.Save(controller.GetCurrentConfiguration());
                     ShowBalloonTip(
                         I18N.GetString("Import Success"),
@@ -162,7 +161,7 @@ namespace Shadowsocks.View {
         }
         
         private void SubscriptionManagement(object sender, EventArgs e) {
-            configuration_current.Timer_regular_update = null;
+            configuration_current.StopRegularUpdate();
             Configuration.Save(configuration_current);
             if (ManageForm == null) {
                 ManageForm = new SubscriptionManagementForm(controller);

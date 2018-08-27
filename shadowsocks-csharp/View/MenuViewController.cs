@@ -482,6 +482,9 @@ namespace Shadowsocks.View
 
         private void ShowConfigForm()
         {
+            #region SSD
+            StopRegularUpdate();
+            #endregion
             if (configForm != null)
             {
                 configForm.Activate();
@@ -526,11 +529,7 @@ namespace Shadowsocks.View
         }
 
         private void ShowLogForm()
-        {
-            #region SSD
-            SetRegularUpdateNull();
-            #endregion
-
+        {         
             if (logForm != null)
             {
                 logForm.Activate();

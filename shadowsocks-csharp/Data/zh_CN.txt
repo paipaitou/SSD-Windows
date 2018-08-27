@@ -177,6 +177,7 @@ Expiry Date:=过期日期：
 {0}d={0}天
 Use Proxy=通过代理
 &Save=保存(&S)
+* Proxy will always be used in Global Mode=* 全局模式下总是会通过代理
 
 
 # Message

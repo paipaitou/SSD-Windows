@@ -73,7 +73,8 @@ namespace Shadowsocks.Model {
 
         //public
 
-        public Subscription ParseBase64(string text_base64, bool merge = true) {
+        public Subscription ParseBase64WithHead(string text_base64, bool merge = true) {
+            text_base64 = text_base64.Replace("ssd://", "");
             text_base64.Replace('-', '+');
             text_base64.Replace('_', '/');
             var mod4 = text_base64.Length % 4;
@@ -112,7 +113,7 @@ namespace Shadowsocks.Model {
             try {
                 var buffer = web_subscribe.DownloadData(url);
                 var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
-                var new_subscription = ParseBase64(text, merge);
+                var new_subscription = ParseBase64WithHead(text, merge);
                 new_subscription.url = url;
                 return new_subscription;
             }
@@ -121,7 +122,7 @@ namespace Shadowsocks.Model {
             }
         }
 
-        public void ResetDetectRunning() {
+        public void ResetRegularDetectRunning() {
             Timer_detect_running = new System.Timers.Timer(1000.0 * 3);
             Timer_detect_running.Elapsed += RegularDetectRunning;
             Timer_detect_running.Start();
@@ -131,6 +132,13 @@ namespace Shadowsocks.Model {
             Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
             Timer_regular_update.Elapsed += RegularUpdate;
             Timer_regular_update.Start();
+        }
+
+        public void StopRegularUpdate() {
+            Timer_regular_update.Stop();
+            Timer_regular_update.Elapsed -= RegularUpdate;
+            Timer_regular_update = null;
+            
         }
         
         public void UpdateAllSubscription(NotifyIcon notifyIcon = null) {

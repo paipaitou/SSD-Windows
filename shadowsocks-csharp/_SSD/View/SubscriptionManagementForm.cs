@@ -28,6 +28,7 @@ namespace Shadowsocks.View {
             CheckBox_use_proxy.Text = I18N.GetString("Use Proxy");
             Label_traffic_used.Text = I18N.GetString("Traffic Used:");
             Label_expiry_date.Text = I18N.GetString("Expiry Date:");
+            Label_proxy_tips.Text = I18N.GetString("* Proxy will always be used in Global Mode");
             CheckBox_use_proxy.Checked = configuration_copy.use_proxy;
             ResetShowed();
 

@@ -13,8 +13,8 @@ namespace Shadowsocks.Model {
         public string password;
         public int port;
         public List<Server> servers;
-        public int traffic_total = -1;
-        public int traffic_used = -1;
+        public double traffic_total = -1.0;
+        public double traffic_used = -1.0;
         public string url;
 
         [JsonIgnore()]
@@ -26,21 +26,23 @@ namespace Shadowsocks.Model {
 
         public string DescribeExpiry() {
             if (expiry == DateTime.MinValue) {
-                return "????-??-?? "+ string.Format(I18N.GetString("{0}d"), "?");
-            }else if (expiry == DateTime.MaxValue) {
+                return "????-??-?? " + string.Format(I18N.GetString("{0}d"), "?");
+            }
+            else if (expiry == DateTime.MaxValue) {
                 return string.Format(I18N.GetString("{0}d"), "+∞");
             }
             else {
-                return expiry.ToString("yyyy-MM-dd")+" "+ string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
+                return expiry.ToString("yyyy-MM-dd") + " " + string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
             }
         }
 
         public string DescribeTraffic() {
             return
-            (traffic_used == -1 ? "?" : traffic_used.ToString()) +
+            (traffic_used == -1.0 ? "?" : traffic_used.ToString("0.00")) +
             "/" +
-            (traffic_total == -1 ? "?" : traffic_total.ToString()) +
+            (traffic_total == -1.0 ? "?" : traffic_total.ToString("0.00")) +
             " G";
+            //ToString会自动四舍五入
         }
 
         public void HandleServers() {
