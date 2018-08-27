@@ -13,7 +13,7 @@ namespace Shadowsocks.View {
         private Configuration configuration_copy;
         private ShadowsocksController controller;
         private bool refresh_switch = true;
-        
+
         public SubscriptionManagementForm(ShadowsocksController controller_set) {
             InitializeComponent();
             controller = controller_set;
@@ -37,6 +37,15 @@ namespace Shadowsocks.View {
 
         private void AddSubscription(object sender, EventArgs e) {
             EnableSwitch();
+
+            foreach (var subscription in configuration_copy.subscriptions) {
+                if (subscription.url == TextBox_url.Text) {
+                    MessageBox.Show(I18N.GetString("This airport is exist"));
+                    EnableSwitch();
+                    return;
+                }
+            }
+
             var new_subscription = configuration_copy.ParseSubscriptionURL(TextBox_url.Text, false);
             if (new_subscription == null) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
@@ -45,13 +54,6 @@ namespace Shadowsocks.View {
             }
             if (TextBox_name.Text != text_auto) {
                 new_subscription.airport = TextBox_name.Text;
-            }
-            foreach (var subscription in configuration_copy.subscriptions) {
-                if (subscription.airport == new_subscription.airport) {
-                    MessageBox.Show(I18N.GetString("This airport is exist"));
-                    EnableSwitch();
-                    return;
-                }
             }
             configuration_copy.subscriptions.Add(new_subscription);
             ListBox_subscription.Items.Add(new_subscription.airport);
@@ -69,7 +71,7 @@ namespace Shadowsocks.View {
                 Button_delete.Enabled = true;
             }
         }
-        
+
         private void DeleteSubscription(object sender, EventArgs e) {
             if (configuration_copy.configs.Count == 0 &&
                 configuration_copy.subscriptions.Count == 1) {
@@ -101,7 +103,7 @@ namespace Shadowsocks.View {
                 ListBox_subscription.Items.Add(subscription.airport);
             }
         }
-        
+
         private void ManagementClosed(object sender, FormClosedEventArgs e) {
             controller.GetCurrentConfiguration().subscriptions = configuration_copy.subscriptions;
             controller.GetCurrentConfiguration().use_proxy = configuration_copy.use_proxy;
@@ -161,7 +163,7 @@ namespace Shadowsocks.View {
             TextBox_name.ForeColor = Color.Gray;
             TextBox_name.Text = text_auto;
         }
-        
+
         private void SubscriptionSelected(object sender, EventArgs e) {
             var index = ListBox_subscription.SelectedIndex;
             if (index == -1) {

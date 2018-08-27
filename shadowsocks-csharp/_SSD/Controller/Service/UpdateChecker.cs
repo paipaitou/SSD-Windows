@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,6 +8,7 @@ using System.Windows.Forms;
 namespace Shadowsocks.Controller {
     public partial class UpdateChecker {
         private const string UPDATE_URL_SSD = "https://api.github.com/repos/CGDF-GitHub/SSD-Windows/releases/latest";
+        private const string RELEASE_URL_SSD = "https://github.com/CGDF-Github/SSD-Windows/releases";
         private const string VERSION_BASIC = "4.1.1";
         private const string VERSION_SSD = "0.0.6";
 
@@ -32,7 +34,8 @@ namespace Shadowsocks.Controller {
                     var version_current = new Version(VERSION_SSD);
                     var version_web = new Version(text_version);
                     if (version_current < version_web) {
-                        MessageBox.Show(I18N.GetString("Current version is too old"));
+                        MessageBox.Show(I18N.GetString("Current SSD version is too old"));
+                        Process.Start(RELEASE_URL_SSD);
                         return true;
                     }
                 }

@@ -182,7 +182,7 @@ Use Proxy=通过代理
 
 # Message
 
-Current version is too old=当前版本过低
+Current SSD version is too old=当前版本过低
 Failed Link: {0}=失败链接： {0}
 Import Airport: {0}=导入机场： {0}
 Import Count: {0}=导入数量： {0}

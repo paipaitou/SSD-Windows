@@ -32,7 +32,7 @@ namespace Shadowsocks.Model {
             else if (index >= configs.Count) {
                 var real_index = index - configs.Count;
                 foreach (var subscription in subscriptions) {
-                    if (subscription.servers.Count >= real_index - 1) {
+                    if (subscription.servers.Count >= real_index + 1) {
                         return subscription.servers[real_index];
                     }
                     real_index -= subscription.servers.Count;
@@ -68,12 +68,12 @@ namespace Shadowsocks.Model {
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
         }
-        
+
         //endregion
 
         //public
 
-        public Subscription ParseBase64WithHead(string text_base64, bool merge = true) {
+        public Subscription ParseBase64WithHead(string text_base64) {
             text_base64 = text_base64.Replace("ssd://", "");
             text_base64.Replace('-', '+');
             text_base64.Replace('_', '/');
@@ -85,24 +85,11 @@ namespace Shadowsocks.Model {
             var json_text = Encoding.UTF8.GetString(json_buffer);
             var new_subscription = JsonConvert.DeserializeObject<Subscription>(json_text);
             new_subscription.configuration = this;
-            if (!merge) {
-                new_subscription.HandleServers();
-                return new_subscription;
-            }
-            foreach (var subscription in subscriptions) {
-                if (subscription.airport == new_subscription.airport) {
-                    subscription.encryption = new_subscription.encryption;
-                    subscription.password = new_subscription.password;
-                    subscription.port = new_subscription.port;
-                    subscription.servers = new_subscription.servers;
-                    subscription.HandleServers();
-                    return subscription;
-                }
-            }
-            //未找到同名订阅，被迫创建
+
             new_subscription.HandleServers();
-            subscriptions.Add(new_subscription);
             return new_subscription;
+
+
         }
 
         public Subscription ParseSubscriptionURL(string url, bool merge = true) {
@@ -113,8 +100,18 @@ namespace Shadowsocks.Model {
             try {
                 var buffer = web_subscribe.DownloadData(url);
                 var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
-                var new_subscription = ParseBase64WithHead(text, merge);
+                var new_subscription = ParseBase64WithHead(text);
                 new_subscription.url = url;
+                foreach (var subscription in subscriptions) {
+                    if (subscription.url == new_subscription.url) {
+                        subscription.encryption = new_subscription.encryption;
+                        subscription.password = new_subscription.password;
+                        subscription.port = new_subscription.port;
+                        subscription.servers = new_subscription.servers;
+                        subscription.HandleServers();
+                        return subscription;
+                    }
+                }
                 return new_subscription;
             }
             catch (Exception) {
@@ -129,18 +126,22 @@ namespace Shadowsocks.Model {
         }
 
         public void ResetRegularUpdate() {
+            StopRegularUpdate();
             Timer_regular_update = new System.Timers.Timer(1000.0 * 3);
             Timer_regular_update.Elapsed += RegularUpdate;
             Timer_regular_update.Start();
         }
 
         public void StopRegularUpdate() {
+            if (Timer_regular_update == null) {
+                return;
+            }
             Timer_regular_update.Stop();
             Timer_regular_update.Elapsed -= RegularUpdate;
             Timer_regular_update = null;
-            
+
         }
-        
+
         public void UpdateAllSubscription(NotifyIcon notifyIcon = null) {
             if (subscriptions.Count == 0 && notifyIcon != null) {
                 notifyIcon.ShowBalloonTip(
@@ -181,7 +182,7 @@ namespace Shadowsocks.Model {
         private void RegularDetectRunning(object sender, System.Timers.ElapsedEventArgs e) {
             Timer_detect_running.Interval = 1000.0 * 60 * 60;
             if (UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
-                
+
             }
         }
 
@@ -204,6 +205,6 @@ namespace Shadowsocks.Model {
 
             }
             Timer_regular_update.Start();
-        }        
+        }
     }
 }

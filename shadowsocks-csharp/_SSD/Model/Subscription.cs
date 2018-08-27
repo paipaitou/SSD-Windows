@@ -31,8 +31,13 @@ namespace Shadowsocks.Model {
             else if (expiry == DateTime.MaxValue) {
                 return string.Format(I18N.GetString("{0}d"), "+∞");
             }
+
             else {
-                return expiry.ToString("yyyy-MM-dd") + " " + string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
+                var day = string.Format(I18N.GetString("{0}d"), 0);
+                if (expiry > DateTime.Now) {
+                    day = string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
+                }
+                return expiry.ToString("yyyy-MM-dd") + " " + day;
             }
         }
 
@@ -67,6 +72,9 @@ namespace Shadowsocks.Model {
             }
             else if (expiry == DateTime.MaxValue) {
                 expiry_description = string.Format(I18N.GetString("{0}d"), "+∞");
+            }
+            else if (expiry < DateTime.Now) {
+                expiry_description = string.Format(I18N.GetString("{0}d"), 0);
             }
             else {
                 expiry_description = string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);

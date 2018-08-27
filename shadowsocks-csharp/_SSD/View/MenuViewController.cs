@@ -68,9 +68,10 @@ namespace Shadowsocks.View {
             }
 
             var subscription_server_index = configuration_current.configs.Count;
-            foreach (var subscription in configuration_current.subscriptions) {
-                var MenuItem_airport = new MenuItem(subscription.NamePrefix() + " " + subscription.airport);
-                foreach (var server in subscription.servers) {
+            var subscriptions = configuration_current.subscriptions;
+            for (var index=0;index<=subscriptions.Count-1;index++) {
+                var MenuItem_airport = new MenuItem(subscriptions[index].NamePrefix() + " " + subscriptions[index].airport);
+                foreach (var server in subscriptions[index].servers) {
                     var server_text = server.NamePrefix(Server.PREFIX_LATENCY) + " " + server.FriendlyName();
                     var server_item = new MenuItem(server_text);
                     server_item.Tag = subscription_server_index;
@@ -124,8 +125,9 @@ namespace Shadowsocks.View {
             }
             else {
                 try {
-                    var new_subscription = controller.GetCurrentConfiguration().ParseBase64WithHead(clipboard);
-                    Configuration.Save(controller.GetCurrentConfiguration());
+                    var new_subscription = configuration_current.ParseBase64WithHead(clipboard);
+                    configuration_current.subscriptions.Add(new_subscription);
+                    Configuration.Save(configuration_current);
                     ShowBalloonTip(
                         I18N.GetString("Import Success"),
                         string.Format(I18N.GetString("Import Airport: {0}"), new_subscription.airport),
