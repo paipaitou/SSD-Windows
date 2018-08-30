@@ -92,7 +92,7 @@ namespace Shadowsocks.Model {
 
         }
 
-        public Subscription ParseSubscriptionURL(string url, bool merge = true) {
+        public Subscription ParseSubscriptionURL(string url) {
             var web_subscribe = new WebClient();
             if (use_proxy) {
                 web_subscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);

@@ -46,7 +46,7 @@ namespace Shadowsocks.View {
                 }
             }
 
-            var new_subscription = configuration_copy.ParseSubscriptionURL(TextBox_url.Text, false);
+            var new_subscription = configuration_copy.ParseSubscriptionURL(TextBox_url.Text);
             if (new_subscription == null) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 EnableSwitch();
@@ -143,10 +143,9 @@ namespace Shadowsocks.View {
 
         private void SaveSubscription(object sender, EventArgs e) {
             EnableSwitch();
-            var new_subscription = configuration_copy.ParseSubscriptionURL(
-                TextBox_url.Text,
-                false
-            );
+            var save_subscription = configuration_copy.subscriptions[ListBox_subscription.SelectedIndex];
+            save_subscription.url = TextBox_url.Text;
+            var new_subscription=save_subscription.ParseURL();
             if (new_subscription == null) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 RefreshSubscriptionAndSwitch();

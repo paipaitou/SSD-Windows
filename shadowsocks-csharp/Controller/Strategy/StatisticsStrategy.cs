@@ -29,8 +29,8 @@ namespace Shadowsocks.Controller.Strategy
             #region SSD
             var randomIndex = InitIndex();
             //var randomIndex = new Random().Next() % servers.Count;
-            //_currentServer = servers[randomIndex];  //choose a server randomly at first
             #endregion
+            _currentServer = servers[randomIndex];  //choose a server randomly at first
             _timer = new Timer(ReloadStatisticsAndChooseAServer);
         }
 
