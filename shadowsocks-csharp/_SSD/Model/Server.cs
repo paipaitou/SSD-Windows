@@ -17,9 +17,9 @@ namespace Shadowsocks.Model {
         [JsonIgnore()]
         public int latency = LATENCY_PENDING;
 
-        public const int LATENCY_ERROR = -2;
-        public const int LATENCY_PENDING = -1;
-        public const int LATENCY_TESTING = 0;
+        public const int LATENCY_ERROR = -3;
+        public const int LATENCY_PENDING = -2;
+        public const int LATENCY_TESTING = -1;
 
         public const int PREFIX_LATENCY = 0;
         public const int PREFIX_AIRPORT = 1;
@@ -72,9 +72,9 @@ namespace Shadowsocks.Model {
             var sock = new TcpClient();
             var stopwatch = new Stopwatch();
             try {
-                Dns.GetHostAddresses(server);
+                var ip=Dns.GetHostAddresses(server);
                 stopwatch.Start();
-                var result = sock.BeginConnect(server, server_port, null, null);
+                var result = sock.BeginConnect(ip[0], server_port, null, null);
                 if (result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
                     stopwatch.Stop();
                     latencies.Add(stopwatch.Elapsed.TotalMilliseconds);

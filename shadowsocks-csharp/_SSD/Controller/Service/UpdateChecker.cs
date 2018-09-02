@@ -16,7 +16,7 @@ namespace Shadowsocks.Controller {
             var version_end = VERSION_SSD[VERSION_SSD.Length - 1];
             var version_end_num = Convert.ToInt32(version_end);
             if (version_end_num % 2 == 0) {
-                if (DateTime.Now > DateTime.Parse("2018-09-01")) {
+                if (DateTime.Now > DateTime.Parse("2018-09-07")) {
                     MessageBox.Show(I18N.GetString("当前测试版本已超出支持日期"));
                     return true;
                 }

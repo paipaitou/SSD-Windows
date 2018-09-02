@@ -182,7 +182,7 @@ namespace Shadowsocks.Model {
         private void RegularDetectRunning(object sender, System.Timers.ElapsedEventArgs e) {
             Timer_detect_running.Interval = 1000.0 * 60 * 60;
             if (UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
-
+                menu_view.Quit();
             }
         }
 
