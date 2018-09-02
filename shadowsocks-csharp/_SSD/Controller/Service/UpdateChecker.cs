@@ -10,7 +10,7 @@ namespace Shadowsocks.Controller {
         private const string UPDATE_URL_SSD = "https://api.github.com/repos/CGDF-GitHub/SSD-Windows/releases/latest";
         private const string RELEASE_URL_SSD = "https://github.com/CGDF-Github/SSD-Windows/releases";
         private const string VERSION_BASIC = "4.1.1";
-        private const string VERSION_SSD = "0.0.6";
+        private const string VERSION_SSD = "0.0.7";
 
         public static bool UnderLowerLimit() {
             var version_end = VERSION_SSD[VERSION_SSD.Length - 1];
