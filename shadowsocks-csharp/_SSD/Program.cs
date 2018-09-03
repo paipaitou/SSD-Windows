@@ -8,7 +8,7 @@ namespace Shadowsocks {
         private static void UnexpectedError(bool UI, string message) {
             string text_ui = UI ? "UI" : "non-UI";
             MessageBox.Show(
-                $"{I18N.GetString("Unexpected error, shadowsocks will exit. Please report to")} https://github.com/SoDa-GitHub/SSD-Windows/issues {Environment.NewLine}{message}",
+                $"{I18N.GetString("Unexpected error, shadowsocks will exit. Please report to")} https://github.com/CGDF-Github/SSD-Windows/issues {Environment.NewLine}{message}",
                 "Shadowsocks " + text_ui + " Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
