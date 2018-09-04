@@ -74,9 +74,9 @@ namespace Shadowsocks.Model {
         //public
 
         public Subscription ParseBase64WithHead(string text_base64) {
-            text_base64 = text_base64.Replace("ssd://", "");
-            text_base64.Replace('-', '+');
-            text_base64.Replace('_', '/');
+            text_base64 = text_base64.Replace("ssd://", "")
+                .Replace('-', '+')
+                .Replace('_', '/');
             var mod4 = text_base64.Length % 4;
             if (mod4 > 0) {
                 text_base64 += new string('=', 4 - mod4);
