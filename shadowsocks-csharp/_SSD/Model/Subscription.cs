@@ -9,12 +9,13 @@ namespace Shadowsocks.Model {
     public class Subscription {
         public string airport;
         public string encryption;
-        public DateTime expiry;
         public string password;
         public int port;
         public List<Server> servers;
-        public double traffic_total = -1.0;
+
+        public DateTime expiry;
         public double traffic_used = -1.0;
+        public double traffic_total = -1.0;
         public string url;
 
         [JsonIgnore()]
@@ -25,16 +26,16 @@ namespace Shadowsocks.Model {
         }
 
         public string DescribeExpiry() {
-            if (expiry == DateTime.MinValue) {
+            if(expiry == DateTime.MinValue) {
                 return "????-??-?? " + string.Format(I18N.GetString("{0}d"), "?");
             }
-            else if (expiry == DateTime.MaxValue) {
+            else if(expiry == DateTime.MaxValue) {
                 return string.Format(I18N.GetString("{0}d"), "+∞");
             }
 
             else {
                 var day = string.Format(I18N.GetString("{0}d"), 0);
-                if (expiry > DateTime.Now) {
+                if(expiry > DateTime.Now) {
                     day = string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
                 }
                 return expiry.ToString("yyyy-MM-dd") + " " + day;
@@ -51,15 +52,15 @@ namespace Shadowsocks.Model {
         }
 
         public void HandleServers() {
-            foreach (var server in servers) {
+            foreach(var server in servers) {
                 server.subscription = this;
-                if (server.method == null) {
+                if(server.method == null) {
                     server.method = encryption;
                 }
-                if (server.server_port == -1) {
+                if(server.server_port == -1) {
                     server.server_port = port;
                 }
-                if (server.password == null) {
+                if(server.password == null) {
                     server.password = password;
                 }
             }
@@ -67,13 +68,13 @@ namespace Shadowsocks.Model {
 
         public string NamePrefix() {
             string expiry_description;
-            if (expiry == DateTime.MinValue) {
+            if(expiry == DateTime.MinValue) {
                 expiry_description = string.Format(I18N.GetString("{0}d"), "?");
             }
-            else if (expiry == DateTime.MaxValue) {
+            else if(expiry == DateTime.MaxValue) {
                 expiry_description = string.Format(I18N.GetString("{0}d"), "+∞");
             }
-            else if (expiry < DateTime.Now) {
+            else if(expiry < DateTime.Now) {
                 expiry_description = string.Format(I18N.GetString("{0}d"), 0);
             }
             else {
@@ -84,7 +85,7 @@ namespace Shadowsocks.Model {
 
         public Subscription ParseURL() {
             var new_subscription = configuration.ParseSubscriptionURL(url);
-            if (new_subscription == null) {
+            if(new_subscription == null) {
                 return null;
             }
             port = new_subscription.port;

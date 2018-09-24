@@ -25,7 +25,7 @@ namespace Shadowsocks.View {
             configuration_current = controller.GetCurrentConfiguration();
             configuration_current.menu_view = this;
             configuration_current.ResetRegularDetectRunning();
-            configuration_current.ResetRegularUpdate();            
+            configuration_current.ResetRegularUpdate();
             contextMenu1.Popup += PreloadMenu;
         }
 
@@ -54,31 +54,31 @@ namespace Shadowsocks.View {
             var items = ServersItem.MenuItems;
             var index_airport = 0;
             var count_seperator = 0;
-            for (; index_airport <= items.Count - 1; index_airport++) {
-                if (items[index_airport].Text == "-") {
+            for(; index_airport <= items.Count - 1; index_airport++) {
+                if(items[index_airport].Text == "-") {
                     count_seperator++;
-                    if (count_seperator == 2) {
+                    if(count_seperator == 2) {
                         break;
                     }
                 }
             }
 
             index_airport++;
-            while (items[index_airport].Text != "-") {
+            while(items[index_airport].Text != "-") {
                 items.RemoveAt(index_airport);
             }
 
             var subscription_server_index = configuration_current.configs.Count;
             var subscriptions = configuration_current.subscriptions;
-            for (var index=0;index<=subscriptions.Count-1;index++) {
+            for(var index = 0; index <= subscriptions.Count - 1; index++) {
                 var MenuItem_airport = new MenuItem(subscriptions[index].NamePrefix() + " " + subscriptions[index].airport);
-                foreach (var server in subscriptions[index].servers) {
+                foreach(var server in subscriptions[index].servers) {
                     var server_text = server.NamePrefix(Server.PREFIX_LATENCY) + " " + server.FriendlyName();
                     var server_item = new MenuItem(server_text);
                     server_item.Tag = subscription_server_index;
                     server_item.Click += AServerItem_Click;
                     MenuItem_airport.MenuItems.Add(server_item);
-                    if (configuration_current.index == subscription_server_index) {
+                    if(configuration_current.index == subscription_server_index) {
                         server_item.Checked = true;
                         MenuItem_airport.Text = "● " + MenuItem_airport.Text;
                     }
@@ -88,7 +88,7 @@ namespace Shadowsocks.View {
                 index_airport++;
             }
         }
-        
+
         private void StopRegularUpdate() {
             configuration_current.StopRegularUpdate();
         }
@@ -103,11 +103,11 @@ namespace Shadowsocks.View {
 
         private void ImportURL() {
             var clipboard = Clipboard.GetText(TextDataFormat.Text).Trim();
-            if (clipboard.IndexOf("ss://") != -1) {
+            if(clipboard.IndexOf("ss://") != -1) {
                 var count_old = configuration_current.configs.Count;
                 var success = controller.AddServerBySSURL(clipboard);
                 var count_new = configuration_current.configs.Count;
-                if (success) {
+                if(success) {
                     ShowBalloonTip(
                         I18N.GetString("Import Success"),
                         string.Format(I18N.GetString("Import Count: {0}"), count_new - count_old),
@@ -136,7 +136,7 @@ namespace Shadowsocks.View {
                         1000
                     );
                 }
-                catch (Exception) {
+                catch(Exception) {
                     ShowBalloonTip(
                         I18N.GetString("Import Fail"),
                         string.Format(I18N.GetString("Import URL: {0}"), clipboard),
@@ -154,7 +154,7 @@ namespace Shadowsocks.View {
         //public
 
         public void Quit() {
-            Quit_Click(null,null);
+            Quit_Click(null, null);
         }
 
         //endpublic
@@ -162,11 +162,11 @@ namespace Shadowsocks.View {
         private void PreloadMenu(object sender, EventArgs e) {
             UpdateServersMenu();
         }
-        
+
         private void SubscriptionManagement(object sender, EventArgs e) {
             configuration_current.StopRegularUpdate();
             Configuration.Save(configuration_current);
-            if (ManageForm == null) {
+            if(ManageForm == null) {
                 ManageForm = new SubscriptionManagementForm(controller);
                 ManageForm.Show();
                 ManageForm.FormClosed += SubscriptionSettingsRecycled;

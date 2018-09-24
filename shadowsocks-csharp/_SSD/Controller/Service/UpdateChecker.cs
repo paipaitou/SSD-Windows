@@ -10,13 +10,13 @@ namespace Shadowsocks.Controller {
         private const string UPDATE_URL_SSD = "https://api.github.com/repos/CGDF-GitHub/SSD-Windows/releases/latest";
         private const string RELEASE_URL_SSD = "https://github.com/CGDF-Github/SSD-Windows/releases";
         private const string VERSION_BASIC = "4.1.1";
-        private const string VERSION_SSD = "0.0.9";
+        private const string VERSION_SSD = "0.1.1";
 
         public static bool UnderLowerLimit() {
             var version_end = VERSION_SSD[VERSION_SSD.Length - 1];
             var version_end_num = char.GetNumericValue(version_end);
-            if (version_end_num % 2 == 0) {
-                if (DateTime.Now > DateTime.Parse("2018-09-07")) {
+            if(version_end_num % 2 == 0) {
+                if(DateTime.Now > DateTime.Parse("2018-09-07")) {
                     MessageBox.Show(I18N.GetString("当前测试版本已超出支持日期"));
                     return true;
                 }
@@ -28,12 +28,12 @@ namespace Shadowsocks.Controller {
             try {
                 var buffer = web_check.DownloadData(UPDATE_URL_SSD);
                 var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
-                var match = Regex.Match(text, @"Limit:\s\d+\.\d+\.\d+");
-                if (match.Success) {
-                    var text_version = match.Value.Substring("Limit: ".Length);
+                var match = Regex.Match(text, @"(?<=Limit:\s)\d+\.\d+\.\d+");
+                if(match.Success) {
+                    var text_version = match.Value;
                     var version_current = new Version(VERSION_SSD);
                     var version_web = new Version(text_version);
-                    if (version_current < version_web) {
+                    if(version_current < version_web) {
                         MessageBox.Show(I18N.GetString("Current SSD version is too old"));
                         Process.Start(RELEASE_URL_SSD);
                         return true;
@@ -41,7 +41,7 @@ namespace Shadowsocks.Controller {
                 }
 
             }
-            catch (Exception) {
+            catch(Exception) {
             }
             return false;
         }

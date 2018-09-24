@@ -38,26 +38,26 @@ namespace Shadowsocks.Model {
 
         public string NamePrefix(int PREFIX_FLAG) {
             string prefix = "[";
-            if (PREFIX_FLAG == PREFIX_LATENCY) {
+            if(PREFIX_FLAG == PREFIX_LATENCY) {
 
-                if (latency == LATENCY_TESTING) {
-                    prefix +=I18N.GetString("Testing");
+                if(latency == LATENCY_TESTING) {
+                    prefix += I18N.GetString("Testing");
                 }
-                else if (latency == LATENCY_ERROR) {
+                else if(latency == LATENCY_ERROR) {
                     prefix += I18N.GetString("Error");
                 }
-                else if (latency == LATENCY_PENDING) {
+                else if(latency == LATENCY_PENDING) {
                     prefix += I18N.GetString("Pending");
                 }
                 else {
                     prefix += latency.ToString() + "ms";
                 }
             }
-            else if (PREFIX_FLAG == PREFIX_AIRPORT) {
+            else if(PREFIX_FLAG == PREFIX_AIRPORT) {
                 prefix += subscription.airport;
             }
 
-            if (subscription == null) {
+            if(subscription == null) {
                 prefix += "]";
             }
             else {
@@ -75,7 +75,7 @@ namespace Shadowsocks.Model {
                 var ip=Dns.GetHostAddresses(server);
                 stopwatch.Start();
                 var result = sock.BeginConnect(ip[0], server_port, null, null);
-                if (result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
+                if(result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
                     stopwatch.Stop();
                     latencies.Add(stopwatch.Elapsed.TotalMilliseconds);
                 }
@@ -84,13 +84,13 @@ namespace Shadowsocks.Model {
                 }
                 sock.Close();
             }
-            catch (Exception) {
+            catch(Exception) {
                 latency = LATENCY_ERROR;
                 return;
             }
 
 
-            if (latencies.Count != 0) {
+            if(latencies.Count != 0) {
                 latency = (int)latencies.Average();
             }
             else {

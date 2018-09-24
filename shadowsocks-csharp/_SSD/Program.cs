@@ -4,7 +4,6 @@ using System.Windows.Forms;
 
 namespace Shadowsocks {
     public partial class Program {
-
         private static void UnexpectedError(bool UI, string message) {
             string text_ui = UI ? "UI" : "non-UI";
             MessageBox.Show(

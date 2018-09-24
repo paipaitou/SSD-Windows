@@ -10,15 +10,15 @@ namespace Shadowsocks.View {
         //region SSD
 
         private void LoadSelectedSubscriptionServerDetails() {
-            if (ServersListBox.SelectedIndex >= _modifiedConfiguration.configs.Count) {
+            if(ServersListBox.SelectedIndex >= _modifiedConfiguration.configs.Count) {
                 SetServerDetailsToUI(SubscriptionServerMap[(string)ServersListBox.Items[ServersListBox.SelectedIndex]]);
             }
         }
 
         private void LoadSubscriptionServerNameList(Configuration modifiedConfiguration) {
             SubscriptionServerMap.Clear();
-            foreach (var subscription in modifiedConfiguration.subscriptions) {
-                foreach (var server in subscription.servers) {
+            foreach(var subscription in modifiedConfiguration.subscriptions) {
+                foreach(var server in subscription.servers) {
                     var ServerText = server.NamePrefix(Server.PREFIX_AIRPORT) + " " + server.FriendlyName();
                     ServersListBox.Items.Add(ServerText);
                     SubscriptionServerMap.Add(ServerText, server);
@@ -27,7 +27,7 @@ namespace Shadowsocks.View {
         }
 
         private bool ChechListCount() {
-            if (ServersListBox.Items.Count == 0) {
+            if(ServersListBox.Items.Count == 0) {
                 MessageBox.Show(I18N.GetString("Please add at least one server"));
                 return false;
             }

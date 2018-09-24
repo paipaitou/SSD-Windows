@@ -26,13 +26,13 @@ namespace Shadowsocks.Model {
         //region SSD
 
         public Server CurrentServerEx() {
-            if (index >= 0 && index < configs.Count) {
+            if(index >= 0 && index < configs.Count) {
                 return configs[index];
             }
-            else if (index >= configs.Count) {
+            else if(index >= configs.Count) {
                 var real_index = index - configs.Count;
-                foreach (var subscription in subscriptions) {
-                    if (subscription.servers.Count >= real_index + 1) {
+                foreach(var subscription in subscriptions) {
+                    if(subscription.servers.Count >= real_index + 1) {
                         return subscription.servers[real_index];
                     }
                     real_index -= subscription.servers.Count;
@@ -43,19 +43,19 @@ namespace Shadowsocks.Model {
 
         public static void LoadSubscription(Configuration configuration_subscription) {
             var count = configuration_subscription.configs.Count;
-            foreach (var subscription in configuration_subscription.subscriptions) {
+            foreach(var subscription in configuration_subscription.subscriptions) {
                 count += subscription.servers.Count;
             }
-            if (count == 0) {
+            if(count == 0) {
                 configuration_subscription.configs.Add(GetDefaultServer());
                 return;
             }
             var subscriptions = configuration_subscription.subscriptions;
-            if (subscriptions == null) {
+            if(subscriptions == null) {
                 subscriptions = new List<Subscription>();
             }
             else {
-                foreach (var subscription in subscriptions) {
+                foreach(var subscription in subscriptions) {
                     subscription.configuration = configuration_subscription;
                 }
             }
@@ -78,7 +78,7 @@ namespace Shadowsocks.Model {
                 .Replace('-', '+')
                 .Replace('_', '/');
             var mod4 = text_base64.Length % 4;
-            if (mod4 > 0) {
+            if(mod4 > 0) {
                 text_base64 += new string('=', 4 - mod4);
             }
             var json_buffer = Convert.FromBase64String(text_base64);
@@ -94,7 +94,7 @@ namespace Shadowsocks.Model {
 
         public Subscription ParseSubscriptionURL(string url) {
             var web_subscribe = new WebClient();
-            if (use_proxy) {
+            if(use_proxy) {
                 web_subscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);
             }
             try {
@@ -102,19 +102,25 @@ namespace Shadowsocks.Model {
                 var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
                 var new_subscription = ParseBase64WithHead(text);
                 new_subscription.url = url;
-                foreach (var subscription in subscriptions) {
-                    if (subscription.url == new_subscription.url) {
+                foreach(var subscription in subscriptions) {
+                    if(subscription.url == new_subscription.url) {
                         subscription.encryption = new_subscription.encryption;
                         subscription.password = new_subscription.password;
                         subscription.port = new_subscription.port;
                         subscription.servers = new_subscription.servers;
+
+                        //todo : 判断以下值是否存在
+                        subscription.expiry = new_subscription.expiry;
+                        subscription.traffic_used = new_subscription.traffic_used;
+                        subscription.traffic_total = new_subscription.traffic_total;
+                        subscription.url = new_subscription.url;
                         subscription.HandleServers();
                         return subscription;
                     }
                 }
                 return new_subscription;
             }
-            catch (Exception) {
+            catch(Exception) {
                 return null;
             }
         }
@@ -133,7 +139,7 @@ namespace Shadowsocks.Model {
         }
 
         public void StopRegularUpdate() {
-            if (Timer_regular_update == null) {
+            if(Timer_regular_update == null) {
                 return;
             }
             Timer_regular_update.Stop();
@@ -143,7 +149,7 @@ namespace Shadowsocks.Model {
         }
 
         public void UpdateAllSubscription(NotifyIcon notifyIcon = null) {
-            if (subscriptions.Count == 0 && notifyIcon != null) {
+            if(subscriptions.Count == 0 && notifyIcon != null) {
                 notifyIcon.ShowBalloonTip(
                     1000,
                     I18N.GetString("Subscribe Fail"),
@@ -151,9 +157,9 @@ namespace Shadowsocks.Model {
                     ToolTipIcon.Error
                 );
             }
-            for (var index = 0; index <= subscriptions.Count - 1; index++) {
-                if (subscriptions[index].ParseURL() != null) {
-                    if (notifyIcon != null) {
+            for(var index = 0; index <= subscriptions.Count - 1; index++) {
+                if(subscriptions[index].ParseURL() != null) {
+                    if(notifyIcon != null) {
                         notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Success");
                         notifyIcon.BalloonTipText = string.Format(I18N.GetString("Successful Airport: {0}"), subscriptions[index].airport);
                         notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
@@ -161,13 +167,13 @@ namespace Shadowsocks.Model {
                     }
                 }
                 else {
-                    if (notifyIcon != null) {
+                    if(notifyIcon != null) {
                         notifyIcon.BalloonTipTitle = I18N.GetString("Subscribe Fail");
                         notifyIcon.BalloonTipText = string.Format(I18N.GetString("Failed Link: {0}"), subscriptions[index].url);
                         notifyIcon.BalloonTipIcon = ToolTipIcon.Error;
                         notifyIcon.ShowBalloonTip(0);
                     }
-                    if (subscriptions[index].airport.IsNullOrEmpty()) {
+                    if(subscriptions[index].airport.IsNullOrEmpty()) {
                         subscriptions[index].airport = "(error)";
                     }
                     subscriptions[index].url = "(error)";
@@ -181,7 +187,7 @@ namespace Shadowsocks.Model {
 
         private void RegularDetectRunning(object sender, System.Timers.ElapsedEventArgs e) {
             Timer_detect_running.Interval = 1000.0 * 60 * 60;
-            if (UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
+            if(UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
                 menu_view.Quit();
             }
         }
@@ -191,17 +197,17 @@ namespace Shadowsocks.Model {
             Timer_regular_update.Stop();
             try {
                 UpdateAllSubscription();
-                foreach (var server in configs) {
+                foreach(var server in configs) {
                     server.TcpingLatency();
                 }
-                foreach (var subscription in subscriptions) {
-                    foreach (var server in subscription.servers) {
+                foreach(var subscription in subscriptions) {
+                    foreach(var server in subscription.servers) {
                         server.TcpingLatency();
                     }
                 }
                 Thread.Sleep(1000 * 60 * 30);
             }
-            catch (Exception) {
+            catch(Exception) {
 
             }
             Timer_regular_update.Start();
