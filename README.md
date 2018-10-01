@@ -23,6 +23,9 @@ SSD不支持混淆而支持AEAD，因此**SSD和\[SSR/SSRR\]不兼容且永远�
 
 SSD无法使用\[SSR/SSRR\]的订阅链接，如果想使用SSD订阅，请先确认机场是否支持
 
+## Telegram公开群
+[点我加入](https://t.me/joinchat/GvbhT0wTOirvK5vz5Yi_fQ)
+
 ## Telegram内测群
 
 [点我加入](https://t.me/joinchat/GvbhT0vatPxTnqLtUgPe7Q) 招收内测小白鼠（无薪）
