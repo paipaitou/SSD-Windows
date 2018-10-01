@@ -17,7 +17,7 @@ measure servers' latency and display automatically     自动测节点延迟并�
 
 ## About - 关于
 
-SSD不支持混淆而支持AEAD，因此**SSD和\[SSR/SSRR\]不兼容且永远不会兼容**
+SSD支持AEAD而\[SSR/SSRR\]不支持，因此**SSD和\[SSR/SSRR\]不兼容且永远不会兼容**
 
 未来版本中将会和V2Ray一样仅支持AEAD
 
@@ -54,9 +54,9 @@ Microsoft Visual C++ 2015 Redistributable (x86)
 
 Visual Studio 2017
 
-.NET Framework 4.6.2 Developer Pack
+.NET Framework 4.6.2 SDK
 
-## Open Source Components / Libraries 开源组件/库
+## Open Source Components / Libraries - 开源组件/库
 ```
 shadowsocks-windows (GPLv3) https://github.com/shadowsocks/shadowsocks-windows
 Caseless.Fody (MIT)         https://github.com/Fody/Caseless
