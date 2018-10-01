@@ -1,13 +1,13 @@
 ShadowsocksD for Windows
 =======================
 
-## Basic Project 基础项目
+## Basic Project - 基础项目
 
 [shadowsocks-windows](https://github.com/shadowsocks/shadowsocks-windows)
 
 ShadowsocksD会跟随Shadowsocks更新代码。
 
-## Extended Features 扩展功能
+## Extended Features - 扩展功能
 ```
 Support subscription and update automatically          支持订阅并自动更新
 Anti-[360/2345/百度]                                    反[360/2345/百度]
@@ -15,7 +15,7 @@ measure servers' latency and display automatically     自动测节点延迟并�
 ```
 [订阅链接规范](https://github.com/SoDa-GitHub/SSD-Windows/wiki/%E8%AE%A2%E9%98%85%E9%93%BE%E6%8E%A5%E8%A7%84%E8%8C%83)
 
-## About 关于
+## About - 关于
 
 SSD不支持混淆而支持AEAD，因此**SSD和\[SSR/SSRR\]不兼容且永远不会兼容**
 
@@ -23,10 +23,11 @@ SSD不支持混淆而支持AEAD，因此**SSD和\[SSR/SSRR\]不兼容且永远�
 
 SSD无法使用\[SSR/SSRR\]的订阅链接，如果想使用SSD订阅，请先确认机场是否支持
 
-## Telegram公开群
+## Telegram Open Group - Telegram公开群
+
 [点我加入](https://t.me/joinchat/GvbhT0wTOirvK5vz5Yi_fQ)
 
-## Telegram内测群
+## Telegram Close Beta Group - Telegram内测群
 
 [点我加入](https://t.me/joinchat/GvbhT0vatPxTnqLtUgPe7Q) 招收内测小白鼠（无薪）
 
@@ -41,7 +42,7 @@ SSD无法使用\[SSR/SSRR\]的订阅链接，如果想使用SSD订阅，请先�
 如果可以找到，恭喜，您是。
 ```
 
-## Environment 环境
+## Environment - 环境
 
 Microsoft .NET Framework 4.6.2 or higher
 
@@ -49,7 +50,7 @@ Microsoft Visual C++ 2015 Redistributable (x86)
 
 无\[360/2345/百度\]全家桶
 
-## Development 开发
+## Development - 开发
 
 Visual Studio 2017
 
