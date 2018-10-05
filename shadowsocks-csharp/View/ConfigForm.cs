@@ -117,6 +117,9 @@ namespace Shadowsocks.View
             server.plugin_opts = PluginOptionsTextBox.Text;
             server.plugin_args = PluginArgumentsTextBox.Text;
             server.remarks = RemarksTextBox.Text;
+            //region SSD
+            SaveSubscriptionServer(server);
+            //endregion
             if (!int.TryParse(TimeoutTextBox.Text, out server.timeout))
             {
                 MessageBox.Show(I18N.GetString("Illegal timeout format"));
@@ -133,9 +136,6 @@ namespace Shadowsocks.View
                 Server server = _modifiedConfiguration.configs[ServersListBox.SelectedIndex];
                 SetServerDetailsToUI(server);
             }
-            #region SSD
-            LoadSelectedSubscriptionServerDetails();
-            #endregion
         }
 
         private void SetServerDetailsToUI(Server server)
@@ -153,14 +153,15 @@ namespace Shadowsocks.View
 
         private void LoadServerNameListToUI(Configuration configuration)
         {
+            #region SSD
+            LoadSubscriptionServerNameList(configuration);
+            return;
+            #endregion
             ServersListBox.Items.Clear();
             foreach (Server server in configuration.configs)
             {
                 ServersListBox.Items.Add(server.FriendlyName());
             }
-            #region SSD
-            LoadSubscriptionServerNameList(configuration);
-            #endregion
         }
 
         private void LoadCurrentConfiguration()
@@ -187,16 +188,11 @@ namespace Shadowsocks.View
             {
                 return false;
             }
-            #region SSD
-            if (!ChechListCount()) {
+            if(_modifiedConfiguration.configs.Count == 0) 
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
                 return false;
             }
-            //if (_modifiedConfiguration.configs.Count == 0)
-            //{
-            //    MessageBox.Show(I18N.GetString("Please add at least one server"));
-            //    return false;
-            //}
-            #endregion
 
             int localPort = int.Parse(ProxyPortTextBox.Text);
             Configuration.CheckLocalPort(localPort);
@@ -242,6 +238,9 @@ namespace Shadowsocks.View
             if (_lastSelectedIndex >= 0 && _lastSelectedIndex < _modifiedConfiguration.configs.Count)
             {
                 ServersListBox.Items[_lastSelectedIndex] = _modifiedConfiguration.configs[_lastSelectedIndex].FriendlyName();
+                #region SSD
+                SetLastSubscriptionName();
+                #endregion
             }
             UpdateButtons();
             LoadSelectedServerDetails();

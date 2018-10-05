@@ -61,7 +61,7 @@
             this.ListBox_subscription.ItemHeight = 25;
             this.ListBox_subscription.Location = new System.Drawing.Point(3, 3);
             this.ListBox_subscription.Name = "ListBox_subscription";
-            this.ListBox_subscription.Size = new System.Drawing.Size(386, 329);
+            this.ListBox_subscription.Size = new System.Drawing.Size(386, 354);
             this.ListBox_subscription.TabIndex = 0;
             this.ListBox_subscription.SelectedIndexChanged += new System.EventHandler(this.SubscriptionSelected);
             // 
@@ -79,7 +79,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(980, 339);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(980, 360);
             this.tableLayoutPanel2.TabIndex = 12;
             // 
             // tableLayoutPanel1
@@ -94,9 +94,9 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(395, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(582, 333);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(582, 354);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -120,12 +120,12 @@
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 5;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.05263F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.05263F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.78947F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.78947F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.31579F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(576, 293);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(576, 294);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // Label_url
@@ -149,7 +149,7 @@
             // Label_expiry
             // 
             this.Label_expiry.AutoSize = true;
-            this.Label_expiry.Location = new System.Drawing.Point(233, 168);
+            this.Label_expiry.Location = new System.Drawing.Point(233, 169);
             this.Label_expiry.Name = "Label_expiry";
             this.Label_expiry.Size = new System.Drawing.Size(200, 25);
             this.Label_expiry.TabIndex = 15;
@@ -158,7 +158,7 @@
             // Label_traffic
             // 
             this.Label_traffic.AutoSize = true;
-            this.Label_traffic.Location = new System.Drawing.Point(3, 168);
+            this.Label_traffic.Location = new System.Drawing.Point(3, 169);
             this.Label_traffic.Name = "Label_traffic";
             this.Label_traffic.Size = new System.Drawing.Size(64, 25);
             this.Label_traffic.TabIndex = 13;
@@ -217,11 +217,11 @@
             this.tableLayoutPanel4.Controls.Add(this.Button_delete, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.Button_save, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.Button_add, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(233, 217);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(233, 219);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(340, 73);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(340, 72);
             this.tableLayoutPanel4.TabIndex = 16;
             // 
             // Button_delete
@@ -229,7 +229,7 @@
             this.Button_delete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_delete.Enabled = false;
-            this.Button_delete.Location = new System.Drawing.Point(229, 24);
+            this.Button_delete.Location = new System.Drawing.Point(229, 23);
             this.Button_delete.Name = "Button_delete";
             this.Button_delete.Size = new System.Drawing.Size(108, 46);
             this.Button_delete.TabIndex = 7;
@@ -242,7 +242,7 @@
             this.Button_save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_save.Enabled = false;
-            this.Button_save.Location = new System.Drawing.Point(116, 24);
+            this.Button_save.Location = new System.Drawing.Point(116, 23);
             this.Button_save.Name = "Button_save";
             this.Button_save.Size = new System.Drawing.Size(107, 46);
             this.Button_save.TabIndex = 8;
@@ -254,7 +254,7 @@
             // 
             this.Button_add.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button_add.Location = new System.Drawing.Point(3, 24);
+            this.Button_add.Location = new System.Drawing.Point(3, 23);
             this.Button_add.Name = "Button_add";
             this.Button_add.Size = new System.Drawing.Size(107, 46);
             this.Button_add.TabIndex = 2;
@@ -266,7 +266,7 @@
             // 
             this.CheckBox_use_proxy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CheckBox_use_proxy.AutoSize = true;
-            this.CheckBox_use_proxy.Location = new System.Drawing.Point(3, 261);
+            this.CheckBox_use_proxy.Location = new System.Drawing.Point(3, 262);
             this.CheckBox_use_proxy.Name = "CheckBox_use_proxy";
             this.CheckBox_use_proxy.Size = new System.Drawing.Size(143, 29);
             this.CheckBox_use_proxy.TabIndex = 9;
@@ -277,7 +277,7 @@
             // Label_proxy_tips
             // 
             this.Label_proxy_tips.AutoSize = true;
-            this.Label_proxy_tips.Location = new System.Drawing.Point(3, 299);
+            this.Label_proxy_tips.Location = new System.Drawing.Point(3, 300);
             this.Label_proxy_tips.Name = "Label_proxy_tips";
             this.Label_proxy_tips.Size = new System.Drawing.Size(423, 25);
             this.Label_proxy_tips.TabIndex = 3;
@@ -287,7 +287,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1004, 363);
+            this.ClientSize = new System.Drawing.Size(1004, 384);
             this.Controls.Add(this.tableLayoutPanel2);
             this.MaximizeBox = false;
             this.Name = "SubscriptionManagementForm";

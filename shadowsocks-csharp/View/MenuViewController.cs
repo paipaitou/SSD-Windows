@@ -400,6 +400,9 @@ namespace Shadowsocks.View
                 if (System.IO.File.Exists(updateChecker.LatestVersionLocalName))
                 {
                     string argument = "/select, \"" + updateChecker.LatestVersionLocalName + "\"";
+                    #region SSD
+                    OpenUpdateInfo();
+                    #endregion
                     System.Diagnostics.Process.Start("explorer.exe", argument);
                 }
             }
@@ -454,12 +457,14 @@ namespace Shadowsocks.View
             int strategyCount = i;
             #region SSD
             Configuration configuration = GetConfigurationCurrent();
-            //Configuration configuration = controller.GetConfigurationCopy();
             #endregion
             foreach (var server in configuration.configs)
             {
                 MenuItem item = new MenuItem(server.FriendlyName());
                 #region SSD
+                if(server.subscription_url != null) {
+                    continue;
+                }
                 item = AdjustServerName(server);
                 #endregion
                 item.Tag = i - strategyCount;
@@ -476,7 +481,7 @@ namespace Shadowsocks.View
                 }
             }
             #region SSD
-            UpdateAirportMenu();
+            UpdateAirportMenu(i-strategyCount);
             #endregion
         }
 

@@ -36,9 +36,6 @@ namespace Shadowsocks.Model
 
         public Server GetCurrentServer()
         {
-            #region SSD
-            return CurrentServerEx();
-            #endregion
             if (index >= 0 && index < configs.Count)
                 return configs[index];
             else
@@ -65,9 +62,9 @@ namespace Shadowsocks.Model
                     config.configs = new List<Server>();
                 #region SSD
                 LoadSubscription(config);
-                //if (config.configs.Count == 0)
-                //    config.configs.Add(GetDefaultServer());
                 #endregion
+                if (config.configs.Count == 0)
+                    config.configs.Add(GetDefaultServer());
                 if (config.localPort == 0)
                     config.localPort = 1080;
                 if (config.index == -1 && config.strategy == null)
@@ -106,11 +103,8 @@ namespace Shadowsocks.Model
 
         public static void Save(Configuration config)
         {
-            #region SSD
-            InitJsonSave();
-            //if (config.index >= config.configs.Count)
-            //    config.index = config.configs.Count - 1;
-            #endregion
+            if (config.index >= config.configs.Count)
+                config.index = config.configs.Count - 1;
             if (config.index < -1)
                 config.index = -1;
             if (config.index == -1 && config.strategy == null)

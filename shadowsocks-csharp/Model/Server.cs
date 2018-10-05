@@ -37,8 +37,8 @@ namespace Shadowsocks.Model
 
         public override bool Equals(object obj)
         {
-            Server o2 = (Server)obj;
-            return server == o2.server && server_port == o2.server_port;
+                Server o2 = (Server)obj;
+                return server == o2.server && server_port == o2.server_port;
         }
 
         public string FriendlyName()
