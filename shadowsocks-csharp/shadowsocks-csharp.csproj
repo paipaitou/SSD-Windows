@@ -222,8 +222,9 @@
     <Compile Include="View\StatisticsStrategyConfigurationForm.Designer.cs">
       <DependentUpon>StatisticsStrategyConfigurationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="_SSD\Controller\Service\UpdateChecker\Public.cs" />
     <Compile Include="_SSD\Controller\Service\UpdateChecker\UpdateChecker.cs" />
-    <Compile Include="_SSD\Controller\ShadowsocksController.cs" />
+    <Compile Include="_SSD\Controller\ShadowsocksController\ShadowsocksController.cs" />
     <Compile Include="_SSD\Model\Configuration\Configuration.cs" />
     <Compile Include="_SSD\Model\Configuration\Private.cs" />
     <Compile Include="_SSD\Model\Configuration\Public.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="_SSD\Model\Subscription\Public.cs" />
     <Compile Include="_SSD\Model\Subscription\Subscription.cs" />
     <Compile Include="_SSD\Program\Program.cs" />
+    <Compile Include="_SSD\Util\Util\Public.cs" />
     <Compile Include="_SSD\Util\Util\Util.cs" />
     <Compile Include="_SSD\View\ConfigForm\ConfigForm.cs">
       <SubType>Form</SubType>

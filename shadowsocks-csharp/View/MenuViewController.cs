@@ -98,7 +98,7 @@ namespace Shadowsocks.View
             {
                 _isFirstRun = true;
                 #region SSD
-                DisableFirstRun();
+                _DisableFirstRun();
                 //ShowConfigForm();
                 #endregion
             }
@@ -108,7 +108,7 @@ namespace Shadowsocks.View
                 updateChecker.CheckUpdate(config, 3000);
             }
             #region SSD
-            InitOther();
+            _InitOther();
             #endregion
         }
 
@@ -276,7 +276,7 @@ namespace Shadowsocks.View
                 this.ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     this.SeperatorItem = new MenuItem("-"),
                     #region SSD
-                    CreateAirportSeperator(),
+                    _CreateAirportSeperator(),
                     #endregion
                     this.ConfigItem = CreateMenuItem("Edit Servers...", new EventHandler(this.Config_Click)),
                     CreateMenuItem("Statistics Config...", StatisticsConfigItem_Click),
@@ -286,7 +286,7 @@ namespace Shadowsocks.View
                     CreateMenuItem("Import URL from Clipboard...", new EventHandler(this.ImportURLItem_Click))
                 }),
                 #region SSD
-                CreateSubscribeGroup(),
+                _CreateSubscribeGroup(),
                 #endregion
                 CreateMenuGroup("PAC ", new MenuItem[] {
                     this.localPACItem = CreateMenuItem("Local PAC", new EventHandler(this.LocalPACItem_Click)),
@@ -401,7 +401,7 @@ namespace Shadowsocks.View
                 {
                     string argument = "/select, \"" + updateChecker.LatestVersionLocalName + "\"";
                     #region SSD
-                    OpenUpdateInfo();
+                    _OpenUpdateInfo();
                     #endregion
                     System.Diagnostics.Process.Start("explorer.exe", argument);
                 }
@@ -456,7 +456,7 @@ namespace Shadowsocks.View
 
             int strategyCount = i;
             #region SSD
-            Configuration configuration = GetConfigurationCurrent();
+            Configuration configuration = _GetConfigurationCurrent();
             #endregion
             foreach (var server in configuration.configs)
             {
@@ -465,7 +465,7 @@ namespace Shadowsocks.View
                 if(server.subscription_url != null) {
                     continue;
                 }
-                item = AdjustServerName(server);
+                item = _AdjustServerName(server);
                 #endregion
                 item.Tag = i - strategyCount;
                 item.Click += AServerItem_Click;
@@ -481,14 +481,14 @@ namespace Shadowsocks.View
                 }
             }
             #region SSD
-            UpdateAirportMenu(i-strategyCount);
+            _UpdateAirportMenu(i-strategyCount);
             #endregion
         }
 
         private void ShowConfigForm()
         {
             #region SSD
-            StopRegularUpdate();
+            _StopRegularUpdate();
             #endregion
             if (configForm != null)
             {
@@ -568,7 +568,7 @@ namespace Shadowsocks.View
             }
 
             #region SSD
-            ResetRegularUpdate();
+            _ResetRegularUpdate();
             #endregion
         }
 
@@ -617,7 +617,7 @@ namespace Shadowsocks.View
         private void AboutItem_Click(object sender, EventArgs e)
         {
             #region SSD
-            AboutSSD();
+            _AboutSSD();
             return;
             #endregion
             Process.Start("https://github.com/shadowsocks/shadowsocks-windows");
@@ -793,7 +793,7 @@ namespace Shadowsocks.View
         private void ImportURLItem_Click(object sender, EventArgs e)
         {
             #region SSD
-            ImportURL();
+            _ImportURL();
             return;
             #endregion
             var success = controller.AddServerBySSURL(Clipboard.GetText(TextDataFormat.Text));

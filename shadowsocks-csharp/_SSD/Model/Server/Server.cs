@@ -19,7 +19,7 @@ namespace Shadowsocks.Model {
         public const int PREFIX_LATENCY = 0;
         public const int PREFIX_AIRPORT = 1;
 
-        private void InitServer() {
+        private void _InitServer() {
             server = "www.baidu.com";
             server_port = -1;
             method = null;

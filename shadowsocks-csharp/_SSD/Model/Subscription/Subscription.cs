@@ -11,7 +11,10 @@ namespace Shadowsocks.Model {
         public DateTime expiry;
         public double traffic_used = -1.0;
         public double traffic_total = -1.0;
-        public string url;
+        public string url="";
+        public string plugin="";
+        public string plugin_options="";
+        public string plugin_arguments="";
 
         [JsonIgnore]
         public Configuration configuration;

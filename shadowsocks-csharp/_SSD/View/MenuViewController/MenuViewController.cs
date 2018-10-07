@@ -13,11 +13,11 @@ namespace Shadowsocks.View {
         private MenuItem MenuItem_subscribeUpdate;
         private SubscriptionManagementForm Form_subscriptionManagement;
 
-        private void DisableFirstRun() {
+        private void _DisableFirstRun() {
 
         }
 
-        private void InitOther() {
+        private void _InitOther() {
             ConfigurationCurrent = controller.GetCurrentConfiguration();
             ConfigurationCurrent.MenuView = this;
             ConfigurationCurrent.ResetRegularDetectRunning();
@@ -25,11 +25,11 @@ namespace Shadowsocks.View {
             contextMenu1.Popup += PreloadMenu;
         }
 
-        private MenuItem CreateAirportSeperator() {
+        private MenuItem _CreateAirportSeperator() {
             return new MenuItem("-");
         }
 
-        private MenuItem CreateSubscribeGroup() {
+        private MenuItem _CreateSubscribeGroup() {
             MenuGroup_subscribe = CreateMenuGroup("Subscription", new MenuItem[] {
                     MenuItem_subscribeManage = CreateMenuItem("Manage", new EventHandler(SubscriptionManagement)),
                     MenuItem_subscribeUpdate = CreateMenuItem("Update", new EventHandler(UpdateSubscription))
@@ -37,20 +37,20 @@ namespace Shadowsocks.View {
             return MenuGroup_subscribe;
         }
 
-        private void OpenUpdateInfo() {
+        private void _OpenUpdateInfo() {
             Process.Start(UpdateChecker.RELEASE_URL_SSD);
         }
 
-        private Configuration GetConfigurationCurrent() {
+        private Configuration _GetConfigurationCurrent() {
             ConfigurationCurrent = controller.GetCurrentConfiguration();
             return ConfigurationCurrent;
         }
 
-        private MenuItem AdjustServerName(Server server) {
+        private MenuItem _AdjustServerName(Server server) {
             return new MenuItem(server.NamePrefix(ConfigurationCurrent, Server.PREFIX_LATENCY) + " " + server.FriendlyName());
         }
 
-        private void UpdateAirportMenu(int inherit_index) {
+        private void _UpdateAirportMenu(int inherit_index) {
             var items = ServersItem.MenuItems;
             var indexAirport = 0;
             var countSeperator = 0;
@@ -89,19 +89,19 @@ namespace Shadowsocks.View {
             }
         }
 
-        private void StopRegularUpdate() {
+        private void _StopRegularUpdate() {
             ConfigurationCurrent.StopRegularUpdate();
         }
 
-        private void ResetRegularUpdate() {
+        private void _ResetRegularUpdate() {
             ConfigurationCurrent.ResetRegularUpdate();
         }
 
-        private void AboutSSD() {
+        private void _AboutSSD() {
             Process.Start("https://github.com/SoDa-GitHub/SSD-Windows");
         }
 
-        private void ImportURL() {
+        private void _ImportURL() {
             var clipboard = Clipboard.GetText(TextDataFormat.Text).Trim();
             if(clipboard.IndexOf("ss://") != -1) {
                 var count_old = ConfigurationCurrent.configs.Count;

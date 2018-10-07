@@ -68,18 +68,37 @@ namespace Shadowsocks.Model {
             newSubscription.port = jsonObject["port"].ToObject<int>();
             newSubscription.encryption = jsonObject["encryption"].ToString();
             newSubscription.password = jsonObject["password"].ToString();
+
             var subscriptionTrafficUsed=jsonObject.GetValue("traffic_used");
             if(subscriptionTrafficUsed != null) {
                 newSubscription.traffic_used = subscriptionTrafficUsed.ToObject<double>();
             }
+
             var subscriptionTrafficTotal=jsonObject.GetValue("traffic_total");
             if(subscriptionTrafficTotal != null) {
                 newSubscription.traffic_total = subscriptionTrafficTotal.ToObject<double>();
             }
+
             var subscriptionExpiry=jsonObject.GetValue("expiry");
             if(subscriptionExpiry != null) {
                 newSubscription.expiry = subscriptionExpiry.ToObject<DateTime>();
             }
+
+            var subscriptionPluginOptions=jsonObject.GetValue("plugin_options");
+            if(subscriptionPluginOptions != null) {
+                newSubscription.plugin_options = subscriptionPluginOptions.ToString();
+            }
+
+            var subscriptionPluginArguments=jsonObject.GetValue("plugin_arguments");
+            if(subscriptionPluginArguments != null) {
+                newSubscription.plugin_arguments = subscriptionPluginArguments.ToString();
+            }
+
+            var subscriptionPlugin=jsonObject.GetValue("plugin");
+            if(subscriptionPlugin != null) {
+                newSubscription.plugin = subscriptionPlugin.ToString();
+            }
+
             configs.RemoveAll(it => it.subscription_url == newSubscription.url);
             var subscriptionServers=JArray.Parse(jsonObject["servers"].ToString());
             foreach(var subscriptionServer in subscriptionServers) {
@@ -88,14 +107,7 @@ namespace Shadowsocks.Model {
                 var jsonServerObject=JObject.Parse(subscriptionServer.ToString());
                 newServer.id = jsonServerObject["id"].ToObject<int>();
                 newServer.server = jsonServerObject["server"].ToString();
-                var serverRatio=jsonServerObject.GetValue("ratio");
-                if(serverRatio != null) {
-                    newServer.ratio = serverRatio.ToObject<double>();
-                }
-                var serverRemarks=jsonServerObject.GetValue("remarks");
-                if(serverRemarks != null) {
-                    newServer.remarks = serverRemarks.ToString();
-                }
+
                 var serverPort=jsonServerObject.GetValue("port");
                 if(serverPort != null) {
                     newServer.server_port = serverPort.ToObject<int>();
@@ -103,6 +115,7 @@ namespace Shadowsocks.Model {
                 else {
                     newServer.server_port = newSubscription.port;
                 }
+
                 var serverEncryption=jsonServerObject.GetValue("encryption");
                 if(serverEncryption != null) {
                     newServer.method = serverEncryption.ToString();
@@ -110,6 +123,7 @@ namespace Shadowsocks.Model {
                 else {
                     newServer.method = newSubscription.encryption;
                 }
+
                 var serverPassword=jsonServerObject.GetValue("password");
                 if(serverPassword != null) {
                     newServer.password = serverPassword.ToString();
@@ -117,6 +131,41 @@ namespace Shadowsocks.Model {
                 else {
                     newServer.password = newSubscription.password;
                 }
+
+                var serverPluginOptions=jsonServerObject.GetValue("plugin_options");
+                if(serverPluginOptions != null) {
+                    newServer.plugin_opts = serverPluginOptions.ToString();
+                }
+                else {
+                    newServer.plugin_opts = newSubscription.plugin_options;
+                }
+
+                var serverPluginArguments=jsonServerObject.GetValue("plugin_arguments");
+                if(serverPluginArguments != null) {
+                    newServer.plugin_args = serverPluginArguments.ToString();
+                }
+                else {
+                    newServer.plugin_args = newSubscription.plugin_arguments;
+                }
+
+                var serverPlugin=jsonServerObject.GetValue("plugin");
+                if(serverPlugin != null) {
+                    newServer.plugin = serverPlugin.ToString();
+                }
+                else {
+                    newServer.plugin = newSubscription.plugin;
+                }
+
+                var serverRatio=jsonServerObject.GetValue("ratio");
+                if(serverRatio != null) {
+                    newServer.ratio = serverRatio.ToObject<double>();
+                }
+
+                var serverRemarks=jsonServerObject.GetValue("remarks");
+                if(serverRemarks != null) {
+                    newServer.remarks = serverRemarks.ToString();
+                }
+
                 configs.Add(newServer);
             }
             newSubscription.configuration = this;

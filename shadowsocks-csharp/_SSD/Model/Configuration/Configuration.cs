@@ -25,12 +25,16 @@ namespace Shadowsocks.Model {
         [JsonIgnore()]
         public System.Timers.Timer Timer_regularUpdate;
 
-        private static void LoadSubscription(Configuration configSubscription) {
+        private static void _LoadSubscription(Configuration configSubscription) {
             var configSubscriptions = configSubscription.subscriptions;
             if(configSubscriptions == null) {
                 configSubscriptions = new List<Subscription>();
             }
             configSubscription.ArrangeConfig();
+        }
+
+        private static void _ArrangeBeforeSave(Configuration config) {
+            config.ArrangeConfig();
         }
     }
 }

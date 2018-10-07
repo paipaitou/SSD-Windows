@@ -568,7 +568,7 @@ namespace Shadowsocks.Controller
             UpdateSystemProxy();
             Utils.ReleaseMemory(true);
             #region SSD
-            ResetRegularUpdate();
+            _ResetRegularUpdate();
             #endregion
         }
 

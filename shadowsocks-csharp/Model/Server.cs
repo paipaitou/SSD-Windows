@@ -77,7 +77,7 @@ namespace Shadowsocks.Model
             password = "";
             remarks = "";
             #region SSD
-            InitServer();
+            _InitServer();
             #endregion
             timeout = DefaultServerTimeoutSec;
         }

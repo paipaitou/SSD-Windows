@@ -118,7 +118,7 @@ namespace Shadowsocks.View
             server.plugin_args = PluginArgumentsTextBox.Text;
             server.remarks = RemarksTextBox.Text;
             //region SSD
-            SaveSubscriptionServer(server);
+            _SaveSubscriptionServer(server);
             //endregion
             if (!int.TryParse(TimeoutTextBox.Text, out server.timeout))
             {
@@ -154,7 +154,7 @@ namespace Shadowsocks.View
         private void LoadServerNameListToUI(Configuration configuration)
         {
             #region SSD
-            LoadSubscriptionServerNameList(configuration);
+            _LoadSubscriptionServerNameList(configuration);
             return;
             #endregion
             ServersListBox.Items.Clear();
@@ -239,7 +239,7 @@ namespace Shadowsocks.View
             {
                 ServersListBox.Items[_lastSelectedIndex] = _modifiedConfiguration.configs[_lastSelectedIndex].FriendlyName();
                 #region SSD
-                SetLastSubscriptionName();
+                _SetLastSubscriptionName();
                 #endregion
             }
             UpdateButtons();
@@ -309,7 +309,7 @@ namespace Shadowsocks.View
         {
             IPTextBox.Focus();
             #region SSD
-            DisableMove();
+            _DisableMove();
             #endregion
         }
 

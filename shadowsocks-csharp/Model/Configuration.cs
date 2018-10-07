@@ -61,7 +61,7 @@ namespace Shadowsocks.Model
                 if (config.configs == null)
                     config.configs = new List<Server>();
                 #region SSD
-                LoadSubscription(config);
+                _LoadSubscription(config);
                 #endregion
                 if (config.configs.Count == 0)
                     config.configs.Add(GetDefaultServer());
@@ -110,6 +110,9 @@ namespace Shadowsocks.Model
             if (config.index == -1 && config.strategy == null)
                 config.index = 0;
             config.isDefault = false;
+            #region SSD
+            _ArrangeBeforeSave(config);
+            #endregion
             try
             {
                 using (StreamWriter sw = new StreamWriter(File.Open(CONFIG_FILE, FileMode.Create)))

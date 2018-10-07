@@ -1,6 +1,6 @@
 ﻿namespace Shadowsocks.Controller {
     public partial class ShadowsocksController {
-        private void ResetRegularUpdate() {
+        private void _ResetRegularUpdate() {
             _config.ResetRegularUpdate();
         }
     }

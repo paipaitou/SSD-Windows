@@ -2,13 +2,13 @@
 
 namespace Shadowsocks.View {
     public partial class ConfigForm {
-        private void SaveSubscriptionServer(Server server) {
+        private void _SaveSubscriptionServer(Server server) {
             server.id = _modifiedConfiguration.configs[_lastSelectedIndex].id;
             server.subscription_url = _modifiedConfiguration.configs[_lastSelectedIndex].subscription_url;
             server.ratio = _modifiedConfiguration.configs[_lastSelectedIndex].ratio;
         }
 
-        private void LoadSubscriptionServerNameList(Configuration modifiedConfiguration) {
+        private void _LoadSubscriptionServerNameList(Configuration modifiedConfiguration) {
             ServersListBox.Items.Clear();
             foreach(var server in modifiedConfiguration.configs) {
                 var ServerText=server.FriendlyName();
@@ -19,14 +19,14 @@ namespace Shadowsocks.View {
             }
         }
 
-        private void SetLastSubscriptionName() {
+        private void _SetLastSubscriptionName() {
             var server=_modifiedConfiguration.configs[_lastSelectedIndex];
             if(server.subscription_url != null) {
                 ServersListBox.Items[_lastSelectedIndex] = server.NamePrefix(_modifiedConfiguration, Server.PREFIX_AIRPORT) + " " + server.FriendlyName();
             }
         }
 
-        private void DisableMove() {
+        private void _DisableMove() {
             MoveUpButton.Visible = false;
             MoveDownButton.Visible = false;
         }
