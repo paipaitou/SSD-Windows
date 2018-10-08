@@ -4,7 +4,7 @@ namespace Shadowsocks.Model {
     public partial class Server {
         public int id=-1;
         public double ratio=0;
-        public string subscription_url=null;
+        public string subscription_url="";
 
         [JsonIgnore]
         public Subscription Subscription=null;
@@ -22,8 +22,7 @@ namespace Shadowsocks.Model {
         private void _InitServer() {
             server = "www.baidu.com";
             server_port = -1;
-            method = null;
-            password = null;
+            method = "";
         }
     }
 }

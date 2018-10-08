@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Shadowsocks.Model {
     public partial class Server :IComparable<Server> {
         public int CompareTo(Server compared) {
-            if(subscription_url == null) {
-                if(compared.subscription_url == null) {
+            if(subscription_url == "") {
+                if(compared.subscription_url == "") {
                     return FriendlyName().CompareTo(compared.FriendlyName());
                 }
                 else {
@@ -16,7 +16,7 @@ namespace Shadowsocks.Model {
                 }
             }
 
-            if(compared.subscription_url == null) {
+            if(compared.subscription_url == "") {
                 return 1;
             }
 

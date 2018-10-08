@@ -1,15 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Shadowsocks.Controller;
-using Shadowsocks.Util;
 using Shadowsocks.View;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace Shadowsocks.Model {
     public partial class Configuration {

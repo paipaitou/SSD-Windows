@@ -25,7 +25,7 @@ namespace Shadowsocks.Model {
                 count = 0;
             }
             subscriptions.RemoveAll(it => it.url == null);
-            configs.RemoveAll(it => it.subscription_url != null && it.Subscription == null);
+            configs.RemoveAll(it => it.subscription_url != "" && it.Subscription == null);
             subscriptions.Sort();
             configs.Sort();
         }
@@ -60,7 +60,6 @@ namespace Shadowsocks.Model {
             }
             var jsonBuffer = Convert.FromBase64String(textBase64);
             var jsonText = Encoding.UTF8.GetString(jsonBuffer);
-            //todo 重新解析
             var jsonObject=JObject.Parse(jsonText);
             var subscriptionUrl=jsonObject.GetValue("url");
             var newSubscription= FindSubscription(subscriptionUrl == null ? bindUrl : subscriptionUrl.ToString());
@@ -225,8 +224,10 @@ namespace Shadowsocks.Model {
                     ToolTipIcon.Error
                 );
             }
+
             var lastSubscriptionUrl=configs[index].subscription_url;
             var lastId=configs[index].id;
+
             foreach(var subscription in subscriptions) {
                 if(subscription.ParseURL() != null) {
                     if(notifyIcon != null) {
@@ -247,14 +248,16 @@ namespace Shadowsocks.Model {
                     continue;
                 }
             }
-            index = configs.FindIndex(it => it.subscription_url == lastSubscriptionUrl && it.id == lastId);
-            if(index < 0) {
-                index = 0;
+            if(lastSubscriptionUrl != "") {
+                var newIndex = configs.FindIndex(it => it.subscription_url == lastSubscriptionUrl && it.id == lastId);
+                if(newIndex < 0) {
+                    newIndex = 0;
+                }
+                if(controller != null&&index != newIndex) {
+                    controller.SelectServerIndex(newIndex);
+                }
             }
             Save(this);
-            if(controller != null) {
-                controller.SelectServerIndex(index);
-            }
         }
     }
 }

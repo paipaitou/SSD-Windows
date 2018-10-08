@@ -22,7 +22,6 @@ namespace Shadowsocks.View {
             Form_subscriptionManagement.Dispose();
             Form_subscriptionManagement = null;
             Configuration.Save(ConfigurationCurrent);
-            controller.SelectServerIndex(0);
             ConfigurationCurrent.ResetRegularUpdate();
         }
 

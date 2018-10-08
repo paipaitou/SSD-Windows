@@ -33,7 +33,7 @@ namespace Shadowsocks.Model {
                 }
             }
 
-            if(subscription_url == null) {
+            if(subscription_url == "") {
                 prefix += "]";
             }
             else {
@@ -50,12 +50,12 @@ namespace Shadowsocks.Model {
         public void TcpingLatency() {
             Latency = LATENCY_TESTING;
             var latencies = new List<double>();
-            var sock = new TcpClient();
+            var socket = new TcpClient();
             var stopwatch = new Stopwatch();
             try {
                 var ip=Dns.GetHostAddresses(server);
                 stopwatch.Start();
-                var result = sock.BeginConnect(ip[0], server_port, null, null);
+                var result = socket.BeginConnect(ip[0], server_port, null, null);
                 if(result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
                     stopwatch.Stop();
                     latencies.Add(stopwatch.Elapsed.TotalMilliseconds);
@@ -63,7 +63,7 @@ namespace Shadowsocks.Model {
                 else {
                     stopwatch.Stop();
                 }
-                sock.Close();
+                socket.Close();
             }
             catch(Exception) {
                 Latency = LATENCY_ERROR;

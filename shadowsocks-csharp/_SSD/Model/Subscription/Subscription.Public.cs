@@ -1,9 +1,6 @@
 ﻿using Shadowsocks.Controller;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shadowsocks.Model {
     public partial class Subscription {
@@ -36,7 +33,7 @@ namespace Shadowsocks.Model {
         public List<Server> GetServers() {
             var servers=new List<Server>();
             foreach(var config in configuration.configs) {
-                if(config.subscription_url == null) {
+                if(config.subscription_url == "") {
                     continue;
                 }
                 if(config.subscription_url == url) {

@@ -462,7 +462,7 @@ namespace Shadowsocks.View
             {
                 MenuItem item = new MenuItem(server.FriendlyName());
                 #region SSD
-                if(server.subscription_url != null) {
+                if(server.subscription_url != "") {
                     continue;
                 }
                 item = _AdjustServerName(server);

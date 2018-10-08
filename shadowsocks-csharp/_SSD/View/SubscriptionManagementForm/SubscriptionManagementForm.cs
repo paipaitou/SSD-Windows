@@ -80,10 +80,27 @@ namespace Shadowsocks.View {
         }
 
         private void ManagementClosed(object sender, FormClosedEventArgs e) {
-            Controller.GetCurrentConfiguration().subscriptions = ConfigurationCopy.subscriptions;
             ConfigurationCopy.ArrangeConfig();
-            Controller.GetCurrentConfiguration().configs = ConfigurationCopy.configs;
-            Controller.GetCurrentConfiguration().use_proxy = ConfigurationCopy.use_proxy;
+
+            var realConfig=Controller.GetCurrentConfiguration();
+
+            var lastServer=realConfig.configs[realConfig.index];
+            var lastSubscriptionUrl=lastServer.subscription_url;
+            var lastId=lastServer.id;
+
+            realConfig.subscriptions = ConfigurationCopy.subscriptions;
+            realConfig.configs = ConfigurationCopy.configs;
+            realConfig.use_proxy = ConfigurationCopy.use_proxy;
+
+            if(lastSubscriptionUrl != "") {
+                var newIndex = realConfig.configs.FindIndex(it => it.subscription_url == lastSubscriptionUrl && it.id == lastId);
+                if(newIndex < 0) {
+                    newIndex = 0;
+                }
+                if(realConfig.index != newIndex) {
+                    Controller.SelectServerIndex(newIndex);
+                }
+            }
         }
 
         private void NameEntered(object sender, EventArgs e) {

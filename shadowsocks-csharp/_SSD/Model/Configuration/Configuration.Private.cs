@@ -13,20 +13,21 @@ namespace Shadowsocks.Model {
         }
 
         private void RegularUpdate(object sender, EventArgs e) {
-            Timer_regularUpdate.Interval = 1000.0 * 60 * 30;
+            Timer_regularUpdate.Interval = 1000.0 * 60 * (30 + configs.Count / 2);
             Timer_regularUpdate.Stop();
             try {
                 //UpdateAllSubscription();
-                //todo 暂时关闭自动更新
+                //不再自动更新订阅
                 foreach(var server in configs) {
                     server.TcpingLatency();
                 }
                 Thread.Sleep(1000 * 60 * 30);
             }
-            catch(Exception) {
-
+            catch(Exception) {               
             }
-            Timer_regularUpdate.Start();
+            if(Timer_regularUpdate != null) {
+                Timer_regularUpdate.Start();
+            }
         }
     }
 }
