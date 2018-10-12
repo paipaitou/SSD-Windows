@@ -57,7 +57,7 @@ namespace Shadowsocks.View {
             ResetShowed();
             EnableSwitch();
         }
-        
+
         private void DeleteSubscription(object sender, EventArgs e) {
             if(ConfigurationCopy.configs.Count == 0 &&
                 ConfigurationCopy.subscriptions.Count == 1) {
@@ -85,8 +85,12 @@ namespace Shadowsocks.View {
             var realConfig=Controller.GetCurrentConfiguration();
 
             var lastServer=realConfig.configs[realConfig.index];
-            var lastSubscriptionUrl=lastServer.subscription_url;
-            var lastId=lastServer.id;
+            var lastSubscriptionUrl="";
+            var lastId=-1;
+            if(realConfig.strategy == null) {
+                lastSubscriptionUrl = lastServer.subscription_url;
+                lastId = lastServer.id;
+            }
 
             realConfig.subscriptions = ConfigurationCopy.subscriptions;
             realConfig.configs = ConfigurationCopy.configs;
@@ -139,7 +143,7 @@ namespace Shadowsocks.View {
                 return;
             }
             var subscription = ConfigurationCopy.subscriptions[index];
-            if(subscription.url != null) {
+            if(subscription.url != "") {
                 TextBox_url.Text = subscription.url;
             }
             else {

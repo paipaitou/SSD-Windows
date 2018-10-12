@@ -20,11 +20,11 @@ namespace Shadowsocks.Model {
                     }
                 }
                 if(count == 0) {
-                    subscription.url = null;
+                    subscription.url = "";
                 }
                 count = 0;
             }
-            subscriptions.RemoveAll(it => it.url == null);
+            subscriptions.RemoveAll(it => it.url == "");
             configs.RemoveAll(it => it.subscription_url != "" && it.Subscription == null);
             subscriptions.Sort();
             configs.Sort();
@@ -225,8 +225,13 @@ namespace Shadowsocks.Model {
                 );
             }
 
-            var lastSubscriptionUrl=configs[index].subscription_url;
-            var lastId=configs[index].id;
+
+            var lastSubscriptionUrl="";
+            var lastId=-1;
+            if(strategy == null) {
+                lastSubscriptionUrl = configs[index].subscription_url;
+                lastId = configs[index].id;
+            }
 
             foreach(var subscription in subscriptions) {
                 if(subscription.ParseURL() != null) {
@@ -244,7 +249,7 @@ namespace Shadowsocks.Model {
                         notifyIcon.BalloonTipIcon = ToolTipIcon.Error;
                         notifyIcon.ShowBalloonTip(0);
                     }
-                    subscription.url = null;
+                    subscription.url = "";
                     continue;
                 }
             }
@@ -253,7 +258,7 @@ namespace Shadowsocks.Model {
                 if(newIndex < 0) {
                     newIndex = 0;
                 }
-                if(controller != null&&index != newIndex) {
+                if(controller != null && index != newIndex) {
                     controller.SelectServerIndex(newIndex);
                 }
             }
