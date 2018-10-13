@@ -24,7 +24,7 @@ namespace Shadowsocks.View {
             RefreshSwitch = !RefreshSwitch;
             CheckSelected();
         }
-        
+
         private void RefreshSubscriptionAndSwitch() {
             ResetShowed();
             ConfigurationCopy.UpdateAllSubscription();
@@ -42,6 +42,7 @@ namespace Shadowsocks.View {
             CheckSelected();
             Label_traffic.Text = "?/? G";
             Label_expiry.Text = "????-??-?? " + string.Format(I18N.GetString("{0}d"), "?");
+            CheckBox_use_proxy.Checked = false;
         }
 
         private void SetNameAuto() {

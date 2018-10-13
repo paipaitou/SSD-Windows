@@ -27,7 +27,6 @@ namespace Shadowsocks.View {
             Label_traffic_used.Text = I18N.GetString("Traffic Used:");
             Label_expiry_date.Text = I18N.GetString("Expiry Date:");
             Label_proxy_tips.Text = I18N.GetString("* Proxy will always be used in Global Mode");
-            CheckBox_use_proxy.Checked = ConfigurationCopy.use_proxy;
             ResetShowed();
 
             Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
@@ -44,7 +43,7 @@ namespace Shadowsocks.View {
                 }
             }
 
-            var newSubscription = ConfigurationCopy.ParseSubscriptionURL(TextBox_url.Text);
+            var newSubscription = ConfigurationCopy.ParseSubscriptionURL(TextBox_url.Text,CheckBox_use_proxy.Checked);
             if(newSubscription == null) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 EnableSwitch();
@@ -94,7 +93,6 @@ namespace Shadowsocks.View {
 
             realConfig.subscriptions = ConfigurationCopy.subscriptions;
             realConfig.configs = ConfigurationCopy.configs;
-            realConfig.use_proxy = ConfigurationCopy.use_proxy;
 
             if(lastSubscriptionUrl != "") {
                 var newIndex = realConfig.configs.FindIndex(it => it.subscription_url == lastSubscriptionUrl && it.id == lastId);
@@ -153,11 +151,15 @@ namespace Shadowsocks.View {
             TextBox_name.ForeColor = SystemColors.WindowText;
             Label_traffic.Text = subscription.DescribeTraffic();
             Label_expiry.Text = subscription.DescribeExpiry();
+            CheckBox_use_proxy.Checked = subscription.use_proxy;
             CheckSelected();
         }
 
         private void UseProxyChanged(object sender, EventArgs e) {
-            ConfigurationCopy.use_proxy = CheckBox_use_proxy.Checked;
+            var selectedIndex=ListBox_subscription.SelectedIndex;
+            if(selectedIndex != -1) {
+                ConfigurationCopy.subscriptions[selectedIndex].use_proxy = CheckBox_use_proxy.Checked;
+            }
         }
     }
 }

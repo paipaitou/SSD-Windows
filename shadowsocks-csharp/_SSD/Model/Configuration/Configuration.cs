@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace Shadowsocks.Model {
     public partial class Configuration {
         public List<Subscription> subscriptions = new List<Subscription>();
-        public bool use_proxy = false;
 
         [JsonIgnore()]
         public MenuViewController MenuView;

@@ -16,6 +16,8 @@ namespace Shadowsocks.Model {
         public string plugin_options="";
         public string plugin_arguments="";
 
+        public bool use_proxy=false;
+
         [JsonIgnore]
         public Configuration configuration;
     }

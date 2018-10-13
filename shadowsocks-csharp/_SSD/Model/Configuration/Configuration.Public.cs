@@ -30,24 +30,30 @@ namespace Shadowsocks.Model {
             configs.Sort();
         }
 
-        public Subscription FindSubscription(string bindUrl) {
+        public Subscription FindSubscription(string bindUrl, bool createNew) {
             if(bindUrl == null) {
-                var newSubscription= new Subscription();
-                newSubscription.url = bindUrl;
-                subscriptions.Add(newSubscription);
-                return newSubscription;
-            }
-            else {
-                foreach(var subscription in subscriptions) {
-                    if(subscription.url == bindUrl) {
-                        return subscription;
-                    }
+                if(createNew == false) {
+                    return null;
                 }
                 var newSubscription= new Subscription();
                 newSubscription.url = bindUrl;
                 subscriptions.Add(newSubscription);
                 return newSubscription;
             }
+
+            foreach(var subscription in subscriptions) {
+                if(subscription.url == bindUrl) {
+                    return subscription;
+                }
+            }
+
+            if(createNew == false) {
+                return null;
+            }
+            var newSubscription2= new Subscription();
+            newSubscription2.url = bindUrl;
+            subscriptions.Add(newSubscription2);
+            return newSubscription2;
         }
 
         public Subscription ParseBase64WithHead(string textBase64, string bindUrl = null) {
@@ -62,7 +68,7 @@ namespace Shadowsocks.Model {
             var jsonText = Encoding.UTF8.GetString(jsonBuffer);
             var jsonObject=JObject.Parse(jsonText);
             var subscriptionUrl=jsonObject.GetValue("url");
-            var newSubscription= FindSubscription(subscriptionUrl == null ? bindUrl : subscriptionUrl.ToString());
+            var newSubscription= FindSubscription(subscriptionUrl == null ? bindUrl : subscriptionUrl.ToString(),true);
             newSubscription.airport = jsonObject["airport"].ToString();
             newSubscription.port = jsonObject["port"].ToObject<int>();
             newSubscription.encryption = jsonObject["encryption"].ToString();
@@ -171,15 +177,23 @@ namespace Shadowsocks.Model {
             return newSubscription;
         }
 
-        public Subscription ParseSubscriptionURL(string url) {
+        public Subscription ParseSubscriptionURL(string url, bool useProxy = false) {
             var webSubscribe = new WebClient();
-            if(use_proxy) {
+            var foundSubscription=FindSubscription(url, false);
+            //优先级：foundSubscription > useProxy参数
+            if(foundSubscription != null) {
+                useProxy = foundSubscription.use_proxy;
+            }
+            if(useProxy) {
                 webSubscribe.Proxy = new WebProxy(IPAddress.Loopback.ToString(), localPort);
             }
             try {
                 var buffer = webSubscribe.DownloadData(url);
                 var text = Encoding.GetEncoding("UTF-8").GetString(buffer);
                 var newSubscription = ParseBase64WithHead(text,url);
+                if(useProxy) {
+                    newSubscription.use_proxy = true;
+                }
                 return newSubscription;
             }
             catch(Exception) {
@@ -224,7 +238,6 @@ namespace Shadowsocks.Model {
                     ToolTipIcon.Error
                 );
             }
-
 
             var lastSubscriptionUrl="";
             var lastId=-1;
