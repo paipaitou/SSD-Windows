@@ -121,14 +121,26 @@
   <data name="abp_js" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Data\abp.js.gz;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="client_windows_386" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\_SSD\Data\client_windows_386.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="client_windows_amd64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\_SSD\Data\client_windows_amd64.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ja" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Data\ja.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="libsscrypto_dll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Data\libsscrypto.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="libwinpthread_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\_SSD\Data\libwinpthread-1.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="mgwz_dll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\mgwz.dll.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="obfs_local" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\_SSD\Data\obfs-local.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="privoxy_conf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\privoxy_conf.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

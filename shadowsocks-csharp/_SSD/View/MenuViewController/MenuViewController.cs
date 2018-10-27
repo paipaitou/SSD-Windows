@@ -13,13 +13,18 @@ namespace Shadowsocks.View {
         private MenuItem MenuItem_subscribeUpdate;
         private SubscriptionManagementForm Form_subscriptionManagement;
 
+        public static MenuViewController StaticMenuView=null;//为毛MenuView不设计为单例模式。。。怨念。。。
+
+        private void _SetStaticMenuView() {
+            StaticMenuView = this;
+        }
+
         private void _DisableFirstRun() {
 
         }
 
         private void _InitOther() {
             ConfigurationCurrent = controller.GetCurrentConfiguration();
-            ConfigurationCurrent.MenuView = this;
             ConfigurationCurrent.ResetRegularDetectRunning();
             ConfigurationCurrent.ResetRegularUpdate();
             contextMenu1.Popup += PreloadMenu;

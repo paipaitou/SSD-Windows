@@ -122,6 +122,11 @@
     <Compile Include="Model\HotKeyConfig.cs" />
     <Compile Include="Model\ProxyConfig.cs" />
     <Compile Include="Model\SysproxyConfig.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -148,11 +153,6 @@
     <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\StatisticsRecord.cs" />
     <Compile Include="Model\StatisticsStrategyConfiguration.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Controller\Strategy\BalancingStrategy.cs" />
     <Compile Include="Controller\Strategy\StrategyManager.cs" />
     <Compile Include="Controller\Strategy\IStrategy.cs" />
@@ -313,6 +313,11 @@
     <None Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="_SSD\Data\simple-obfs.exe" />
+    <None Include="_SSD\Data\libwinpthread-1.dll" />
+    <None Include="_SSD\Data\obfs-local.exe" />
+    <None Include="_SSD\Data\client_windows_386.exe" />
+    <None Include="_SSD\Data\client_windows_amd64.exe" />
     <Content Include="Resources\ssIn24.png" />
     <Content Include="Resources\ssOut24.png" />
     <Content Include="shadowsocks.ico" />

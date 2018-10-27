@@ -1,9 +1,15 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using Shadowsocks.Controller;
+using Shadowsocks.View;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Shadowsocks.Model {
@@ -29,7 +35,7 @@ namespace Shadowsocks.Model {
             subscriptions.Sort();
             configs.Sort();
         }
-
+      
         public Subscription FindSubscription(string bindUrl, bool createNew) {
             if(bindUrl == null) {
                 if(createNew == false) {

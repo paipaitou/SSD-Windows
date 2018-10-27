@@ -63,7 +63,9 @@ namespace Shadowsocks.View
         public MenuViewController(ShadowsocksController controller)
         {
             this.controller = controller;
-
+            #region SSD
+            _SetStaticMenuView();
+            #endregion
             LoadMenu();
 
             controller.EnableStatusChanged += controller_EnableStatusChanged;

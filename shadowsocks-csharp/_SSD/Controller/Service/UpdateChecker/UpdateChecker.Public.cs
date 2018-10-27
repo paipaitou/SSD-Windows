@@ -8,15 +8,6 @@ using System.Windows.Forms;
 namespace Shadowsocks.Controller {
     public partial class UpdateChecker {
         public static bool UnderLowerLimit() {
-            var versionEnd = VERSION_SSD[VERSION_SSD.Length - 1];
-            var versionEndNum = char.GetNumericValue(versionEnd);
-            if(versionEndNum % 2 == 0) {
-                if(DateTime.Now > DateTime.Parse("2018-10-16")) {
-                    MessageBox.Show(I18N.GetString("当前测试版本已超出支持日期"));
-                    return true;
-                }
-            }
-
             Logging.Debug("Checking low limit...");
             var webCheck = new WebClient();
             webCheck.Headers.Add("User-Agent", UserAgent);

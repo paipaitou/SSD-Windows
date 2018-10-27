@@ -82,11 +82,11 @@ namespace Shadowsocks.View {
             ConfigurationCopy.ArrangeConfig();
 
             var realConfig=Controller.GetCurrentConfiguration();
-
-            var lastServer=realConfig.configs[realConfig.index];
+            
             var lastSubscriptionUrl="";
             var lastId=-1;
             if(realConfig.strategy == null) {
+                var lastServer=realConfig.configs[realConfig.index];
                 lastSubscriptionUrl = lastServer.subscription_url;
                 lastId = lastServer.id;
             }

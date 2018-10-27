@@ -490,8 +490,10 @@ namespace Shadowsocks.Controller
             // some logic in configuration updated the config when saving, we need to read it again
             _config = Configuration.Load();
             StatisticsConfiguration = StatisticsStrategyConfiguration.Load();
-
-            if (privoxyRunner == null)
+            #region SSD
+            _ReleasePlugin();
+            #endregion
+            if(privoxyRunner == null)
             {
                 privoxyRunner = new PrivoxyRunner();
             }

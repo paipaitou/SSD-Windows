@@ -5,22 +5,20 @@ using System.Collections.Generic;
 namespace Shadowsocks.Model {
     public partial class Configuration {
         public List<Subscription> subscriptions = new List<Subscription>();
-
-        [JsonIgnore()]
-        public MenuViewController MenuView;
-
+       
         [JsonIgnore()]
         public System.Timers.Timer Timer_detectRunning;
 
         [JsonIgnore()]
         public System.Timers.Timer Timer_regularUpdate;
 
-        private static void _LoadSubscription(Configuration configSubscription) {
-            var configSubscriptions = configSubscription.subscriptions;
+        private static void _LoadSubscriptionAndPlugin(Configuration configHandled) {
+            //Subscription
+            var configSubscriptions = configHandled.subscriptions;
             if(configSubscriptions == null) {
                 configSubscriptions = new List<Subscription>();
             }
-            configSubscription.ArrangeConfig();
+            configHandled.ArrangeConfig();
         }
 
         private static void _ArrangeBeforeSave(Configuration config) {

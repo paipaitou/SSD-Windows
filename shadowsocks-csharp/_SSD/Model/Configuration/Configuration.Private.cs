@@ -1,5 +1,6 @@
 ﻿using Shadowsocks.Controller;
 using Shadowsocks.Util;
+using Shadowsocks.View;
 using System;
 using System.Threading;
 
@@ -8,7 +9,7 @@ namespace Shadowsocks.Model {
         private void RegularDetectRunning(object sender, System.Timers.ElapsedEventArgs e) {
             Timer_detectRunning.Interval = 1000.0 * 60 * 60;
             if(UpdateChecker.UnderLowerLimit() || Utils.DetectVirus()) {
-                MenuView.Quit();
+                MenuViewController.StaticMenuView.Quit();
             }
         }
 
@@ -16,8 +17,6 @@ namespace Shadowsocks.Model {
             Timer_regularUpdate.Interval = 1000.0 * 60 * (30 + configs.Count / 2);
             Timer_regularUpdate.Stop();
             try {
-                //UpdateAllSubscription();
-                //不再自动更新订阅
                 foreach(var server in configs) {
                     server.TcpingLatency();
                 }

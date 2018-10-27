@@ -61,7 +61,7 @@ namespace Shadowsocks.Model
                 if (config.configs == null)
                     config.configs = new List<Server>();
                 #region SSD
-                _LoadSubscription(config);
+                _LoadSubscriptionAndPlugin(config);
                 #endregion
                 if (config.configs.Count == 0)
                     config.configs.Add(GetDefaultServer());
