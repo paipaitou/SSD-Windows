@@ -37,4 +37,6 @@ ZXing.Net (Apache 2.0)      https://github.com/micjahn/ZXing.Net
 libsscrypto (GPLv2)         https://github.com/shadowsocks/libsscrypto
 Privoxy (GPLv2)             https://www.privoxy.org
 Sysproxy ()                 https://github.com/Noisyfox/sysproxy
+simple-obfs (GPLv3)         https://github.com/shadowsocks/simple-obfs
+kcptun (MIT)                https://github.com/shadowsocks/kcptun
 ```
