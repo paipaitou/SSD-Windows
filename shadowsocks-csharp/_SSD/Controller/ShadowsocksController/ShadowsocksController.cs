@@ -11,7 +11,7 @@ namespace Shadowsocks.Controller {
 
             //simple-obfs
             File.WriteAllBytes(
-                Path.Combine(directory, "simple_obfs.exe"),
+                Path.Combine(directory, "simple-obfs.exe"),
                 Resources.obfs_local
             );
             File.WriteAllBytes(

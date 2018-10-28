@@ -50,28 +50,30 @@ namespace Shadowsocks.Model {
         public void TcpingLatency() {
             Latency = LATENCY_TESTING;
             var latencies = new List<double>();
-            var socket = new TcpClient();
             var stopwatch = new Stopwatch();
-            try {
-                var ip=Dns.GetHostAddresses(server);
-                stopwatch.Start();
-                var result = socket.BeginConnect(ip[0], server_port, null, null);
-                if(result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
-                    stopwatch.Stop();
-                    latencies.Add(stopwatch.Elapsed.TotalMilliseconds);
+            for(var testTime = 0; testTime <= 1; testTime++) {
+                try {
+                    var socket = new TcpClient();
+                    var ip=Dns.GetHostAddresses(server);
+                    stopwatch.Start();
+                    var result = socket.BeginConnect(ip[0], server_port, null, null);
+                    if(result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(2))) {
+                        stopwatch.Stop();
+                        latencies.Add(stopwatch.Elapsed.TotalMilliseconds);
+                    }
+                    else {
+                        stopwatch.Stop();
+                    }
+                    socket.Close();
                 }
-                else {
-                    stopwatch.Stop();
+                catch(Exception) {
+
                 }
-                socket.Close();
-            }
-            catch(Exception) {
-                Latency = LATENCY_ERROR;
-                return;
+                stopwatch.Reset();
             }
 
             if(latencies.Count != 0) {
-                Latency = (int)latencies.Average();
+                Latency = ( int ) latencies.Average();
             }
             else {
                 Latency = LATENCY_ERROR;
