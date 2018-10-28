@@ -6,6 +6,14 @@ using System.Windows.Forms;
 
 namespace Shadowsocks.Controller {
     public partial class ShadowsocksController {
+        private void _FirstTcpingLatencyAll() {
+            GetCurrentConfiguration().TcpingLatencyAll();
+        }
+
+        private void _ArrangeCurrentConfig() {
+            GetCurrentConfiguration().ArrangeConfig();
+        }
+
         private void _ReleasePlugin() {
             var directory=Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -36,9 +44,6 @@ namespace Shadowsocks.Controller {
             if(kcptunResource != null) {
                 File.WriteAllBytes(Path.Combine(directory, "kcptun.exe"), kcptunResource);
             }
-        }
-        private void _ResetRegularUpdate() {
-            _config.ResetRegularUpdate();
         }
     }
 }

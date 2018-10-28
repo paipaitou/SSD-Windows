@@ -96,6 +96,9 @@ namespace Shadowsocks.Controller
             {
                 HotkeyReg.RegAllHotkeys();
             }
+            #region SSD
+            _FirstTcpingLatencyAll();
+            #endregion
         }
 
         protected void ReportError(Exception e)
@@ -205,6 +208,9 @@ namespace Shadowsocks.Controller
                     _config.configs.Add(server);
                 }
                 _config.index = _config.configs.Count - 1;
+                #region SSD
+                _ArrangeCurrentConfig();
+                #endregion
                 SaveConfig(_config);
                 return true;
             }
@@ -569,9 +575,6 @@ namespace Shadowsocks.Controller
 
             UpdateSystemProxy();
             Utils.ReleaseMemory(true);
-            #region SSD
-            _ResetRegularUpdate();
-            #endregion
         }
 
         private void StartPlugin()

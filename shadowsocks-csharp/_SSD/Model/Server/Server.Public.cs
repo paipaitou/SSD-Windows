@@ -1,4 +1,5 @@
-﻿using Shadowsocks.Controller;
+﻿using Newtonsoft.Json;
+using Shadowsocks.Controller;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,9 @@ using System.Net.Sockets;
 
 namespace Shadowsocks.Model {
     public partial class Server {
+        public bool DataEqual(Server compared) {
+            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(compared);
+        }
         public string NamePrefix(Configuration config, int PREFIX_FLAG) {
             string prefix = "[";
             if(PREFIX_FLAG == PREFIX_LATENCY) {

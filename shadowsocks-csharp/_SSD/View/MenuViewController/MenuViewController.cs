@@ -26,12 +26,19 @@ namespace Shadowsocks.View {
         private void _InitOther() {
             ConfigurationCurrent = controller.GetCurrentConfiguration();
             ConfigurationCurrent.ResetRegularDetectRunning();
-            ConfigurationCurrent.ResetRegularUpdate();
             contextMenu1.Popup += PreloadMenu;
         }
 
         private MenuItem _CreateAirportSeperator() {
             return new MenuItem("-");
+        }
+        
+        private MenuItem _CreateTcpingLatency() {
+            return new MenuItem(
+                I18N.GetString("Tcping Latency"),
+                (sender,e) => {
+                    ConfigurationCurrent.TcpingLatencyAll();
+                });
         }
 
         private MenuItem _CreateSubscribeGroup() {
@@ -59,7 +66,7 @@ namespace Shadowsocks.View {
             var items = ServersItem.MenuItems;
             var indexAirport = 0;
             var countSeperator = 0;
-            //todo ssd:to switch foreach
+
             for(; indexAirport <= items.Count - 1; indexAirport++) {
                 if(items[indexAirport].Text == "-") {
                     countSeperator++;
@@ -92,14 +99,6 @@ namespace Shadowsocks.View {
                 items.Add(indexAirport, MenuItem_airport);
                 indexAirport++;
             }
-        }
-
-        private void _StopRegularUpdate() {
-            ConfigurationCurrent.StopRegularUpdate();
-        }
-
-        private void _ResetRegularUpdate() {
-            ConfigurationCurrent.ResetRegularUpdate();
         }
 
         private void _AboutSSD() {
@@ -150,8 +149,6 @@ namespace Shadowsocks.View {
                     );
                 }
             }
-
-            ConfigurationCurrent.ResetRegularUpdate();
         }
     }
 }

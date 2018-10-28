@@ -82,20 +82,12 @@ namespace Shadowsocks.View {
             ConfigurationCopy.ArrangeConfig();
 
             var realConfig=Controller.GetCurrentConfiguration();
-            
-            var lastSubscriptionUrl="";
-            var lastId=-1;
-            if(realConfig.strategy == null) {
-                var lastServer=realConfig.configs[realConfig.index];
-                lastSubscriptionUrl = lastServer.subscription_url;
-                lastId = lastServer.id;
-            }
 
+            var oldServer=realConfig.CurrentServer();
             realConfig.subscriptions = ConfigurationCopy.subscriptions;
             realConfig.configs = ConfigurationCopy.configs;
-
-            if(lastSubscriptionUrl != "") {
-                var newIndex = realConfig.configs.FindIndex(it => it.subscription_url == lastSubscriptionUrl && it.id == lastId);
+            if(oldServer != null) {
+                var newIndex = realConfig.configs.FindIndex(it => it.DataEqual(oldServer));
                 if(newIndex < 0) {
                     newIndex = 0;
                 }

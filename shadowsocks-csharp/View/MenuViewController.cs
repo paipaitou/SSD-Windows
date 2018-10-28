@@ -281,6 +281,9 @@ namespace Shadowsocks.View
                     _CreateAirportSeperator(),
                     #endregion
                     this.ConfigItem = CreateMenuItem("Edit Servers...", new EventHandler(this.Config_Click)),
+                    #region SSD
+                    _CreateTcpingLatency(),
+                    #endregion          
                     CreateMenuItem("Statistics Config...", StatisticsConfigItem_Click),
                     new MenuItem("-"),
                     CreateMenuItem("Share Server Config...", new EventHandler(this.QRCodeItem_Click)),
@@ -489,9 +492,6 @@ namespace Shadowsocks.View
 
         private void ShowConfigForm()
         {
-            #region SSD
-            _StopRegularUpdate();
-            #endregion
             if (configForm != null)
             {
                 configForm.Activate();
@@ -568,10 +568,6 @@ namespace Shadowsocks.View
                 ShowFirstTimeBalloon();
                 _isFirstRun = false;
             }
-
-            #region SSD
-            _ResetRegularUpdate();
-            #endregion
         }
 
         void proxyForm_FormClosed(object sender, FormClosedEventArgs e)

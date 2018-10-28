@@ -8,7 +8,6 @@ namespace Shadowsocks.View {
         }
 
         private void SubscriptionManagement(object sender, EventArgs e) {
-            ConfigurationCurrent.StopRegularUpdate();
             Configuration.Save(ConfigurationCurrent);
             if(Form_subscriptionManagement == null) {
                 Form_subscriptionManagement = new SubscriptionManagementForm(controller);
@@ -22,7 +21,6 @@ namespace Shadowsocks.View {
             Form_subscriptionManagement.Dispose();
             Form_subscriptionManagement = null;
             Configuration.Save(ConfigurationCurrent);
-            ConfigurationCurrent.ResetRegularUpdate();
         }
 
         private void UpdateSubscription(object sender, EventArgs e) {

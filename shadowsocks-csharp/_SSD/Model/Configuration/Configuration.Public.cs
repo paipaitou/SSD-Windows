@@ -1,20 +1,16 @@
-﻿using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Shadowsocks.Controller;
-using Shadowsocks.View;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Shadowsocks.Model {
     public partial class Configuration {
         public void ArrangeConfig() {
+            var oldServer=CurrentServer();
             subscriptions = subscriptions.Distinct(new Subscription()).ToList();
             foreach(var subscription in subscriptions) {
                 subscription.configuration = this;
@@ -34,8 +30,17 @@ namespace Shadowsocks.Model {
             configs.RemoveAll(it => it.subscription_url != "" && it.Subscription == null);
             subscriptions.Sort();
             configs.Sort();
+            if(oldServer != null) {
+                var newIndex=configs.FindIndex(it=>it.DataEqual(oldServer));
+                if(newIndex < 0) {
+                    index = 0;
+                }
+                else {
+                    index = newIndex;
+                }
+            }
         }
-      
+        
         public Subscription FindSubscription(string bindUrl, bool createNew) {
             if(bindUrl == null) {
                 if(createNew == false) {
@@ -60,6 +65,13 @@ namespace Shadowsocks.Model {
             newSubscription2.url = bindUrl;
             subscriptions.Add(newSubscription2);
             return newSubscription2;
+        }
+
+        public Server CurrentServer() {
+            if(index >= 0 && index < configs.Count) {
+                return configs[index];
+            }
+            return null;
         }
 
         public Subscription ParseBase64WithHead(string textBase64, string bindUrl = null) {
@@ -218,21 +230,17 @@ namespace Shadowsocks.Model {
             Timer_detectRunning.Start();
         }
 
-        public void ResetRegularUpdate() {
-            StopRegularUpdate();
-            Timer_regularUpdate = new System.Timers.Timer(1000.0 * 3);
-            Timer_regularUpdate.Elapsed += RegularUpdate;
-            Timer_regularUpdate.Start();
-        }
+        public void TcpingLatencyAll() {
+            new Thread(() => {
+                try {
+                    foreach(var server in configs) {
+                        server.TcpingLatency();
+                    }
+                }
+                catch(Exception) {
 
-        public void StopRegularUpdate() {
-            if(Timer_regularUpdate == null) {
-                return;
-            }
-            Timer_regularUpdate.Stop();
-            Timer_regularUpdate.Elapsed -= RegularUpdate;
-            Timer_regularUpdate = null;
-
+                }
+            }).Start();
         }
 
         public void UpdateAllSubscription(NotifyIcon notifyIcon = null, ShadowsocksController controller = null) {
@@ -245,13 +253,7 @@ namespace Shadowsocks.Model {
                 );
             }
 
-            var lastSubscriptionUrl="";
-            var lastId=-1;
-            if(strategy == null) {
-                lastSubscriptionUrl = configs[index].subscription_url;
-                lastId = configs[index].id;
-            }
-
+            var oldServer=CurrentServer();
             foreach(var subscription in subscriptions) {
                 if(subscription.ParseURL() != null) {
                     if(notifyIcon != null) {
@@ -272,8 +274,8 @@ namespace Shadowsocks.Model {
                     continue;
                 }
             }
-            if(lastSubscriptionUrl != "") {
-                var newIndex = configs.FindIndex(it => it.subscription_url == lastSubscriptionUrl && it.id == lastId);
+            if(oldServer != null) {
+                var newIndex = configs.FindIndex(it => it.DataEqual(oldServer));
                 if(newIndex < 0) {
                     newIndex = 0;
                 }
