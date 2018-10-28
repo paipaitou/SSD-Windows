@@ -96,9 +96,6 @@ namespace Shadowsocks.Controller
             {
                 HotkeyReg.RegAllHotkeys();
             }
-            #region SSD
-            _FirstTcpingLatencyAll();
-            #endregion
         }
 
         protected void ReportError(Exception e)
@@ -497,7 +494,7 @@ namespace Shadowsocks.Controller
             _config = Configuration.Load();
             StatisticsConfiguration = StatisticsStrategyConfiguration.Load();
             #region SSD
-            _ReleasePlugin();
+            _ReTcpingLatencyAll();
             #endregion
             if(privoxyRunner == null)
             {

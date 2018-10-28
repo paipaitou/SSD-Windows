@@ -76,6 +76,9 @@ namespace Shadowsocks
                 string privoxyLogFilename = Utils.GetTempPath("privoxy.log");
                 if (File.Exists(privoxyLogFilename))
                     using (new FileStream(privoxyLogFilename, FileMode.Truncate)) { }
+                #region SSD
+                _ReleasePlugin();
+                #endregion
 #else
                 Logging.OpenLogFile();
 #endif
