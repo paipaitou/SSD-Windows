@@ -32,19 +32,19 @@ namespace Shadowsocks.View {
         private MenuItem _CreateAirportSeperator() {
             return new MenuItem("-");
         }
-        
+
         private MenuItem _CreateTcpingLatency() {
             return new MenuItem(
                 I18N.GetString("Tcping Latency"),
-                (sender,e) => {
+                (sender, e) => {
                     ConfigurationCurrent.TcpingLatencyAll();
                 });
         }
 
         private MenuItem _CreateSubscribeGroup() {
             MenuGroup_subscribe = CreateMenuGroup("Subscription", new MenuItem[] {
-                    MenuItem_subscribeManage = CreateMenuItem("Manage", new EventHandler(SubscriptionManagement)),
-                    MenuItem_subscribeUpdate = CreateMenuItem("Update", new EventHandler(UpdateSubscription))
+                    MenuItem_subscribeManage = CreateMenuItem("Manage", SubscriptionManagement),
+                    MenuItem_subscribeUpdate = CreateMenuItem("Update", UpdateSubscription)
                 });
             return MenuGroup_subscribe;
         }
@@ -102,53 +102,7 @@ namespace Shadowsocks.View {
         }
 
         private void _AboutSSD() {
-            Process.Start("https://github.com/SoDa-GitHub/SSD-Windows");
-        }
-
-        private void _ImportURL() {
-            var clipboard = Clipboard.GetText(TextDataFormat.Text).Trim();
-            if(clipboard.IndexOf("ss://") != -1) {
-                var count_old = ConfigurationCurrent.configs.Count;
-                var success = controller.AddServerBySSURL(clipboard);
-                var count_new = ConfigurationCurrent.configs.Count;
-                if(success) {
-                    ShowBalloonTip(
-                        I18N.GetString("Import Success"),
-                        string.Format(I18N.GetString("Import Count: {0}"), count_new - count_old),
-                        ToolTipIcon.Info,
-                        1000
-                    );
-                }
-                else {
-                    ShowBalloonTip(
-                        I18N.GetString("Import Fail"),
-                        string.Format(I18N.GetString("Import URL: {0}"), clipboard),
-                        ToolTipIcon.Error,
-                        1000
-                    );
-                }
-            }
-            else {
-                try {
-                    var new_subscription = ConfigurationCurrent.ParseBase64WithHead(clipboard);
-                    ConfigurationCurrent.subscriptions.Add(new_subscription);
-                    Configuration.Save(ConfigurationCurrent);
-                    ShowBalloonTip(
-                        I18N.GetString("Import Success"),
-                        string.Format(I18N.GetString("Import Airport: {0}"), new_subscription.airport),
-                        ToolTipIcon.Info,
-                        1000
-                    );
-                }
-                catch(Exception) {
-                    ShowBalloonTip(
-                        I18N.GetString("Import Fail"),
-                        string.Format(I18N.GetString("Import URL: {0}"), clipboard),
-                        ToolTipIcon.Error,
-                        1000
-                    );
-                }
-            }
+            Process.Start("https://github.com/CGDF-GitHub/SSD-Windows");
         }
     }
 }

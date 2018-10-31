@@ -186,14 +186,13 @@
             // 
             this.TextBox_name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBox_name.Enabled = false;
             this.TextBox_name.ForeColor = System.Drawing.Color.Gray;
             this.TextBox_name.Location = new System.Drawing.Point(233, 64);
             this.TextBox_name.Name = "TextBox_name";
             this.TextBox_name.Size = new System.Drawing.Size(340, 31);
             this.TextBox_name.TabIndex = 6;
             this.TextBox_name.Text = "(Auto)";
-            this.TextBox_name.Enter += new System.EventHandler(this.NameEntered);
-            this.TextBox_name.Leave += new System.EventHandler(this.NameLeaved);
             // 
             // Label_name
             // 

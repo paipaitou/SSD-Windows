@@ -4,7 +4,7 @@ namespace Shadowsocks.View {
     public partial class ConfigForm {
         private void _SaveSubscriptionServer(Server server) {
             server.id = _modifiedConfiguration.configs[_lastSelectedIndex].id;
-            server.subscription_url = _modifiedConfiguration.configs[_lastSelectedIndex].subscription_url;
+            server.Subscription = _modifiedConfiguration.configs[_lastSelectedIndex].Subscription;
             server.ratio = _modifiedConfiguration.configs[_lastSelectedIndex].ratio;
         }
 

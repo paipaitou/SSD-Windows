@@ -790,10 +790,6 @@ namespace Shadowsocks.View
 
         private void ImportURLItem_Click(object sender, EventArgs e)
         {
-            #region SSD
-            _ImportURL();
-            return;
-            #endregion
             var success = controller.AddServerBySSURL(Clipboard.GetText(TextDataFormat.Text));
             if (success)
             {

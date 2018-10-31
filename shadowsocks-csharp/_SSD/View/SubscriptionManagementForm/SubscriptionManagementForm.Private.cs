@@ -17,7 +17,6 @@ namespace Shadowsocks.View {
         private void EnableSwitch() {
             ListBox_subscription.Enabled = !RefreshSwitch;
             TextBox_url.Enabled = !RefreshSwitch;
-            TextBox_name.Enabled = !RefreshSwitch;
             Button_add.Enabled = !RefreshSwitch;
             Button_save.Enabled = false;
             Button_delete.Enabled = false;
@@ -37,17 +36,12 @@ namespace Shadowsocks.View {
 
         private void ResetShowed() {
             TextBox_url.Text = "";
-            SetNameAuto();
+            TextBox_name.Text = "";
             ListBox_subscription.SelectedIndex = -1;
             CheckSelected();
             Label_traffic.Text = "?/? G";
             Label_expiry.Text = "????-??-?? " + string.Format(I18N.GetString("{0}d"), "?");
             CheckBox_use_proxy.Checked = false;
-        }
-
-        private void SetNameAuto() {
-            TextBox_name.ForeColor = Color.Gray;
-            TextBox_name.Text = TextAuto;
         }
     }
 }

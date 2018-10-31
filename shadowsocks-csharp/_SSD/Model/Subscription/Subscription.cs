@@ -20,5 +20,25 @@ namespace Shadowsocks.Model {
 
         [JsonIgnore]
         public Configuration configuration;
+
+        public Subscription() {
+
+        }
+
+        public Subscription(Configuration config, string urlSet) {
+            url = urlSet;
+            configuration = config;
+            configuration.subscriptions.Add(this);
+        }
+
+        public override bool Equals(object compared) {
+            var comparedSubscription=(Subscription)compared;
+            return url == comparedSubscription.url &&
+                configuration == comparedSubscription.configuration;
+        }
+
+        public override int GetHashCode() {
+            return url.GetHashCode();
+        }
     }
 }

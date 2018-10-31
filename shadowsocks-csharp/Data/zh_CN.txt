@@ -171,7 +171,6 @@ Update=更新
 Subscription Management=订阅管理
 Subscription URL=订阅链接
 Airport Name=机场名
-(Auto)=（自动）
 Traffic Used:=已用流量：
 Expiry Date:=过期日期：
 {0}d={0}天

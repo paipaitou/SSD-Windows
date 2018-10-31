@@ -4,7 +4,22 @@ namespace Shadowsocks.Model {
     public partial class Server {
         public int id=-1;
         public double ratio=0;
-        public string subscription_url="";
+
+        [JsonIgnore]
+        public string subscriptionURLSartup="";//仅Load Config时一次性用
+        public string subscription_url {
+            get {
+                if(Subscription == null) {
+                    return "";
+                }
+                return Subscription.url;
+            }
+
+            //仅Load Config时一次性用
+            set {
+                subscriptionURLSartup = value;
+            }
+        }
 
         [JsonIgnore]
         public Subscription Subscription=null;

@@ -48,7 +48,6 @@ namespace Shadowsocks.Model {
 
         public void SetSubscription(Subscription subscriptionSet) {
             Subscription = subscriptionSet;
-            subscription_url = subscriptionSet.url;
         }
 
         public void TcpingLatency() {

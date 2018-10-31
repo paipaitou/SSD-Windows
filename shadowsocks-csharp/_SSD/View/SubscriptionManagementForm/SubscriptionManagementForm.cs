@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 namespace Shadowsocks.View {
     public partial class SubscriptionManagementForm :Form {
-        private string TextAuto = I18N.GetString("(Auto)");
         private Configuration ConfigurationCopy;
         private ShadowsocksController Controller;
         private bool RefreshSwitch = true;
@@ -43,14 +42,11 @@ namespace Shadowsocks.View {
                 }
             }
 
-            var newSubscription = ConfigurationCopy.ParseSubscriptionURL(TextBox_url.Text,CheckBox_use_proxy.Checked);
+            var newSubscription = ConfigurationCopy.ParseNewSubscriptionURL(TextBox_url.Text,CheckBox_use_proxy.Checked);
             if(newSubscription == null) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 EnableSwitch();
                 return;
-            }
-            if(TextBox_name.Text != TextAuto) {
-                newSubscription.airport = TextBox_name.Text;
             }
             ListBox_subscription.Items.Add(newSubscription.airport);
             ResetShowed();
@@ -72,7 +68,6 @@ namespace Shadowsocks.View {
         }
 
         private void LoadSubscriptionManage(object sender, EventArgs e) {
-            SetNameAuto();
             foreach(var subscription in ConfigurationCopy.subscriptions) {
                 ListBox_subscription.Items.Add(subscription.airport);
             }
@@ -97,33 +92,15 @@ namespace Shadowsocks.View {
             }
         }
 
-        private void NameEntered(object sender, EventArgs e) {
-            if(TextBox_name.Text.Trim() == TextAuto) {
-                TextBox_name.Text = "";
-                TextBox_name.ForeColor = SystemColors.WindowText;
-            }
-        }
-
-        private void NameLeaved(object sender, EventArgs e) {
-            if(TextBox_name.Text.Trim() == "") {
-                SetNameAuto();
-            }
-        }
-
         private void SaveSubscription(object sender, EventArgs e) {
             EnableSwitch();
             var saveSubscription = ConfigurationCopy.subscriptions[ListBox_subscription.SelectedIndex];
             saveSubscription.url = TextBox_url.Text;
-            var newSubscription=saveSubscription.ParseURL();
-            if(newSubscription == null) {
+            if(!saveSubscription.ParseURL()) {
                 MessageBox.Show(I18N.GetString("Subscribe Fail"));
                 RefreshSubscriptionAndSwitch();
                 return;
             }
-            if(TextBox_name.Text != TextAuto) {
-                newSubscription.airport = TextBox_name.Text;
-            }
-            ConfigurationCopy.subscriptions[ListBox_subscription.SelectedIndex] = newSubscription;
             RefreshSubscriptionAndSwitch();
         }
 
