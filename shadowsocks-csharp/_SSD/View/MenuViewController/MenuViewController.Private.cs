@@ -20,7 +20,12 @@ namespace Shadowsocks.View {
         private void SubscriptionSettingsRecycled(object sender, EventArgs e) {
             Form_subscriptionManagement.Dispose();
             Form_subscriptionManagement = null;
-            Configuration.Save(ConfigurationCurrent);
+            if(ConfigurationCurrent.strategy == null) {
+                controller.SelectServerIndex(ConfigurationCurrent.index);
+            }
+            else {
+                controller.SelectStrategy(ConfigurationCurrent.strategy);
+            }
         }
 
         private void UpdateSubscription(object sender, EventArgs e) {

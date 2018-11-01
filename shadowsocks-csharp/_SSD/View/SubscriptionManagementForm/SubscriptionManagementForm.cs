@@ -86,9 +86,7 @@ namespace Shadowsocks.View {
                 if(newIndex < 0) {
                     newIndex = 0;
                 }
-                if(realConfig.index != newIndex) {
-                    Controller.SelectServerIndex(newIndex);
-                }
+                realConfig.index = newIndex;
             }
         }
 

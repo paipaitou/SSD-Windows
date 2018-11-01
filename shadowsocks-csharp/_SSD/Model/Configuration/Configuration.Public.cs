@@ -131,7 +131,9 @@ namespace Shadowsocks.Model {
                     controller.SelectServerIndex(newIndex);
                 }
             }
-            Save(this);
+            else {
+                controller.SelectStrategy(strategy);
+            }
         }
     }
 }
