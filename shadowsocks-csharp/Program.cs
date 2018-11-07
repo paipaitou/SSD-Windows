@@ -77,11 +77,11 @@ namespace Shadowsocks
                 if (File.Exists(privoxyLogFilename))
                     using (new FileStream(privoxyLogFilename, FileMode.Truncate)) { }
 #else
+                Logging.OpenLogFile();
+#endif
                 #region SSD
                 _ReleasePlugin();
                 #endregion
-                Logging.OpenLogFile();
-#endif
                 MainController = new ShadowsocksController();
                 MenuController = new MenuViewController(MainController);
                 HotKeys.Init(MainController);

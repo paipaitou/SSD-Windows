@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Shadowsocks.Model {
@@ -77,7 +77,7 @@ namespace Shadowsocks.Model {
         }
 
         public void TcpingLatencyAll() {
-            new Thread(() => {
+            new Task(() => {                
                 try {
                     foreach(var server in configs) {
                         server.Latency = Server.LATENCY_PENDING;
