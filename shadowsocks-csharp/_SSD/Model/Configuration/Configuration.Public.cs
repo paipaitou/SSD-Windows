@@ -77,7 +77,7 @@ namespace Shadowsocks.Model {
         }
 
         public void TcpingLatencyAll() {
-            new Task(() => {                
+            new Task(() => {
                 try {
                     foreach(var server in configs) {
                         server.Latency = Server.LATENCY_PENDING;
@@ -127,11 +127,11 @@ namespace Shadowsocks.Model {
                 if(newIndex < 0) {
                     newIndex = 0;
                 }
-                if(controller != null && index != newIndex) {
+                if(controller != null) {
                     controller.SelectServerIndex(newIndex);
                 }
             }
-            else {
+            else if(controller != null) {
                 controller.SelectStrategy(strategy);
             }
         }
