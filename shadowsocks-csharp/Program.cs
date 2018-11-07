@@ -76,10 +76,10 @@ namespace Shadowsocks
                 string privoxyLogFilename = Utils.GetTempPath("privoxy.log");
                 if (File.Exists(privoxyLogFilename))
                     using (new FileStream(privoxyLogFilename, FileMode.Truncate)) { }
+#else
                 #region SSD
                 _ReleasePlugin();
                 #endregion
-#else
                 Logging.OpenLogFile();
 #endif
                 MainController = new ShadowsocksController();
