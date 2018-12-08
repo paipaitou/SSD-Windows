@@ -6,6 +6,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Text;
 using Shadowsocks.Util;
+using Shadowsocks.Util.SystemProxy;
 
 namespace Shadowsocks.Controller
 {
@@ -144,6 +145,20 @@ namespace Shadowsocks.Controller
                 if ((uint) ex.ErrorCode != 0x80004005)
                 {
                     Info(e);
+                }
+            }
+            else if(e is ProxyException) {
+                var ex = (ProxyException)e;
+                switch(ex.Type) {
+                    case ProxyExceptionType.FailToRun:
+                    case ProxyExceptionType.QueryReturnMalformed:
+                    case ProxyExceptionType.SysproxyExitError:
+                        Error($"sysproxy - {ex.Type.ToString()}:{ex.Message}");
+                        break;
+                    case ProxyExceptionType.QueryReturnEmpty:
+                    case ProxyExceptionType.Unspecific:
+                        Error($"sysproxy - {ex.Type.ToString()}");
+                        break;
                 }
             }
             else
