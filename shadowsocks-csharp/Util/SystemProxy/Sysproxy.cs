@@ -115,7 +115,6 @@ namespace Shadowsocks.Util.SystemProxy
             ExecSysproxy(arguments);
         }
 
-
         // set system proxy to 1 (null) (null) (null)
         public static bool ResetIEProxy() 
         {

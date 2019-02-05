@@ -25,11 +25,12 @@ namespace Shadowsocks.Model {
         public Subscription Subscription=null;
 
         [JsonIgnore]
-        public int Latency = LATENCY_PENDING;
+        public int Latency = LATENCY_UNKNOWN;
 
-        public const int LATENCY_ERROR = -3;
-        public const int LATENCY_PENDING = -2;
-        public const int LATENCY_TESTING = -1;
+        public const int LATENCY_UNKNOWN = -1;
+        public const int LATENCY_TESTING = -2;
+        public const int LATENCY_PENDING = -3;
+        public const int LATENCY_ERROR = -4;
 
         public const int PREFIX_LATENCY = 0;
         public const int PREFIX_AIRPORT = 1;
