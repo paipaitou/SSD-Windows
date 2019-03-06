@@ -21,8 +21,9 @@ namespace Shadowsocks.Controller {
                     var versionWeb = new Version(textVersion);
                     if(versionCurrent < versionWeb) {
                         MessageBox.Show(I18N.GetString("Current SSD version is too old"));
-                        Process.Start(RELEASE_URL_SSD);
-                        return true;
+                        //检查更新但不退出
+                        //Process.Start(RELEASE_URL_SSD);                        
+                        //return true;
                     }
                 }
             }
