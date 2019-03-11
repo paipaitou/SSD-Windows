@@ -24,16 +24,6 @@ namespace Shadowsocks.View {
             CheckSelected();
         }
 
-        private void RefreshSubscriptionAndSwitch() {
-            ResetShowed();
-            ConfigurationCopy.UpdateAllSubscription();
-            ListBox_subscription.Items.Clear();
-            foreach(var subscription in ConfigurationCopy.subscriptions) {
-                ListBox_subscription.Items.Add(subscription.airport);
-            }
-            EnableSwitch();
-        }
-
         private void ResetShowed() {
             TextBox_url.Text = "";
             TextBox_name.Text = "";
@@ -42,6 +32,7 @@ namespace Shadowsocks.View {
             Label_traffic.Text = "?/? G";
             Label_expiry.Text = "????-??-?? " + string.Format(I18N.GetString("{0}d"), "?");
             CheckBox_use_proxy.Checked = false;
+            CheckBox_use_proxy.Enabled = false;
         }
     }
 }

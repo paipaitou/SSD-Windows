@@ -31,10 +31,10 @@ namespace Shadowsocks {
 
             //v2ray
             if (!is64) {
-                File.WriteAllBytes(Path.Combine(directory, "kcptun.exe"), Resources.v2ray_plugin_windows_386);
+                File.WriteAllBytes(Path.Combine(directory, "v2ray.exe"), Resources.v2ray_plugin_windows_386);
             }
             else {
-                File.WriteAllBytes(Path.Combine(directory, "kcptun.exe"), Resources.v2ray_plugin_windows_amd64);
+                File.WriteAllBytes(Path.Combine(directory, "v2ray.exe"), Resources.v2ray_plugin_windows_amd64);
             }
         }
         private static void _UnexpectedError(bool UI, string message) {

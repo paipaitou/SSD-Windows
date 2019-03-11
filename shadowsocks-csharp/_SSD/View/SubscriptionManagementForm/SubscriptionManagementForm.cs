@@ -91,15 +91,9 @@ namespace Shadowsocks.View {
         }
 
         private void SaveSubscription(object sender, EventArgs e) {
-            EnableSwitch();
             var saveSubscription = ConfigurationCopy.subscriptions[ListBox_subscription.SelectedIndex];
             saveSubscription.url = TextBox_url.Text;
-            if(!saveSubscription.ParseURL()) {
-                MessageBox.Show(I18N.GetString("Subscribe Fail"));
-                RefreshSubscriptionAndSwitch();
-                return;
-            }
-            RefreshSubscriptionAndSwitch();
+            saveSubscription.use_proxy = CheckBox_use_proxy.Checked;
         }
 
         private void SubscriptionSelected(object sender, EventArgs e) {
@@ -118,15 +112,9 @@ namespace Shadowsocks.View {
             TextBox_name.ForeColor = SystemColors.WindowText;
             Label_traffic.Text = subscription.DescribeTraffic();
             Label_expiry.Text = subscription.DescribeExpiry();
-            CheckBox_use_proxy.Checked = subscription.use_proxy;
+            CheckBox_use_proxy.Enabled = true;
+            CheckBox_use_proxy.Checked = subscription.use_proxy;           
             CheckSelected();
-        }
-
-        private void UseProxyChanged(object sender, EventArgs e) {
-            var selectedIndex=ListBox_subscription.SelectedIndex;
-            if(selectedIndex != -1) {
-                ConfigurationCopy.subscriptions[selectedIndex].use_proxy = CheckBox_use_proxy.Checked;
-            }
         }
     }
 }

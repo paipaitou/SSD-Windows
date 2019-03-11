@@ -10,7 +10,11 @@ using System.Net.Sockets;
 namespace Shadowsocks.Model {
     public partial class Server {
         public bool DataEqual(Server compared) {
-            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(compared);
+            var leftCopy = MemberwiseClone() as Server;
+            var rightCopy = compared.MemberwiseClone() as Server;
+            leftCopy.Latency = LATENCY_UNKNOWN;
+            rightCopy.Latency = LATENCY_UNKNOWN;
+            return JsonConvert.SerializeObject(leftCopy) == JsonConvert.SerializeObject(rightCopy);
         }
         public string NamePrefix(Configuration config, int PREFIX_FLAG) {
             string prefix = "[";
