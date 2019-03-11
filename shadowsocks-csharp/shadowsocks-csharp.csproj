@@ -294,6 +294,8 @@
     <None Include="Data\proxy.pac.txt.gz" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="_SSD\Data\v2ray-plugin_windows_386.exe" />
+    <Content Include="_SSD\Data\v2ray-plugin_windows_amd64.exe" />
     <None Include="Data\sysproxy.exe.gz" />
     <None Include="Data\sysproxy64.exe.gz" />
     <None Include="packages.config" />

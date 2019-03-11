@@ -24,7 +24,6 @@ namespace Shadowsocks.Model {
         [JsonIgnore]
         public Subscription Subscription=null;
 
-        [JsonIgnore]
         public int Latency = LATENCY_UNKNOWN;
 
         public const int LATENCY_UNKNOWN = -1;
