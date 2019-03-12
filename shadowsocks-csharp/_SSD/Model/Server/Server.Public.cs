@@ -19,17 +19,22 @@ namespace Shadowsocks.Model {
         public string NamePrefix(Configuration config, int PREFIX_FLAG) {
             string prefix = "[";
             if(PREFIX_FLAG == PREFIX_LATENCY) {
-                if(Latency == LATENCY_TESTING) {
-                    prefix += I18N.GetString("Testing");
-                }
-                else if(Latency == LATENCY_ERROR) {
-                    prefix += I18N.GetString("Error");
-                }
-                else if(Latency == LATENCY_PENDING) {
-                    prefix += I18N.GetString("Pending");
-                }
-                else {
-                    prefix += Latency.ToString() + "ms";
+                switch (Latency) {
+                    case LATENCY_UNKNOWN:
+                        prefix += I18N.GetString("Unknown");
+                        break;
+                    case LATENCY_TESTING:
+                        prefix += I18N.GetString("Testing");
+                        break;
+                    case LATENCY_ERROR:
+                        prefix += I18N.GetString("Error");
+                        break;
+                    case LATENCY_PENDING:
+                        prefix += I18N.GetString("Pending");
+                        break;
+                    default:
+                        prefix += Latency.ToString() + "ms";
+                        break;
                 }
             }
             else if(PREFIX_FLAG == PREFIX_AIRPORT) {

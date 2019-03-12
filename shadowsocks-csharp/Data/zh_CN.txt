@@ -156,10 +156,11 @@ Unrecoverable proxy setting error occured, see log for detail=发生不可恢复
 ## SSD
 
 # Menu items
-Tcping 延迟
+Tcping Latency=Tcping 延迟
 
 # Servers
 
+Unknown=未知
 Testing=测试中
 Pending=队列中
 Error=失败

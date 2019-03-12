@@ -271,7 +271,6 @@
             this.CheckBox_use_proxy.TabIndex = 9;
             this.CheckBox_use_proxy.Text = "Use Proxy";
             this.CheckBox_use_proxy.UseVisualStyleBackColor = true;
-            this.CheckBox_use_proxy.CheckedChanged += new System.EventHandler(this.UseProxyChanged);
             // 
             // Label_proxy_tips
             // 
