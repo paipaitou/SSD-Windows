@@ -19,7 +19,7 @@ namespace Shadowsocks.Model {
         public string NamePrefix(Configuration config, int PREFIX_FLAG) {
             string prefix = "[";
             if(PREFIX_FLAG == PREFIX_LATENCY) {
-                switch (Latency) {
+                switch(Latency) {
                     case LATENCY_UNKNOWN:
                         prefix += I18N.GetString("Unknown");
                         break;
@@ -85,7 +85,7 @@ namespace Shadowsocks.Model {
             }
 
             if(latencies.Count != 0) {
-                Latency = ( int ) latencies.Average();
+                Latency = (int) latencies.Average();
             }
             else {
                 Latency = LATENCY_ERROR;

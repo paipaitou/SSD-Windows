@@ -22,7 +22,7 @@ namespace Shadowsocks {
             );
 
             //kcptun
-            if (!is64) {
+            if(!is64) {
                 File.WriteAllBytes(Path.Combine(directory, "kcptun.exe"), Resources.client_windows_386);
             }
             else {
@@ -30,7 +30,7 @@ namespace Shadowsocks {
             }
 
             //v2ray
-            if (!is64) {
+            if(!is64) {
                 File.WriteAllBytes(Path.Combine(directory, "v2ray.exe"), Resources.v2ray_plugin_windows_386);
             }
             else {

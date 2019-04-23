@@ -113,7 +113,7 @@ namespace Shadowsocks.View {
             Label_traffic.Text = subscription.DescribeTraffic();
             Label_expiry.Text = subscription.DescribeExpiry();
             CheckBox_use_proxy.Enabled = true;
-            CheckBox_use_proxy.Checked = subscription.use_proxy;           
+            CheckBox_use_proxy.Checked = subscription.use_proxy;
             CheckSelected();
         }
     }
