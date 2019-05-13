@@ -31,8 +31,8 @@ namespace Shadowsocks.Model {
         public const int LATENCY_PENDING = -3;
         public const int LATENCY_ERROR = -4;
 
-        public const int PREFIX_LATENCY = 0;
-        public const int PREFIX_AIRPORT = 1;
+        public const int PREFIX_MENU = 0;
+        public const int PREFIX_LIST = 1;
 
         private void _InitServer() {
             server = "www.baidu.com";

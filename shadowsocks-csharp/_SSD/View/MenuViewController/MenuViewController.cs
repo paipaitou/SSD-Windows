@@ -59,7 +59,7 @@ namespace Shadowsocks.View {
         }
 
         private MenuItem _AdjustServerName(Server server) {
-            return new MenuItem(server.NamePrefix(ConfigurationCurrent, Server.PREFIX_LATENCY) + " " + server.FriendlyName());
+            return new MenuItem(server.NamePrefix(ConfigurationCurrent, Server.PREFIX_MENU) + " " + server.FriendlyName());
         }
 
         private void _UpdateAirportMenu(int inherit_index) {
@@ -85,7 +85,7 @@ namespace Shadowsocks.View {
             for(var index = 0; index <= subscriptions.Count - 1; index++) {
                 var MenuItem_airport = new MenuItem(subscriptions[index].NamePrefix() + " " + subscriptions[index].airport);
                 foreach(var server in subscriptions[index].GetServers()) {
-                    var serverText = server.NamePrefix(ConfigurationCurrent,Server.PREFIX_LATENCY) + " " + server.FriendlyName();
+                    var serverText = server.NamePrefix(ConfigurationCurrent,Server.PREFIX_MENU) + " " + server.FriendlyName();
                     var serverItem = new MenuItem(serverText);
                     serverItem.Tag = inherit_index;
                     serverItem.Click += AServerItem_Click;
