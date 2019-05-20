@@ -13,7 +13,7 @@ namespace Shadowsocks.View {
             foreach(var server in modifiedConfiguration.configs) {
                 var ServerText=server.FriendlyName();
                 if(server.subscription_url != "") {
-                    ServerText = server.NamePrefix(modifiedConfiguration, Server.PREFIX_LIST) + server.FriendlyName();
+                    ServerText = server.NamePrefix(modifiedConfiguration, Server.PREFIX_LIST) + server.remarks;
                 }
                 ServersListBox.Items.Add(ServerText);
             }
@@ -22,7 +22,7 @@ namespace Shadowsocks.View {
         private void _SetLastSubscriptionName() {
             var server=_modifiedConfiguration.configs[_lastSelectedIndex];
             if(server.subscription_url != "") {
-                ServersListBox.Items[_lastSelectedIndex] = server.NamePrefix(_modifiedConfiguration, Server.PREFIX_LIST) + server.FriendlyName();
+                ServersListBox.Items[_lastSelectedIndex] = server.NamePrefix(_modifiedConfiguration, Server.PREFIX_LIST) + server.remarks;
             }
         }
 
