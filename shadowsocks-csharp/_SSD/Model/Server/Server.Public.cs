@@ -6,43 +6,70 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Shadowsocks.Model {
     public partial class Server {
         public bool DataEqual(Server compared) {
-            return JsonConvert.SerializeObject(this) == JsonConvert.SerializeObject(compared);
+            var leftCopy = MemberwiseClone() as Server;
+            var rightCopy = compared.MemberwiseClone() as Server;
+            leftCopy.Latency = LATENCY_UNKNOWN;
+            rightCopy.Latency = LATENCY_UNKNOWN;
+            return JsonConvert.SerializeObject(leftCopy) == JsonConvert.SerializeObject(rightCopy);
         }
+
         public string NamePrefix(Configuration config, int PREFIX_FLAG) {
             string prefix = "[";
-            if(PREFIX_FLAG == PREFIX_LATENCY) {
-                if(Latency == LATENCY_TESTING) {
-                    prefix += I18N.GetString("Testing");
+            if(PREFIX_FLAG == PREFIX_MENU) {
+                switch(Latency) {
+                    case LATENCY_UNKNOWN:
+                        prefix += I18N.GetString("Unknown");
+                        break;
+                    case LATENCY_TESTING:
+                        prefix += I18N.GetString("Testing");
+                        break;
+                    case LATENCY_ERROR:
+                        prefix += I18N.GetString("Error");
+                        break;
+                    case LATENCY_PENDING:
+                        prefix += I18N.GetString("Pending");
+                        break;
+                    default:
+                        prefix += Latency.ToString() + "ms";
+                        break;
                 }
-                else if(Latency == LATENCY_ERROR) {
-                    prefix += I18N.GetString("Error");
-                }
-                else if(Latency == LATENCY_PENDING) {
-                    prefix += I18N.GetString("Pending");
-                }
-                else {
-                    prefix += Latency.ToString() + "ms";
+                if(subscription_url == "") {
+                    prefix += " " + ratio + "x";
                 }
             }
-            else if(PREFIX_FLAG == PREFIX_AIRPORT) {
+            else if(PREFIX_FLAG == PREFIX_LIST) {
                 foreach(var subscription in config.subscriptions) {
                     if(subscription.url == subscription_url) {
-                        prefix += subscription.airport;
+                        var encoding = Encoding.GetEncoding("GB2312");
+                        var cut=4;
+                        var cut_prefix="";
+                        while(true) {
+                            cut_prefix = subscription.airport.Substring(0, cut);
+                            var byte_count=encoding.GetByteCount(cut_prefix);
+                            if(byte_count <= 4) {
+                                if(byte_count < 4) {
+                                    cut_prefix += ".";
+                                }
+                                cut_prefix += "..";
+                                break;
+                            }
+                            else {
+                                cut--;
+                            }
+                        }
+                        prefix += cut_prefix;
                         break;
                     }
                 }
             }
 
-            if(subscription_url == "") {
-                prefix += "]";
-            }
-            else {
-                prefix += " " + ratio + "x]";
-            }
+            prefix += "]";
+
             return prefix;
         }
 
@@ -76,7 +103,7 @@ namespace Shadowsocks.Model {
             }
 
             if(latencies.Count != 0) {
-                Latency = ( int ) latencies.Average();
+                Latency = (int) latencies.Average();
             }
             else {
                 Latency = LATENCY_ERROR;

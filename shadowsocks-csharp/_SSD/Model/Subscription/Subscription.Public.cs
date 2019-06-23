@@ -18,7 +18,7 @@ namespace Shadowsocks.Model {
             else {
                 var day = string.Format(I18N.GetString("{0}d"), 0);
                 if(expiry > DateTime.Now) {
-                    day = string.Format(I18N.GetString("{0}d"), ( expiry - DateTime.Now ).Days);
+                    day = string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
                 }
                 return expiry.ToString("yyyy-MM-dd") + " " + day;
             }
@@ -26,9 +26,9 @@ namespace Shadowsocks.Model {
 
         public string DescribeTraffic() {
             return
-            ( traffic_used == -1.0 ? "?" : traffic_used.ToString("0.00") ) +
+            (traffic_used == -1.0 ? "?" : traffic_used.ToString("0.00")) +
             "/" +
-            ( traffic_total == -1.0 ? "?" : traffic_total.ToString("0.00") ) +
+            (traffic_total == -1.0 ? "?" : traffic_total.ToString("0.00")) +
             " G";
             //ToString会自动四舍五入
         }
@@ -58,7 +58,7 @@ namespace Shadowsocks.Model {
                 expiryDescription = string.Format(I18N.GetString("{0}d"), 0);
             }
             else {
-                expiryDescription = string.Format(I18N.GetString("{0}d"), ( expiry - DateTime.Now ).Days);
+                expiryDescription = string.Format(I18N.GetString("{0}d"), (expiry - DateTime.Now).Days);
             }
             return "[" + DescribeTraffic() + " " + expiryDescription + "]";
         }
@@ -123,7 +123,15 @@ namespace Shadowsocks.Model {
                     var newServer=new Server();
                     newServer.SetSubscription(this);
                     var jsonServerObject=JObject.Parse(subscriptionServer.ToString());
-                    newServer.id = jsonServerObject["id"].ToObject<int>();
+
+                    var serverId=jsonServerObject.GetValue("id");
+                    if(serverId != null) {
+                        newServer.id = serverId.ToObject<int>();
+                    }
+                    else {
+                        newServer.id = 0;
+                    }
+
                     newServer.server = jsonServerObject["server"].ToString();
 
                     var serverPort=jsonServerObject.GetValue("port");

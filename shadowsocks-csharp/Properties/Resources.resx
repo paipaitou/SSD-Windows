@@ -178,6 +178,12 @@
   <data name="user_rule" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\user-rule.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="v2ray_plugin_windows_386" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\_SSD\Data\v2ray-plugin_windows_386.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="v2ray_plugin_windows_amd64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\_SSD\Data\v2ray-plugin_windows_amd64.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="zh_CN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\zh_CN.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

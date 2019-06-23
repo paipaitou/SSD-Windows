@@ -3,9 +3,5 @@
         private void _ArrangeCurrentConfig() {
             GetCurrentConfiguration().ArrangeConfig();
         }
-
-        private void _ReTcpingLatencyAll() {
-            GetCurrentConfiguration().TcpingLatencyAll();
-        }
     }
 }
