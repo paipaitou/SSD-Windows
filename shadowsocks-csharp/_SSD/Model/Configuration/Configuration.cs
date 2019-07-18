@@ -10,11 +10,7 @@ namespace Shadowsocks.Model {
         public System.Timers.Timer Timer_detectRunning;
 
         private static void _LoadSubscription(Configuration configHandled) {
-            var configSubscriptions = configHandled.subscriptions;
-            if(configSubscriptions == null) {
-                configSubscriptions = new List<Subscription>();
-            }
-
+            var configSubscriptions = configHandled.subscriptions??new List<Subscription>();
             configSubscriptions = configSubscriptions.Distinct().ToList();
             foreach(var configSubscription in configSubscriptions) {
                 configSubscription.configuration = configHandled;

@@ -127,12 +127,10 @@ namespace Shadowsocks.Model {
                 if(newIndex < 0) {
                     newIndex = 0;
                 }
-                if(controller != null) {
-                    controller.SelectServerIndex(newIndex);
-                }
+                controller?.SelectServerIndex(newIndex);
             }
-            else if(controller != null) {
-                controller.SelectStrategy(strategy);
+            else {
+                controller?.SelectStrategy(strategy);
             }
         }
     }
