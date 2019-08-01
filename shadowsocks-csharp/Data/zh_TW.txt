@@ -152,10 +152,10 @@ Timeout is invalid, it should not exceed {0}=逾時無效，不應超過 {0}
 
 ## SSD
 
-# Menu items
+# Menu item
 Tcping Latency=Tcping 延遲
 
-# Servers
+# Server
 
 Unknown=未知
 Testing=測試中
@@ -180,11 +180,8 @@ Use Proxy=使用代理
 &Save=儲存(&S)
 * Proxy will always be used in Global Mode=* 全局模式下總是會使用代理
 
-
 # Message
 
-Cannot recognize the plugin(s) in the config: {0}=無法辨識設定檔中的外掛程式： {0}
-Cannot recognize the type of this device's CPU. If SSD is not running in virtual environment, you can submit a issue to help us improve SSD.=無法辨識此裝置的CPU型號，如果SSD並非運行在虛擬環境中，你可以提交一個issue來幫助我們改進SSD。
 Current SSD version is too old=當前版本過低
 Failed Link: {0}=失敗連結： {0}
 Import Airport: {0}=匯入機場： {0}
