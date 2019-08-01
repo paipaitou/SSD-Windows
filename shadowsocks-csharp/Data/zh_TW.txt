@@ -148,3 +148,52 @@ Proxy handshake failed=Proxy 交握失敗
 Register hotkey failed=註冊快速鍵失敗
 Cannot parse hotkey: {0}=剖析快速鍵失敗: {0}
 Timeout is invalid, it should not exceed {0}=逾時無效，不應超過 {0}
+
+
+## SSD
+
+# Menu items
+Tcping Latency=Tcping 延遲
+
+# Servers
+
+Unknown=未知
+Testing=測試中
+Pending=佇列中
+Error=錯誤
+
+# Subscription
+
+Subscription=訂閱
+Manage=管理
+Update=更新
+
+# SubscriptionManagement Form
+
+Subscription Management=訂閱管理
+Subscription URL=訂閱連結
+Airport Name=提供商名稱
+Traffic Used:=數據用量：
+Expiry Date:=過期日期：
+{0}d={0}天
+Use Proxy=使用代理
+&Save=儲存(&S)
+* Proxy will always be used in Global Mode=* 全局模式下總是會使用代理
+
+
+# Message
+
+Cannot recognize the plugin(s) in the config: {0}=無法辨識設定檔中的外掛程式： {0}
+Cannot recognize the type of this device's CPU. If SSD is not running in virtual environment, you can submit a issue to help us improve SSD.=無法辨識此裝置的CPU型號，如果SSD並非運行在虛擬環境中，你可以提交一個issue來幫助我們改進SSD。
+Current SSD version is too old=當前版本過低
+Failed Link: {0}=失敗連結： {0}
+Import Airport: {0}=匯入提供商： {0}
+Import Count: {0}=匯入數量： {0}
+Import Fail=匯入失敗
+Import Success=匯入成功
+Import URL: {0}=匯入 URL： {0}
+No Subscription=沒有訂閱
+Successful Airport: {0}=成功提供商： {0}
+Subscribe Fail=訂閱失敗
+Subscribe Success=訂閱成功
+This airport is exist=此提供商已存在
