@@ -155,10 +155,10 @@ Unrecoverable proxy setting error occured, see log for detail=发生不可恢复
 
 ## SSD
 
-# Menu items
+# Menu item
 Tcping Latency=Tcping 延迟
 
-# Servers
+# Server
 
 Unknown=未知
 Testing=测试中
@@ -183,11 +183,8 @@ Use Proxy=通过代理
 &Save=保存(&S)
 * Proxy will always be used in Global Mode=* 全局模式下总是会通过代理
 
-
 # Message
 
-Cannot recognize the plugin(s) in the config: {0}=无法识别配置中的插件： {0}
-Cannot recognize the type of this device's CPU. If SSD is not running in virtual environment, you can submit a issue to help us improve SSD.=无法识别此设备的CPU型号，如果SSD并非运行在虚拟环境中，你可以提交一个issue来帮助我们改进SSD。
 Current SSD version is too old=当前版本过低
 Failed Link: {0}=失败链接： {0}
 Import Airport: {0}=导入机场： {0}

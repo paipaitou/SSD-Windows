@@ -4,15 +4,15 @@
 
 [shadowsocks-windows](https://github.com/shadowsocks/shadowsocks-windows)
 
-ShadowsocksD会跟随Shadowsocks更新代码。
+ShadowsocksD会跟随Shadowsocks更新代码
 
 ## Shared Wiki - 共享Wiki
 
-[ShadowsocksD项目共享Wiki](https://github.com/CGDF-Github/SSD-Windows/wiki)
+[ShadowsocksD项目共享Wiki](https://github.com/TheCGDF/SSD-Windows/wiki)
 
 ## Environment - 环境
 
-Microsoft .NET Framework 4.6.2+
+Microsoft .NET Framework 4.0+
 
 Microsoft Visual C++ 2015 Redistributable (x86)
 
@@ -22,7 +22,7 @@ Microsoft Visual C++ 2015 Redistributable (x86)
 
 Visual Studio 2019
 
-.NET Framework 4.6.2 SDK
+.NET Framework 4.7.2 SDK
 
 ## Open Source References - 开源引用
 ```
