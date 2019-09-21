@@ -38,9 +38,12 @@ namespace Shadowsocks.Model {
                         prefix += Latency.ToString() + "ms";
                         break;
                 }
+                //不显示比率
+                /**
                 if(subscription_url == "") {
                     prefix += " " + ratio + "x";
                 }
+                **/
             }
             else if(PREFIX_FLAG == PREFIX_LIST) {
                 foreach(var subscription in config.subscriptions) {
